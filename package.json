@@ -4,10 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev",
+    "start": "vite",
+    "test": "vitest --ui",
     "build": "tsc && vite build",
+    "tsc":"tsc",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "pre-push-check": "npm run tsc && npm run prettier && npm run eslint && npm run build",
+    "preview": "vite preview --port 80 --host",
+    "prepare": "husky"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -22,6 +27,7 @@
     "eslint": "^8.55.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "husky": "^9.0.11",
     "typescript": "^5.2.2",
     "vite": "^5.0.8"
   }
