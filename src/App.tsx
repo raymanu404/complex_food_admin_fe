@@ -1,15 +1,14 @@
 import { ThemeProvider } from '@emotion/react'
 import './App.css'
 import { theme } from './theme'
-import { Home } from './pages/Home/Home'
 import { StyledEngineProvider } from '@mui/material'
+import Router from './router/Router'
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <StyledEngineProvider injectFirst>
-        {/* use for now this compo, should be router */}
-        <Home />
+        <Router />
       </StyledEngineProvider>
     </ThemeProvider>
   )

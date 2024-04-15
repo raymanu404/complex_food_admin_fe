@@ -10,8 +10,10 @@ interface ICustomPalette {
     darkest: string
   }
   utility: {
-    lightOrange: string
+    black: string
+    white: string
     warning: string
+    background: string
   }
 }
 
@@ -37,15 +39,17 @@ const theme = createTheme({
   customPalette: {
     //change with our colors/fonts etc
     primary: {
-      main: '#00B2AA',
-      lightest: '#D3EEED',
-      light: '#5ACEC8',
+      main: '#2F86A6',
+      lightest: 'rgba(47, 134, 166, .5)',
+      light: 'rgba(47, 134, 166, .8)',
       dark: '#00948D',
       darkest: '#006661',
     },
     utility: {
-      lightOrange: '#FDF0E6',
       warning: '#ED6C02',
+      black: '#000000',
+      white: '#FFFFFF',
+      background: '#D6EAF8',
     },
   },
 })
