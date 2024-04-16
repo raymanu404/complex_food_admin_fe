@@ -1,5 +1,4 @@
 import { ThemeProvider } from '@emotion/react'
-import './App.css'
 import { theme } from './theme'
 import { StyledEngineProvider } from '@mui/material'
 import Router from './router/Router'
