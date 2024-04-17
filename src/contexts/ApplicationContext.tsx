@@ -19,7 +19,7 @@ const ApplicationContext = createContext<ApplicationContextI>(DefaultContext)
 
 const ApplicationContextProvider = ({ children }: PropsWithChildren) => {
   const { closeModal: closeDrawer, isOpen: isOpenDrawer, openModal: openDrawer } = useModal()
-  console.log(`isOpenDrawer ${isOpenDrawer}`)
+  console.log(`isOpenDrawer ${isOpenDrawer}`) // handle somehow to close Drawer after user switch between pages from drawer
 
   return (
     <ApplicationContext.Provider value={{ closeDrawer, isOpenDrawer, openDrawer }}>
