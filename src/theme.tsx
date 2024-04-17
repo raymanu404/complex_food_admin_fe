@@ -35,6 +35,20 @@ const theme = createTheme({
         disableRipple: true, // No more ripple, on the whole application 💣!
       },
     },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#2F86A6',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#2F86A6',
+        },
+      },
+    },
   },
   customPalette: {
     //change with our colors/fonts etc
@@ -50,6 +64,15 @@ const theme = createTheme({
       black: '#000000',
       white: '#FFFFFF',
       background: '#D6EAF8',
+    },
+  },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 600,
+      md: 900,
+      lg: 1200,
+      xl: 1536,
     },
   },
 })

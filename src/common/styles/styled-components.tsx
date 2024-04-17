@@ -7,7 +7,6 @@ const FlexBox = styled(Box)(() => ({
 }))
 
 const FlexBoxCentered = styled(Box)(() => ({
-  flex: '1',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
