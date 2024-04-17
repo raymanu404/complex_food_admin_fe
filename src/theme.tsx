@@ -37,7 +37,16 @@ const theme = createTheme({
     },
     MuiAppBar: {
       styleOverrides: {
-        colorPrimary: '#2F86A6',
+        root: {
+          backgroundColor: '#2F86A6',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#2F86A6',
+        },
       },
     },
   },

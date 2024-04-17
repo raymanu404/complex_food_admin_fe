@@ -1,18 +1,35 @@
-import { AppBar, IconButton, Toolbar, useTheme } from '@mui/material'
+import { AppBar, Box, IconButton, Toolbar } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { FlexBox } from '@/common/styles/styled-components'
+import { useApplicationContext } from '@/contexts/ApplicationContext'
+import Drawer from './Drawer'
 
 const Header = () => {
-  const theme = useTheme()
+  const { isOpenDrawer, closeDrawer, openDrawer } = useApplicationContext()
 
   return (
     <FlexBox>
-      <AppBar color="primary" position="static">
+      <AppBar position="static">
         <Toolbar>
-          <IconButton size="large" edge="start" aria-label="open drawer" sx={{ mr: 2 }}>
-            <MenuIcon />
-          </IconButton>
+          <Box>
+            <IconButton
+              size="large"
+              edge="start"
+              aria-label="open drawer"
+              sx={{ mr: 2 }}
+              onClick={() => {
+                if (isOpenDrawer) {
+                  closeDrawer()
+                } else {
+                  openDrawer()
+                }
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Box>
         </Toolbar>
+        <Drawer />
       </AppBar>
     </FlexBox>
   )
