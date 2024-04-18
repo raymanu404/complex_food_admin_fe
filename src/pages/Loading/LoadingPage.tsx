@@ -1,4 +1,4 @@
-import Spinner from '@/common/components/Spinner/Spinner'
+import { Spinner } from '@/common/components'
 import { FlexBoxCentered } from '@/common/styles/styled-components'
 
 const LoadingPage = () => {
