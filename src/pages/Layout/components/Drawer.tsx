@@ -19,11 +19,17 @@ const Drawer = () => {
   const navigate = useNavigate()
 
   const onClickDrawerItemHandler = useCallback(
-    (id: string) => {
-      console.log(id)
-      navigate(`/${id}`)
+    async (id: string) => {
+      const closePromise = new Promise((resolve) => {
+        closeDrawer()
+        resolve('OK')
+      }).then(() => {
+        navigate(`/${id}`)
+      })
+
+      await closePromise
     },
-    [navigate]
+    [closeDrawer, navigate]
   )
 
   return (

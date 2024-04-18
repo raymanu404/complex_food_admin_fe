@@ -1,9 +1,11 @@
-import React from 'react'
+// import { useGetListOrders } from '@/api/hooks/orderHooks'
+import { FlexBoxCentered } from '@/common/styles/styled-components'
 
-export const OrdersContainer = (props) => {
+export const OrdersContainer = () => {
+  // const { data, isLoading } = useGetListOrders()
   return (
-    <>
-      <h1>this is orders page</h1>
-    </>
+    <FlexBoxCentered sx={{ padding: '20px 40px' }}>
+      <h1>this is orders page </h1>
+    </FlexBoxCentered>
   )
 }
