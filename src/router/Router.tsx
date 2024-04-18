@@ -7,15 +7,15 @@ import Layout from '@/pages/Layout/Layout'
 const Router = () => {
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingPage />}>
-        <Layout>
+      <Layout>
+        <Suspense fallback={<LoadingPage />}>
           <Routes>
             {RoutePaths.map((route, index) => (
               <Route {...route.routeProps} key={`${index}-${route.name}`} />
             ))}
           </Routes>
-        </Layout>
-      </Suspense>
+        </Suspense>
+      </Layout>
     </BrowserRouter>
   )
 }
