@@ -3,18 +3,8 @@ import { theme } from './theme'
 import { StyledEngineProvider } from '@mui/material'
 import Router from './router/Router'
 import { ApplicationContextProvider } from './contexts/ApplicationContext'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-      refetchOnMount: true,
-      refetchOnWindowFocus: false,
-      refetchOnReconnect: true,
-    },
-  },
-})
+import { QueryClientProvider } from '@tanstack/react-query'
+import { queryClient } from './common/config/application_config'
 
 function App() {
   return (

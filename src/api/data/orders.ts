@@ -1,5 +1,5 @@
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
-import { axiosInstance } from '../config'
+import { axiosInstance } from '../../common/config/application_config'
 import { GetOrdersResponseBeI } from '../interfaces/orders'
 
 const getListOrdersAsync = async () => {
