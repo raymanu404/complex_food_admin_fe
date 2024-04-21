@@ -11,6 +11,7 @@ const OrderItemsContainer = ({ row }: PropsI) => {
   const { original } = row
   const { orderItems } = original
 
+  //TODO: do order Items Page with carusel/slide data horizontally to see items from that order
   return (
     <Stack gap="0.5rem" minHeight="00px">
       {orderItems &&

@@ -55,6 +55,7 @@ export const OrdersContainer = () => {
       disabled: row.original.orderItems.length === 0,
     }),
     onColumnFiltersChange: setColumnFilters,
+    //TODO:[OPTIONAL] figure out how to search by term in app, check also BE
     // onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
@@ -84,6 +85,7 @@ export const OrdersContainer = () => {
     <FlexBoxCentered sx={{ padding: '20px 40px' }}>
       <FlexCard sx={{ width: '90vw' }}>
         <h1>this is orders page </h1>
+        //TODO: figure out how to not overlap table with page e.g see table when expand all order items
         <MaterialReactTable table={ordersTable} />
       </FlexCard>
     </FlexBoxCentered>
