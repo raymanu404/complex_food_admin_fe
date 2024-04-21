@@ -47,6 +47,7 @@ interface OrderBeI {
   code: string
   buyerId: number
   orderItems: OrderItemBeI[]
+  buyerFullName: string
 }
 
 //FE MODELS
@@ -69,7 +70,7 @@ enum CategoryProductEnum {
 interface OrderItemFeI {
   orderItemId: number
   quantity: number
-  category: CategoryProductEnum
+  category: string
   title: string
   description: string
   image: string
@@ -80,11 +81,12 @@ interface OrderItemFeI {
 interface OrderFeI {
   id: number
   totalPrice: number
-  datePlaced: Date
-  status: OrderStatusEnum
+  datePlaced: string
+  status: string
   discount: number
   code: string
   buyerId: number
+  buyerFullName: string
   orderItems: OrderItemFeI[]
 }
 
@@ -95,5 +97,5 @@ interface GetOrdersResponseBeI {
   currentPage: number
 }
 
-export type { GetOrdersResponseBeI, OrderBeI, OrderFeI }
+export type { GetOrdersResponseBeI, OrderBeI, OrderFeI, OrderItemFeI }
 export { OrderStatusEnum, CategoryProductEnum }
