@@ -49,6 +49,13 @@ const theme = createTheme({
         },
       },
     },
+    // MuiTableContainer: {
+    //   styleOverrides: {
+    //     root: {
+    //       backgroundColor: '#2F86A6',
+    //     },
+    //   },
+    // },
   },
   customPalette: {
     //change with our colors/fonts etc
