@@ -17,6 +17,7 @@
     "@mui/x-date-pickers": "^7.2.0",
     "@tanstack/react-query": "^5.29.2",
     "axios": "^1.6.8",
+    "dayjs": "^1.11.10",
     "lodash": "^4.17.21",
     "material-react-table": "^2.12.1",
     "react": "^18.2.0",
