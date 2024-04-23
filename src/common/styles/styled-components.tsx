@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material'
+import { Box, Card, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material'
 
 const FlexBox = styled(Box)(() => ({
   flex: '1',
@@ -23,4 +23,23 @@ const FlexCard = styled(Box)(({ theme }) => ({
   flexGrow: 1,
 }))
 
-export { FlexBox, FlexBoxCentered, FlexCard }
+const TooltipCustom = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip
+    {...props}
+    classes={{ popper: className }}
+    sx={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}
+  />
+))({
+  [`& .${tooltipClasses.tooltip}`]: {
+    maxWidth: 500,
+  },
+})
+
+const FlipCard = styled(Card)(() => ({
+  width: '300px',
+  height: '300px',
+  borderRadius: '16px',
+  padding: '20px 5px',
+}))
+
+export { FlexBox, FlexBoxCentered, FlexCard, TooltipCustom, FlipCard }

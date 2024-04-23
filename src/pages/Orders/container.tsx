@@ -40,7 +40,7 @@ export const OrdersContainer = () => {
   const ordersTable = useMaterialReactTable({
     columns,
     data: orders,
-    initialState: { showColumnFilters: true },
+    initialState: { showColumnFilters: false }, //default to false
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: true, //turn off built-in client-side sorting

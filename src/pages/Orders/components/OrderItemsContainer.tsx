@@ -13,7 +13,7 @@ const OrderItemsContainer = ({ row }: PropsI) => {
 
   //TODO: do order Items Page with carusel/slide data horizontally to see items from that order
   return (
-    <Stack gap="0.5rem" minHeight="00px">
+    <Stack gap="0.5rem" minHeight="0px" direction={'row'} columnGap={10} sx={{ overflow: 'auto', maxWidth: '100%' }}>
       {orderItems &&
         orderItems.map((orderItem) => <OrderItemDetails orderItem={orderItem} key={orderItem.orderItemId} />)}
     </Stack>
