@@ -5,7 +5,14 @@ import {
   OrderItemFeI,
   OrderStatusEnum,
 } from '@/api/interfaces/orders'
-import { MRT_ColumnDef } from 'material-react-table'
+// import { formatDate } from '@/common/utils/helpers'
+import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
+
+const statuses: DropdownOption[] = Object.keys(OrderStatusEnum)
+  .map((value) => ({
+    value: value,
+  }))
+  .slice(3)
 
 const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
   {
@@ -17,6 +24,8 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
     accessorKey: 'buyerFullName',
     header: 'Customer Full name',
     size: 150,
+    enableColumnFilter: false, //disable these 2 for now
+    enableSorting: false,
   },
   {
     accessorKey: 'code',
@@ -24,9 +33,12 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
     size: 150,
   },
   {
-    accessorKey: 'datePlaced',
+    id: 'datePlaced',
+    accessorFn: (originalRow) => new Date(originalRow.datePlaced),
     header: 'Date placed',
     size: 150,
+    filterVariant: 'date',
+    Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(),
   },
   {
     accessorKey: 'discount',
@@ -39,11 +51,22 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
     header: 'Total Price',
     size: 150,
     Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+    filterVariant: 'range-slider',
+    filterFn: 'betweenInclusive', // default (or between)
+    muiFilterSliderProps: {
+      //no need to specify min/max/step if using faceted values
+      marks: true,
+      step: 10,
+      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+    },
   },
   {
     accessorKey: 'status',
     header: 'Status',
     size: 150,
+    filterFn: 'equals',
+    filterSelectOptions: statuses,
+    filterVariant: 'select',
   },
 ]
 

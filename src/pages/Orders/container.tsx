@@ -40,8 +40,8 @@ export const OrdersContainer = () => {
   const ordersTable = useMaterialReactTable({
     columns,
     data: orders,
-    initialState: { showColumnFilters: false },
-    manualFiltering: true, //turn off built-in client-side filtering
+    initialState: { showColumnFilters: false }, //default to false
+    manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: true, //turn off built-in client-side sorting
     muiToolbarAlertBannerProps: isError
@@ -79,13 +79,16 @@ export const OrdersContainer = () => {
       variant: 'outlined',
     },
     paginationDisplayMode: 'pages',
+    enableFacetedValues: true,
+    enableGlobalFilter: false, //lets disable this for now
   })
 
   return (
     <FlexBoxCentered sx={{ padding: '20px 40px' }}>
       <FlexCard sx={{ width: '90vw' }}>
         <h1>this is orders page </h1>
-        //TODO: figure out how to not overlap table with page e.g see table when expand all order items
+        //TODO: figure out how to not overlap table with page e.g see table when expand all order items //TODO: make
+        styles more fancy
         <MaterialReactTable table={ordersTable} />
       </FlexCard>
     </FlexBoxCentered>
