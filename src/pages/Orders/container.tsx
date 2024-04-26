@@ -1,6 +1,6 @@
-import { useGetListOrders } from '@/api/hooks/orderHooks'
+import { useGetListOrders, useUpdateOrderStatus } from '@/api/hooks/orderHooks'
 import { OrderFeI } from '@/api/interfaces/orders'
-import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
+import { FlexBoxCentered } from '@/common/styles/styled-components'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import {
   MRT_ColumnDef,
@@ -12,7 +12,7 @@ import {
 } from 'material-react-table'
 import AddIcon from '@mui/icons-material/Add'
 import MinusIcon from '@mui/icons-material/Remove'
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { orders_columns } from './utils/mapper'
 import OrderItemsContainer from './components/OrderItemsContainer'
 
@@ -33,14 +33,26 @@ export const OrdersContainer = () => {
     pagination,
   })
 
+  const { mutateAsync: updateOrderStatusAsync } = useUpdateOrderStatus()
+
   const orders = useMemo(() => data?.data ?? [], [data?.data])
 
-  const columns = useMemo<MRT_ColumnDef<OrderFeI>[]>(orders_columns, [])
+  const changeOrderStatusHandler = useCallback(
+    async (orderId: number, orderStatus: number) => {
+      await updateOrderStatusAsync({ orderId: orderId, orderStatus: orderStatus })
+    },
+    [updateOrderStatusAsync]
+  )
+
+  const columns = useMemo<MRT_ColumnDef<OrderFeI>[]>(
+    () => orders_columns({ changeOrderStatusHandler }),
+    [changeOrderStatusHandler]
+  )
 
   const ordersTable = useMaterialReactTable({
     columns,
     data: orders,
-    initialState: { showColumnFilters: false }, //default to false
+    initialState: { showColumnFilters: false, columnPinning: { right: ['status'] } }, //default to false
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: true, //turn off built-in client-side sorting
@@ -61,6 +73,27 @@ export const OrdersContainer = () => {
     onSortingChange: setSorting,
     renderDetailPanel: ({ row }) => <OrderItemsContainer row={row} />,
     rowCount: data?.totalCount ?? 0,
+    muiTableContainerProps: {
+      color: 'primary',
+    },
+    muiTablePaperProps: {
+      sx: {
+        // maxHeight: '70vh',
+        overflow: 'auto',
+      },
+    },
+    muiPaginationProps: {
+      color: 'primary',
+      shape: 'rounded',
+      variant: 'outlined',
+    },
+    enableStickyHeader: true,
+    paginationDisplayMode: 'pages',
+    enableFacetedValues: true,
+    enableGlobalFilter: false, //lets disable this for now
+    editDisplayMode: 'table', // ('modal', 'row', 'cell', and 'custom' are also
+    enableEditing: true,
+    // enableRowActions: true,
     state: {
       columnFilters,
       // globalFilter,
@@ -70,27 +103,11 @@ export const OrdersContainer = () => {
       showProgressBars: isRefetching,
       sorting,
     },
-    muiTableContainerProps: {
-      color: 'primary',
-    },
-    muiPaginationProps: {
-      color: 'primary',
-      shape: 'rounded',
-      variant: 'outlined',
-    },
-    paginationDisplayMode: 'pages',
-    enableFacetedValues: true,
-    enableGlobalFilter: false, //lets disable this for now
   })
 
   return (
-    <FlexBoxCentered sx={{ padding: '20px 40px' }}>
-      <FlexCard sx={{ width: '90vw' }}>
-        <h1>this is orders page </h1>
-        //TODO: figure out how to not overlap table with page e.g see table when expand all order items //TODO: make
-        styles more fancy
-        <MaterialReactTable table={ordersTable} />
-      </FlexCard>
+    <FlexBoxCentered sx={{ padding: '20px 40px', maxHeight: '90vh', maxWidth: '80vw' }}>
+      <MaterialReactTable table={ordersTable} />
     </FlexBoxCentered>
   )
 }

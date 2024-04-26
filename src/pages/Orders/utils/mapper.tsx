@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   CategoryProductEnum,
   GetOrdersResponseBeI,
@@ -14,11 +15,16 @@ const statuses: DropdownOption[] = Object.keys(OrderStatusEnum)
   }))
   .slice(3)
 
-const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
+const orders_columns = ({
+  changeOrderStatusHandler,
+}: {
+  changeOrderStatusHandler: (orderId: number, status: number) => void
+}): MRT_ColumnDef<OrderFeI>[] => [
   {
     accessorKey: 'id',
     header: 'Order Id',
     size: 20,
+    enableEditing: false,
   },
   {
     accessorKey: 'buyerFullName',
@@ -26,11 +32,13 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
     size: 150,
     enableColumnFilter: false, //disable these 2 for now
     enableSorting: false,
+    enableEditing: false,
   },
   {
     accessorKey: 'code',
     header: 'Order code',
     size: 150,
+    enableEditing: false,
   },
   {
     id: 'datePlaced',
@@ -38,13 +46,16 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
     header: 'Date placed',
     size: 150,
     filterVariant: 'date',
+    //TODO: fix filtering by date
     Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(),
+    enableEditing: false,
   },
   {
     accessorKey: 'discount',
     header: 'Discount',
     size: 50,
     Cell: ({ cell }) => (cell.getValue<number>() / 100).toLocaleString('ro-RO', { style: 'percent' }),
+    enableEditing: false,
   },
   {
     accessorKey: 'totalPrice',
@@ -59,14 +70,31 @@ const orders_columns = (): MRT_ColumnDef<OrderFeI>[] => [
       step: 10,
       valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
     },
+    enableEditing: false,
   },
   {
     accessorKey: 'status',
     header: 'Status',
-    size: 150,
+    size: 120,
     filterFn: 'equals',
     filterSelectOptions: statuses,
     filterVariant: 'select',
+    editVariant: 'select',
+    editSelectOptions: statuses,
+    enableEditing: true,
+    muiEditTextFieldProps: ({ row }) => ({
+      select: true,
+      onChange: (event) => {
+        const orderId = row.original.id
+        const [value] = Object.entries(OrderStatusEnum).filter(([key, value]) => {
+          if (key === event.target.value) {
+            return value
+          }
+        })
+        const [_, valueStatus] = value
+        changeOrderStatusHandler(orderId, valueStatus as number)
+      },
+    }),
   },
 ]
 

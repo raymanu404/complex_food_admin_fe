@@ -1,6 +1,6 @@
 import { OrderItemFeI } from '@/api/interfaces/orders'
 import { FlipCard, TooltipCustom } from '@/common/styles/styled-components'
-import { Button, CardActions, CardContent, Typography, Divider, useTheme, Box, Chip } from '@mui/material'
+import { CardContent, Typography, Divider, useTheme, Box, Chip } from '@mui/material'
 
 interface PropsI extends Omit<OrderItemFeI, 'image' | 'orderId'> {
   flipCardHandler: (value: boolean) => void
@@ -16,10 +16,18 @@ const OrderItemFrontSide = ({
   flipCardHandler,
 }: PropsI) => {
   const theme = useTheme()
+
+  //TODO: fix styles, tooltips, buttons etc
   return (
     <FlipCard
       sx={{
         backgroundColor: theme.customPalette.primary.lightest,
+        cursor: 'pointer',
+        userSelect: 'none',
+      }}
+      onClick={(ev) => {
+        ev.preventDefault()
+        flipCardHandler(true)
       }}
     >
       <CardContent>
@@ -51,17 +59,6 @@ const OrderItemFrontSide = ({
           <Typography variant="body2">{quantity} items</Typography>
         </Box>
       </CardContent>
-      <CardActions>
-        <Button
-          size="small"
-          onClick={(ev) => {
-            ev.preventDefault()
-            flipCardHandler(true)
-          }}
-        >
-          See your product
-        </Button>
-      </CardActions>
     </FlipCard>
   )
 }

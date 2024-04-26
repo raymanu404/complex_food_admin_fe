@@ -1,5 +1,5 @@
 import { OrderFeI } from '@/api/interfaces/orders'
-import { Stack } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { MRT_Row } from 'material-react-table'
 import OrderItemDetails from './OrderItemDetails'
 
@@ -11,12 +11,14 @@ const OrderItemsContainer = ({ row }: PropsI) => {
   const { original } = row
   const { orderItems } = original
 
-  //TODO: do order Items Page with carusel/slide data horizontally to see items from that order
+  //TODO:finish styles
   return (
-    <Stack gap="0.5rem" minHeight="0px" direction={'row'} columnGap={10} sx={{ overflow: 'auto', maxWidth: '100%' }}>
-      {orderItems &&
-        orderItems.map((orderItem) => <OrderItemDetails orderItem={orderItem} key={orderItem.orderItemId} />)}
-    </Stack>
+    <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto', maxHeight: '300px' }}>
+      <Stack gap="0.2rem" direction={'row'} columnGap={10} sx={{}}>
+        {orderItems &&
+          orderItems.map((orderItem) => <OrderItemDetails orderItem={orderItem} key={orderItem.orderItemId} />)}
+      </Stack>
+    </Box>
   )
 }
 

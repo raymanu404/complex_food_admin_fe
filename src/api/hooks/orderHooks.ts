@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { getListOrdersAsync } from '../data/orders'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { getListOrdersAsync, updateOrderStatus } from '../data/orders'
 import { transformOrdersData } from '@/pages/Orders/utils/mapper'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 
@@ -16,7 +16,7 @@ const useGetListOrders = ({
 }) => {
   return useQuery({
     queryKey: [
-      'get-paginated-orders-list',
+      'get-paginated-orders-list-query',
       columnFilters,
       globalFilter,
       pagination.pageSize,
@@ -28,4 +28,12 @@ const useGetListOrders = ({
   })
 }
 
-export { useGetListOrders }
+const useUpdateOrderStatus = () => {
+  return useMutation({
+    mutationKey: ['update-order-status-mutation'],
+    mutationFn: async ({ orderId, orderStatus }: { orderId: number; orderStatus: number }) =>
+      await updateOrderStatus(orderId, orderStatus),
+  })
+}
+
+export { useGetListOrders, useUpdateOrderStatus }
