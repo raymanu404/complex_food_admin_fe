@@ -41,4 +41,12 @@ const getListOrdersAsync = async ({
   return data
 }
 
-export { getListOrdersAsync }
+const updateOrderStatus = async (orderId: number, orderStatus: number) => {
+  const { data } = await axiosInstance.put<number>(
+    `${BACKEND_ADMIN_PATH}/orders/update-status/${orderId}?orderStatus=${orderStatus}`
+  )
+
+  return data
+}
+
+export { getListOrdersAsync, updateOrderStatus }
