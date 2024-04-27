@@ -3,6 +3,7 @@ import { getListOrdersAsync, updateOrderStatus } from '../data/orders'
 import { transformOrdersData } from '@/pages/Orders/utils/mapper'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { toast } from 'react-toastify'
+import { OrderStatusEnum } from '../interfaces/orders'
 
 const useGetListOrders = ({
   columnFilters,
@@ -38,8 +39,12 @@ const useUpdateOrderStatus = () => {
       toast.error(`You cannot update order status.\n${error.message}`)
     },
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    onSuccess: (_, { orderId, orderStatus }) => {
-      toast.success(`Order ${orderId} was updated to -> ${orderStatus}`)
+    onSuccess: (data, { orderId, orderStatus }) => {
+      if (data === 1) {
+        toast.success(`Order ${orderId} was updated to -> ${OrderStatusEnum[orderStatus]}`)
+      } else {
+        toast.info(`Order ${orderId} was not updated to ${OrderStatusEnum[orderStatus]}`)
+      }
     },
   })
 }
