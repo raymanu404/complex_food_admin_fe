@@ -26,9 +26,10 @@
 //   "currentPage": 1
 // }
 
+//BE MODELS
 interface OrderItemBeI {
   orderItemId: number
-  cantity: number //TODO: will be changed with quantity later
+  cantity: number
   category: number
   title: string
   description: string
@@ -37,7 +38,6 @@ interface OrderItemBeI {
   orderId: number
 }
 
-//BE MODELS
 interface OrderBeI {
   id: number
   totalPrice: number
@@ -55,16 +55,6 @@ enum OrderStatusEnum {
   Placed = 1,
   InProgress,
   Done,
-}
-
-enum CategoryProductEnum {
-  Soup = 1,
-  Meat,
-  FoodGarnish,
-  Salad,
-  Desert,
-  Drink,
-  Standard,
 }
 
 interface OrderItemFeI {
@@ -98,4 +88,4 @@ interface GetOrdersResponseBeI {
 }
 
 export type { GetOrdersResponseBeI, OrderBeI, OrderFeI, OrderItemFeI }
-export { OrderStatusEnum, CategoryProductEnum }
+export { OrderStatusEnum }

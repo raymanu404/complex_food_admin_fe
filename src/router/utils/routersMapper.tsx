@@ -12,7 +12,9 @@ const HomePage = lazy(() => import('@/pages/Home/Home').then((module) => ({ defa
 const OrdersPage = lazy(() =>
   import('@/pages/Orders/container').then((module) => ({ default: module.OrdersContainer }))
 )
-const ProductsPage = lazy(() => import('@/pages/Products/container').then((module) => ({ default: module.default })))
+const ProductsPage = lazy(() =>
+  import('@/pages/Products/container').then((module) => ({ default: module.ProductsContainer }))
+)
 const LoginPage = lazy(() => import('@/pages/Login/container').then((module) => ({ default: module.default })))
 
 const RoutePaths: RouteI[] = [

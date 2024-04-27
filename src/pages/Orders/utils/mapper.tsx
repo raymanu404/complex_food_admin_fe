@@ -1,11 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  CategoryProductEnum,
-  GetOrdersResponseBeI,
-  OrderFeI,
-  OrderItemFeI,
-  OrderStatusEnum,
-} from '@/api/interfaces/orders'
+import { GetOrdersResponseBeI, OrderFeI, OrderItemFeI, OrderStatusEnum } from '@/api/interfaces/orders'
+import { CategoryProductEnum } from '@/api/interfaces/products'
 // import { formatDate } from '@/common/utils/helpers'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 
