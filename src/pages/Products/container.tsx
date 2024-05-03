@@ -4,6 +4,7 @@ import {
   MRT_ColumnFiltersState,
   MRT_PaginationState,
   MRT_SortingState,
+  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table'
@@ -13,6 +14,8 @@ import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import { useGetListProducts } from '@/api/hooks/productHooks'
 import ActionsCell from './components/ActionsCell'
+import { Button } from '@mui/material'
+import EditProductModal from './components/EditProductModal'
 
 export const ProductsContainer = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -30,6 +33,11 @@ export const ProductsContainer = () => {
     pagination,
   })
 
+  const handleEditProduct: MRT_TableOptions<ProductFeI>['onEditingRowSave'] = async ({ values, table }) => {
+    console.log({ values })
+    table.setEditingRow(null) //exit editing mode
+  }
+
   const products = useMemo(() => data?.data ?? [], [data?.data])
 
   const columns = useMemo<MRT_ColumnDef<ProductFeI>[]>(() => products_columns(), [])
@@ -37,7 +45,7 @@ export const ProductsContainer = () => {
   const productsTable = useMaterialReactTable({
     columns,
     data: products,
-    initialState: { showColumnFilters: false, columnPinning: { right: ['actions'] } },
+    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] } },
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: false, //turn off built-in client-side sorting
@@ -56,9 +64,7 @@ export const ProductsContainer = () => {
       color: 'primary',
     },
     muiTablePaperProps: {
-      sx: {
-        overflow: 'auto',
-      },
+      sx: { overflow: 'auto' },
     },
     muiPaginationProps: {
       color: 'primary',
@@ -69,11 +75,34 @@ export const ProductsContainer = () => {
     paginationDisplayMode: 'pages',
     enableFacetedValues: true,
     enableGlobalFilter: true,
-    editDisplayMode: 'table', // ('modal', 'row', 'cell', and 'custom' are also
+    editDisplayMode: 'modal',
     enableEditing: true,
     enableRowActions: true,
     enablePinning: true,
-    renderRowActions: ({ row }) => <ActionsCell row={row} />,
+    createDisplayMode: 'modal',
+    renderRowActions: ({ row, table }) => <ActionsCell row={row} table={table} />,
+    onEditingRowSave: handleEditProduct,
+    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
+      <EditProductModal table={table} row={row}>
+        {internalEditComponents}
+      </EditProductModal>
+    ),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          table.setCreatingRow(true) //simplest way to open the create row modal with no default values
+          //or you can pass in a row object to set default values with the `createRow` helper function
+          // table.setCreatingRow(
+          //   createRow(table, {
+          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
+          //   }),
+          // );
+        }}
+      >
+        Create New Product
+      </Button>
+    ),
     state: {
       columnFilters,
       globalFilter,
@@ -86,7 +115,7 @@ export const ProductsContainer = () => {
   })
 
   return (
-    <FlexBoxCentered sx={{ padding: '20px 40px', maxWidth: '80vw' }}>
+    <FlexBoxCentered sx={{ padding: '20px 40px', margin: '0 auto' }}>
       <FlexCard sx={{ height: '80vh' }}>
         <h1>Products table</h1>
         <MaterialReactTable table={productsTable} />

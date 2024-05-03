@@ -2,17 +2,17 @@ import { Box, IconButton, Tooltip } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ProductFeI } from '@/api/interfaces/products'
-import { MRT_Row } from 'material-react-table'
+import { MRT_Row, MRT_TableInstance } from 'material-react-table'
 
 interface PropsI {
   row: MRT_Row<ProductFeI>
+  table: MRT_TableInstance<ProductFeI>
 }
-const ActionsCell = ({ row }: PropsI) => {
-  console.log(row.original.id)
+const ActionsCell = ({ row, table }: PropsI) => {
   return (
     <>
       <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Tooltip title="Edit">
+        <Tooltip title="Edit" onClick={() => table.setEditingRow(row)}>
           <IconButton>
             <EditIcon />
           </IconButton>
