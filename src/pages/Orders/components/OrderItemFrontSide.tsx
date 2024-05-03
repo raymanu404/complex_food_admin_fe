@@ -1,4 +1,5 @@
 import { OrderItemFeI } from '@/api/interfaces/orders'
+import { OverflowTooltip } from '@/common/components/Tooltip/OverflowTooltip'
 import { FlipCard, TooltipCustom } from '@/common/styles/styled-components'
 import { CardContent, Typography, Divider, useTheme, Box, Chip } from '@mui/material'
 
@@ -47,7 +48,7 @@ const OrderItemFrontSide = ({
         <Box sx={{ padding: '10px 20px', height: '140px' }}>
           <Typography variant="h4">{category}</Typography>
           {/* <TooltipCustom title={description}> */}
-          <Typography variant="h5">{description}</Typography>
+          <OverflowTooltip text={`${description}`} />
           {/* </TooltipCustom> */}
         </Box>
         {/* PRICE + Quantity */}

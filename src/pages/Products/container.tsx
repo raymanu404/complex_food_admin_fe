@@ -12,6 +12,7 @@ import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import { useGetListProducts } from '@/api/hooks/productHooks'
+import ActionsCell from './components/ActionsCell'
 
 export const ProductsContainer = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -36,7 +37,7 @@ export const ProductsContainer = () => {
   const productsTable = useMaterialReactTable({
     columns,
     data: products,
-    initialState: { showColumnFilters: false },
+    initialState: { showColumnFilters: false, columnPinning: { right: ['actions'] } },
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: false, //turn off built-in client-side sorting
@@ -69,8 +70,10 @@ export const ProductsContainer = () => {
     enableFacetedValues: true,
     enableGlobalFilter: true,
     editDisplayMode: 'table', // ('modal', 'row', 'cell', and 'custom' are also
-    // enableEditing: true,
-    // enableRowActions: true,
+    enableEditing: true,
+    enableRowActions: true,
+    enablePinning: true,
+    renderRowActions: ({ row }) => <ActionsCell row={row} />,
     state: {
       columnFilters,
       globalFilter,

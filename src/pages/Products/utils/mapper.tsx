@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { CategoryProductEnum, GetProductsResponseBeI, ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_NA } from '@/common/utils/constants'
-import { Checkbox } from '@mui/material'
+import { Box, Checkbox } from '@mui/material'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 import ImageCell from '../components/ImageCell'
+import { OverflowTooltip } from '@/common/components/Tooltip/OverflowTooltip'
 
 const productCategories: DropdownOption[] = Object.keys(CategoryProductEnum)
   .map((value) => ({
@@ -21,13 +22,23 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
   {
     accessorKey: 'title',
     header: 'Title',
-    size: 150,
+    Cell: ({ row }) => (
+      <Box sx={{ width: '15em' }}>
+        <OverflowTooltip text={`${row.original.title}`} />
+      </Box>
+    ),
+    enableClickToCopy: true,
     enableEditing: true,
   },
   {
     accessorKey: 'description',
     header: 'Description',
-    size: 150,
+    Cell: ({ row }) => (
+      <Box sx={{ width: '15em' }}>
+        <OverflowTooltip text={`${row.original.description}`} />
+      </Box>
+    ),
+    enableClickToCopy: true,
     enableEditing: true,
   },
   {
