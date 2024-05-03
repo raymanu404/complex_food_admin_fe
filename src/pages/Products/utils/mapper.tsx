@@ -3,12 +3,13 @@ import { CategoryProductEnum, GetProductsResponseBeI, ProductFeI } from '@/api/i
 import { DEFAULT_NA } from '@/common/utils/constants'
 import { Checkbox } from '@mui/material'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
+import ImageCell from '../components/ImageCell'
 
 const productCategories: DropdownOption[] = Object.keys(CategoryProductEnum)
   .map((value) => ({
     value: value,
   }))
-  .slice(3)
+  .slice(7)
 
 const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
   {
@@ -51,8 +52,8 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     size: 120,
     filterFn: 'equals',
     Cell: ({ cell }) => {
-      // console.log(cell.getValue<string>())
-      return cell.getValue<string>()
+      const { category } = cell.row.original
+      return category
     },
     filterSelectOptions: productCategories,
     filterVariant: 'select',
@@ -85,6 +86,16 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     filterVariant: 'date',
     enableEditing: true,
   },
+  {
+    accessorKey: 'image',
+    header: 'Image',
+    size: 150,
+    Cell: ({ cell }) => <ImageCell imagePath={cell.row.original.image} title={cell.row.original.title} />,
+    enableEditing: false,
+    enableSorting: false,
+    enableColumnFilter: false,
+    enableGlobalFilter: false,
+  },
 ]
 
 const transformProductsData = (data: GetProductsResponseBeI): { data: ProductFeI[]; totalCount: number } => {
@@ -92,12 +103,11 @@ const transformProductsData = (data: GetProductsResponseBeI): { data: ProductFeI
     const dateCreatedFe = product.dateCreated ? new Date(product.dateCreated) : null
     const dateUpdatedFe = product.dateUpdated ? new Date(product.dateUpdated) : null
 
-    const productCategory = CategoryProductEnum[product.cateogory]
-    console.log(productCategory)
+    const productCategory = CategoryProductEnum[product.category]
 
     return {
       id: product.id,
-      cateogory: productCategory,
+      category: productCategory,
       dateCreated: dateCreatedFe,
       dateUpdated: dateUpdatedFe,
       description: product.description,

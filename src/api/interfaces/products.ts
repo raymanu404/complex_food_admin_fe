@@ -10,7 +10,7 @@ enum CategoryProductEnum {
 
 interface ProductBeI {
   id: number
-  cateogory: number
+  category: number
   title: string
   description: string
   price: number
@@ -22,7 +22,7 @@ interface ProductBeI {
 
 interface ProductFeI {
   id: number
-  cateogory: string
+  category: string
   title: string
   description: string
   price: number

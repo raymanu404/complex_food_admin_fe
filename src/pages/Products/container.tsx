@@ -7,8 +7,6 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table'
-import AddIcon from '@mui/icons-material/Add'
-import MinusIcon from '@mui/icons-material/Remove'
 import { products_columns } from './utils/mapper'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { ProductFeI } from '@/api/interfaces/products'
@@ -48,14 +46,10 @@ export const ProductsContainer = () => {
           children: 'Error loading data',
         }
       : undefined,
-    muiExpandButtonProps: ({ row }) => ({
-      children: row.getIsExpanded() ? <MinusIcon /> : <AddIcon />,
-    }),
     onColumnFiltersChange: setColumnFilters,
     onGlobalFilterChange: setGlobalFilter,
     onPaginationChange: setPagination,
     onSortingChange: setSorting,
-    renderDetailPanel: ({ row }) => null, //TODO:render product image details
     rowCount: data?.totalCount ?? 0,
     muiTableContainerProps: {
       color: 'primary',
@@ -90,7 +84,7 @@ export const ProductsContainer = () => {
 
   return (
     <FlexBoxCentered sx={{ padding: '20px 40px', maxWidth: '80vw' }}>
-      <FlexCard sx={{ maxHeight: '90vh' }}>
+      <FlexCard sx={{ height: '80vh' }}>
         <h1>Products table</h1>
         <MaterialReactTable table={productsTable} />
       </FlexCard>
