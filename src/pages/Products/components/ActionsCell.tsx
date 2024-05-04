@@ -1,27 +1,34 @@
-import { Box, IconButton, Tooltip } from '@mui/material'
+import { Box, IconButton } from '@mui/material'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { ProductFeI } from '@/api/interfaces/products'
-import { MRT_Row, MRT_TableInstance } from 'material-react-table'
+import { MRT_Row } from 'material-react-table'
 
 interface PropsI {
   row: MRT_Row<ProductFeI>
-  table: MRT_TableInstance<ProductFeI>
+  openEditModal: (product: ProductFeI) => void
+  openDeleteModal: (productId: number) => void
 }
-const ActionsCell = ({ row, table }: PropsI) => {
+const ActionsCell = ({ row, openEditModal, openDeleteModal }: PropsI) => {
+  const { original: data } = row
   return (
     <>
       <Box sx={{ display: 'flex', gap: '1rem' }}>
-        <Tooltip title="Edit" onClick={() => table.setEditingRow(row)}>
-          <IconButton>
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <IconButton
+          onClick={() => {
+            openEditModal(data)
+          }}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          color="error"
+          onClick={() => {
+            openDeleteModal(data.id)
+          }}
+        >
+          <DeleteIcon />
+        </IconButton>
       </Box>
     </>
   )

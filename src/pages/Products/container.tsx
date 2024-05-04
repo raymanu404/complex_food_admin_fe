@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   MRT_ColumnDef,
   MRT_ColumnFiltersState,
@@ -14,8 +14,10 @@ import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import { useGetListProducts } from '@/api/hooks/productHooks'
 import ActionsCell from './components/ActionsCell'
-import { Button } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import EditProductModal from './components/EditProductModal'
+import { useModal } from '@/common/utils/hooks/useModal'
+import CreateProductModal from './components/CreateProductModal'
 
 export const ProductsContainer = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -25,6 +27,11 @@ export const ProductsContainer = () => {
     pageIndex: 0,
     pageSize: DEFAULT_PAGE_SIZE,
   })
+  const { closeModal: closeEditModal, isOpen: isEditModalOpen, openModal: openEditModal } = useModal()
+  const { closeModal: closeCreateModal, isOpen: isCreateModalOpen, openModal: openCreateModal } = useModal()
+  const { closeModal: closeDeleteModal, isOpen: isDeleteModalOpen, openModal: openDeleteModal } = useModal()
+  const [editProduct, setEditProduct] = useState<ProductFeI | null>(null)
+  const [productId, setProductId] = useState<number>(0)
 
   const { data, isLoading, isError, isRefetching } = useGetListProducts({
     columnFilters,
@@ -33,10 +40,38 @@ export const ProductsContainer = () => {
     pagination,
   })
 
-  const handleEditProduct: MRT_TableOptions<ProductFeI>['onEditingRowSave'] = async ({ values, table }) => {
-    console.log({ values })
-    table.setEditingRow(null) //exit editing mode
-  }
+  // const handleEditProduct: MRT_TableOptions<ProductFeI>['onEditingRowSave'] = async ({ values }) => {
+  //   console.log({ values })
+  //   // table.setEditingRow(null) //exit editing mode
+  // }
+
+  const handleOpenEditModal = useCallback(
+    async (product: ProductFeI) => {
+      await new Promise((resolve) => {
+        setEditProduct(product)
+        resolve('finish')
+      }).then(() => {
+        openEditModal()
+      })
+    },
+    [openEditModal]
+  )
+
+  const handleOpenDeleteModal = useCallback(
+    async (productId: number) => {
+      await new Promise((resolve) => {
+        setProductId(productId)
+        resolve('finish')
+      }).then(() => {
+        openDeleteModal()
+      })
+    },
+    [openDeleteModal]
+  )
+
+  const handleCloseCreateModal = useCallback(() => {
+    closeCreateModal()
+  }, [closeCreateModal])
 
   const products = useMemo(() => data?.data ?? [], [data?.data])
 
@@ -45,7 +80,7 @@ export const ProductsContainer = () => {
   const productsTable = useMaterialReactTable({
     columns,
     data: products,
-    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] } },
+    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] }, isFullScreen: true },
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: false, //turn off built-in client-side sorting
@@ -75,34 +110,41 @@ export const ProductsContainer = () => {
     paginationDisplayMode: 'pages',
     enableFacetedValues: true,
     enableGlobalFilter: true,
-    editDisplayMode: 'modal',
     enableEditing: true,
     enableRowActions: true,
     enablePinning: true,
-    createDisplayMode: 'modal',
-    renderRowActions: ({ row, table }) => <ActionsCell row={row} table={table} />,
-    onEditingRowSave: handleEditProduct,
-    renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
-      <EditProductModal table={table} row={row}>
-        {internalEditComponents}
-      </EditProductModal>
+    renderRowActions: ({ row }) => (
+      <ActionsCell row={row} openEditModal={handleOpenEditModal} openDeleteModal={handleOpenDeleteModal} />
     ),
-    renderTopToolbarCustomActions: ({ table }) => (
-      <Button
-        variant="contained"
-        onClick={() => {
-          table.setCreatingRow(true) //simplest way to open the create row modal with no default values
-          //or you can pass in a row object to set default values with the `createRow` helper function
-          // table.setCreatingRow(
-          //   createRow(table, {
-          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-          //   }),
-          // );
-        }}
-      >
-        Create New Product
-      </Button>
-    ),
+    // onEditingRowSave: handleEditProduct,
+    editDisplayMode: 'custom',
+    // createDisplayMode: 'modal',
+    // renderCreateRowDialogContent: ({ row, table }) => {
+    //   console.log(`isCreateModalOpen ${isCreateModalOpen}`)
+    //   return (
+    //     isCreateModalOpen && (
+    //       <CreateProductModal row={row} close={handleCloseCreateModal} isOpen={isCreateModalOpen} table={table} />
+    //     )
+    //   )
+    // },
+    // muiCreateRowModalProps: { open: isCreateModalOpen, onClose: handleCloseCreateModal },
+    // renderTopToolbarCustomActions: ({ table }) => (
+    //   <Button
+    //     variant="contained"
+    //     onClick={() => {
+    //       openCreateModal()
+    //       //  table.setCreatingRow(true) //simplest way to open the create row modal with no default values
+    //       //or you can pass in a row object to set default values with the `createRow` helper function
+    //       // table.setCreatingRow(
+    //       //   createRow(table, {
+    //       //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
+    //       //   }),
+    //       // );
+    //     }}
+    //   >
+    //     Create New Product
+    //   </Button>
+    // ),
     state: {
       columnFilters,
       globalFilter,
@@ -120,6 +162,7 @@ export const ProductsContainer = () => {
         <h1>Products table</h1>
         <MaterialReactTable table={productsTable} />
       </FlexCard>
+      {isEditModalOpen && <EditProductModal close={closeEditModal} isOpen={isEditModalOpen} product={editProduct} />}
     </FlexBoxCentered>
   )
 }
