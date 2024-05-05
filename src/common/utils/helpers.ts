@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { format } from 'date-fns'
 import { SyntheticEvent } from 'react'
 import PlaceholderImage from '@/common/assets/placeholder-image.png'
@@ -16,4 +17,14 @@ const handleImageError = (event: SyntheticEvent<HTMLImageElement | Event>) => {
   target.style.padding = '20px'
 }
 
-export { formatDate, handleImageError }
+// Function to map enum values to strings
+function enumToString(enumObject: any, value: number): string | undefined {
+  return enumObject[value]
+}
+
+// Function to map strings to enum values
+function stringToEnum(enumObject: any, key: string): number | undefined {
+  return enumObject[key]
+}
+
+export { formatDate, handleImageError, enumToString, stringToEnum }

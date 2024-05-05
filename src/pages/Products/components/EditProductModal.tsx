@@ -1,22 +1,25 @@
-import { ProductFeI } from '@/api/interfaces/products'
-import { Box, Dialog, DialogActions, DialogContent, DialogProps, DialogTitle } from '@mui/material'
-import { PropsWithChildren } from 'react'
+import { ProductBodyToUpdate, ProductFeI } from '@/api/interfaces/products'
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, TextField } from '@mui/material'
+import { PropsWithChildren, useState } from 'react'
+import ProductForm from './ProductForm'
 
 interface PropsI extends Omit<DialogProps, 'open' | 'onClose'>, PropsWithChildren {
-  product: ProductFeI | null
+  product: ProductFeI
   isOpen: boolean
   close: () => void
 }
 
-const EditProductModal = ({ close, product, isOpen, children, ...rest }: PropsI) => {
+const EditProductModal = ({ close, product, isOpen, ...rest }: PropsI) => {
   return (
-    <Dialog open={isOpen} onClose={close} {...rest}>
+    <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>
       <DialogTitle variant="h3">Edit Product</DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <Box>{product?.title}</Box>
-        {children}
+      <DialogContent sx={{ padding: '20px 0' }}>
+        <ProductForm />
       </DialogContent>
-      <DialogActions>{/* <MRT_EditActionButtons variant="text" table={table} row={row} /> */}</DialogActions>
+      <DialogActions>
+        <Button onClick={close}>Cancel</Button>
+        <Button type="submit">Submit</Button>
+      </DialogActions>
     </Dialog>
   )
 }

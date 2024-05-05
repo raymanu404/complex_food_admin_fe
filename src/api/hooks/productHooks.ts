@@ -1,7 +1,9 @@
 import { transformProductsData } from '@/pages/Products/utils/mapper'
-import { getListProductsAsync } from '../data/products'
-import { useQuery } from '@tanstack/react-query'
+import { getListProductsAsync, updateProduct } from '../data/products'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
+import { ProductBodyToUpdate } from '../interfaces/products'
+import { toast } from 'react-toastify'
 
 const useGetListProducts = ({
   columnFilters,
@@ -28,4 +30,18 @@ const useGetListProducts = ({
   })
 }
 
-export { useGetListProducts }
+const useUpdateProduct = () => {
+  return useMutation({
+    mutationKey: ['update-product-mutation-key'],
+    mutationFn: async ({ productId, productToUpdate }: { productId: number; productToUpdate: ProductBodyToUpdate }) =>
+      await updateProduct(productId, productToUpdate),
+    onError: (error) => {
+      toast.error(`You cannot update product .\n${error.message}`)
+    },
+    onSuccess: (_, { productId }) => {
+      toast.success(`Product ${productId} was updated successfully!`)
+    },
+  })
+}
+
+export { useGetListProducts, useUpdateProduct }

@@ -1,6 +1,6 @@
 import { axiosInstance } from '@/common/config/application_config'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
-import { GetProductsResponseBeI } from '../interfaces/products'
+import { GetProductsResponseBeI, ProductBodyToUpdate } from '../interfaces/products'
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
 
 const getListProductsAsync = async ({
@@ -39,4 +39,9 @@ const getListProductsAsync = async ({
 
   return data
 }
-export { getListProductsAsync }
+
+const updateProduct = async (productId: number, productToUpdate: ProductBodyToUpdate) => {
+  await axiosInstance.put(`${BACKEND_ADMIN_PATH}/products/${productId}`, productToUpdate)
+}
+
+export { getListProductsAsync, updateProduct }

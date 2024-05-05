@@ -4,7 +4,6 @@ import {
   MRT_ColumnFiltersState,
   MRT_PaginationState,
   MRT_SortingState,
-  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table'
@@ -14,7 +13,6 @@ import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import { useGetListProducts } from '@/api/hooks/productHooks'
 import ActionsCell from './components/ActionsCell'
-import { Box, Button } from '@mui/material'
 import EditProductModal from './components/EditProductModal'
 import { useModal } from '@/common/utils/hooks/useModal'
 import CreateProductModal from './components/CreateProductModal'
@@ -30,7 +28,7 @@ export const ProductsContainer = () => {
   const { closeModal: closeEditModal, isOpen: isEditModalOpen, openModal: openEditModal } = useModal()
   const { closeModal: closeCreateModal, isOpen: isCreateModalOpen, openModal: openCreateModal } = useModal()
   const { closeModal: closeDeleteModal, isOpen: isDeleteModalOpen, openModal: openDeleteModal } = useModal()
-  const [editProduct, setEditProduct] = useState<ProductFeI | null>(null)
+  const [editProduct, setEditProduct] = useState<ProductFeI>()
   const [productId, setProductId] = useState<number>(0)
 
   const { data, isLoading, isError, isRefetching } = useGetListProducts({
