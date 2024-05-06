@@ -1,25 +1,24 @@
-import { ProductBodyToUpdate, ProductFeI } from '@/api/interfaces/products'
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, TextField } from '@mui/material'
-import { PropsWithChildren, useState } from 'react'
+import { ProductFeI } from '@/api/interfaces/products'
+import { Dialog, DialogContent, DialogProps, DialogTitle } from '@mui/material'
+import { PropsWithChildren } from 'react'
 import ProductForm from './ProductForm'
+import { transformFromFeToFormData } from '../utils/mapper'
 
 interface PropsI extends Omit<DialogProps, 'open' | 'onClose'>, PropsWithChildren {
-  product: ProductFeI
+  product: ProductFeI | undefined
   isOpen: boolean
   close: () => void
 }
 
 const EditProductModal = ({ close, product, isOpen, ...rest }: PropsI) => {
+  const productObj = transformFromFeToFormData(product)
+
   return (
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>
-      <DialogTitle variant="h3">Edit Product</DialogTitle>
+      <DialogTitle variant="h4">Edit Product Id:{product?.id}</DialogTitle>
       <DialogContent sx={{ padding: '20px 0' }}>
-        <ProductForm />
+        <ProductForm onCloseHandler={close} productId={product?.id ?? 0} defaultData={productObj} />
       </DialogContent>
-      <DialogActions>
-        <Button onClick={close}>Cancel</Button>
-        <Button type="submit">Submit</Button>
-      </DialogActions>
     </Dialog>
   )
 }

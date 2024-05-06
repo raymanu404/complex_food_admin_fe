@@ -5,7 +5,7 @@ interface PropsI extends Omit<TooltipProps, 'title' | 'children'> {
   text: string
 }
 
-export function OverflowTooltip({ text, ...rest }: PropsI) {
+function OverflowTooltip({ text, ...rest }: PropsI) {
   const [isOverflowing, setIsOverflowing] = useState(false)
 
   // Ref to measure text overflow
@@ -44,3 +44,5 @@ export function OverflowTooltip({ text, ...rest }: PropsI) {
     </Tooltip>
   )
 }
+
+export default OverflowTooltip

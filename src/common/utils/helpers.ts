@@ -27,4 +27,43 @@ function stringToEnum(enumObject: any, key: string): number | undefined {
   return enumObject[key]
 }
 
-export { formatDate, handleImageError, enumToString, stringToEnum }
+const arrayOfProps = (obj: any) =>
+  Object.entries(obj).map(([key, value]) => ({
+    name: key,
+    value,
+  }))
+
+function arePropsEqual(obj1: any, obj2: any): boolean {
+  // Deep copy obj1 and obj2 using JSON methods
+  const copiedObj1 = JSON.parse(JSON.stringify(obj1))
+  const copiedObj2 = JSON.parse(JSON.stringify(obj2))
+
+  // Sort the keys of the copied objects to ensure consistent order
+  const keys1 = Object.keys(copiedObj1).sort()
+  const keys2 = Object.keys(copiedObj2).sort()
+
+  // Check if the number of keys is the same
+  if (keys1.length !== keys2.length) {
+    return false
+  }
+
+  // Check if all keys are the same
+  for (let i = 0; i < keys1.length; i++) {
+    const key1 = keys1[i]
+    const key2 = keys2[i]
+    if (key1 !== key2) {
+      return false
+    }
+  }
+
+  // Check if all property values are the same
+  for (const key of keys1) {
+    if (copiedObj1[key] !== copiedObj2[key]) {
+      return false
+    }
+  }
+
+  return true
+}
+
+export { formatDate, handleImageError, enumToString, stringToEnum, arrayOfProps, arePropsEqual }

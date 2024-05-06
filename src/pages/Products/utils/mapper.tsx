@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { CategoryProductEnum, GetProductsResponseBeI, ProductFeI } from '@/api/interfaces/products'
-import { DEFAULT_NA } from '@/common/utils/constants'
+import { CategoryProductEnum, GetProductsResponseBeI, ProductFeI, ProductFormUpdate } from '@/api/interfaces/products'
+import { DEFAULT_NA, RO_CURRENCY } from '@/common/utils/constants'
 import { Box, Checkbox } from '@mui/material'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 import ImageCell from '../components/ImageCell'
-import { OverflowTooltip } from '@/common/components/Tooltip/OverflowTooltip'
+import { OverflowTooltip } from '@/common/components'
+import { stringToEnum } from '@/common/utils/helpers'
+import { DEFAULT_PRODUCT_FE } from './constants'
 
 const productCategories: DropdownOption[] = Object.keys(CategoryProductEnum)
   .map((value) => ({
@@ -45,7 +47,7 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     accessorKey: 'price',
     header: 'Price',
     size: 50,
-    Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+    Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
     enableEditing: true,
     enableSorting: true,
     filterVariant: 'range-slider',
@@ -54,7 +56,7 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     muiFilterSliderProps: {
       marks: true,
       step: 10,
-      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
     },
   },
   {
@@ -131,4 +133,16 @@ const transformProductsData = (data: GetProductsResponseBeI): { data: ProductFeI
   return { data: mappedProducts, totalCount: data.totalCount }
 }
 
-export { products_columns, transformProductsData }
+const transformFromFeToFormData = (product: ProductFeI | undefined) =>
+  product
+    ? ({
+        title: product.title,
+        description: product.description,
+        category: stringToEnum(CategoryProductEnum, product.category),
+        image: product.image,
+        isInStock: product.isInStock,
+        price: product.price,
+      } as ProductFormUpdate)
+    : DEFAULT_PRODUCT_FE
+
+export { products_columns, transformProductsData, transformFromFeToFormData }
