@@ -9,7 +9,7 @@ import { DEFAULT_PRODUCT_FE } from '../utils/constants'
 // import { useMemo } from 'react'
 
 interface PropsI {
-  productId: number
+  productId?: number
   defaultData?: ProductFormUpdate | null
   onCloseHandler: () => void
   refetch: () => void
@@ -47,7 +47,7 @@ const ProductForm = ({ defaultData, productId, onCloseHandler, refetch }: PropsI
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = async (data) => {
     await mutateAsync({
-      productId: productId,
+      productId: productId ?? 0,
       productToUpdate: { ...data },
     }).then(() => {
       onCloseHandler()

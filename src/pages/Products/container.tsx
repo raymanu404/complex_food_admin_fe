@@ -9,7 +9,7 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table'
-import { Box, DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { Box, Button, DialogActions, DialogContent, DialogTitle } from '@mui/material'
 import { products_columns } from './utils/mapper'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { CategoryProductEnum, ProductFeI } from '@/api/interfaces/products'
@@ -160,29 +160,28 @@ export const ProductsContainer = () => {
     //   )
     // },
     // muiCreateRowModalProps: { open: isCreateModalOpen, onClose: handleCloseCreateModal },
-    // renderTopToolbarCustomActions: ({ table }) => (
-    //   <Button
-    //     variant="contained"
-    //     onClick={() => {
-    //       openCreateModal()
-    //       //  table.setCreatingRow(true) //simplest way to open the create row modal with no default values
-    //       //or you can pass in a row object to set default values with the `createRow` helper function
-    //       // table.setCreatingRow(
-    //       //   createRow(table, {
-    //       //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-    //       //   }),
-    //       // );
-    //     }}
-    //   >
-    //     Create New Product
-    //   </Button>
-    // ),
+    renderTopToolbarCustomActions: ({ table }) => (
+      <Button
+        variant="contained"
+        onClick={() => {
+          openCreateModal()
+          //  table.setCreatingRow(true) //simplest way to open the create row modal with no default values
+          //or you can pass in a row object to set default values with the `createRow` helper function
+          // table.setCreatingRow(
+          //   createRow(table, {
+          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
+          //   }),
+          // );
+        }}
+      >
+        Create New Product
+      </Button>
+    ),
     state: {
       columnFilters,
       globalFilter,
       pagination,
       isLoading: isLoading,
-      // isSaving: isUpdatingProduct,
       showAlertBanner: isError,
       showProgressBars: isRefetching,
       sorting,
