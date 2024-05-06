@@ -12,6 +12,7 @@ interface PropsI {
   productId: number
   defaultData?: ProductFormUpdate | null
   onCloseHandler: () => void
+  refetch: () => void
 }
 
 type SelectOption = {
@@ -28,7 +29,7 @@ const categoriesOptions: SelectOption[] = Object.entries(CategoryProductEnum)
     }
   })
 
-const ProductForm = ({ defaultData, productId, onCloseHandler }: PropsI) => {
+const ProductForm = ({ defaultData, productId, onCloseHandler, refetch }: PropsI) => {
   const {
     control,
     handleSubmit,
@@ -50,6 +51,7 @@ const ProductForm = ({ defaultData, productId, onCloseHandler }: PropsI) => {
       productToUpdate: { ...data },
     }).then(() => {
       onCloseHandler()
+      refetch()
     })
   }
 

@@ -34,7 +34,7 @@ export const ProductsContainer = () => {
   const [editProduct, setEditProduct] = useState<ProductFeI>()
   const [productId, setProductId] = useState<number>(0)
 
-  const { data, isLoading, isError, isRefetching } = useGetListProducts({
+  const { data, isLoading, isError, isRefetching, refetch } = useGetListProducts({
     columnFilters,
     searchTerm: globalFilter,
     sorting,
@@ -195,7 +195,9 @@ export const ProductsContainer = () => {
         <h1>Products table</h1>
         <MaterialReactTable table={productsTable} />
       </FlexCard>
-      {isEditModalOpen && <EditProductModal close={closeEditModal} isOpen={isEditModalOpen} product={editProduct} />}
+      {isEditModalOpen && (
+        <EditProductModal close={closeEditModal} isOpen={isEditModalOpen} product={editProduct} refetch={refetch} />
+      )}
     </FlexBoxCentered>
   )
 }

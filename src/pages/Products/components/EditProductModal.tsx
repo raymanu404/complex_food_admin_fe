@@ -8,16 +8,17 @@ interface PropsI extends Omit<DialogProps, 'open' | 'onClose'>, PropsWithChildre
   product: ProductFeI | undefined
   isOpen: boolean
   close: () => void
+  refetch: () => void
 }
 
-const EditProductModal = ({ close, product, isOpen, ...rest }: PropsI) => {
+const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) => {
   const productObj = transformFromFeToFormData(product)
 
   return (
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>
       <DialogTitle variant="h4">Edit Product Id:{product?.id}</DialogTitle>
       <DialogContent sx={{ padding: '20px 0' }}>
-        <ProductForm onCloseHandler={close} productId={product?.id ?? 0} defaultData={productObj} />
+        <ProductForm onCloseHandler={close} productId={product?.id ?? 0} defaultData={productObj} refetch={refetch} />
       </DialogContent>
     </Dialog>
   )
