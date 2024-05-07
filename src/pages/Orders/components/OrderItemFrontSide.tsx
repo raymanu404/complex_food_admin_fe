@@ -1,5 +1,7 @@
 import { OrderItemFeI } from '@/api/interfaces/orders'
+import { OverflowTooltip } from '@/common/components'
 import { FlipCard, TooltipCustom } from '@/common/styles/styled-components'
+import { RO_CURRENCY } from '@/common/utils/constants'
 import { CardContent, Typography, Divider, useTheme, Box, Chip } from '@mui/material'
 
 interface PropsI extends Omit<OrderItemFeI, 'image' | 'orderId'> {
@@ -47,14 +49,14 @@ const OrderItemFrontSide = ({
         <Box sx={{ padding: '10px 20px', height: '140px' }}>
           <Typography variant="h4">{category}</Typography>
           {/* <TooltipCustom title={description}> */}
-          <Typography variant="h5">{description}</Typography>
+          <OverflowTooltip text={`${description}`} />
           {/* </TooltipCustom> */}
         </Box>
         {/* PRICE + Quantity */}
         <Divider />
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignContent: 'center' }}>
           <Typography sx={{ mb: 1.5 }} color="text.secondary">
-            {price.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' })}
+            {price.toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY })}
           </Typography>
           <Typography variant="body2">{quantity} items</Typography>
         </Box>

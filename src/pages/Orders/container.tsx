@@ -1,6 +1,6 @@
 import { useGetListOrders, useUpdateOrderStatus } from '@/api/hooks/orderHooks'
 import { OrderFeI } from '@/api/interfaces/orders'
-import { FlexBoxCentered } from '@/common/styles/styled-components'
+import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import {
   MRT_ColumnDef,
@@ -106,8 +106,11 @@ export const OrdersContainer = () => {
   })
 
   return (
-    <FlexBoxCentered sx={{ padding: '20px 40px', maxHeight: '90vh', maxWidth: '80vw' }}>
-      <MaterialReactTable table={ordersTable} />
+    <FlexBoxCentered sx={{ padding: '20px 40px', maxWidth: '80vw' }}>
+      <FlexCard sx={{ maxHeight: '90vh' }}>
+        <h1>Orders table</h1>
+        <MaterialReactTable table={ordersTable} />
+      </FlexCard>
     </FlexBoxCentered>
   )
 }

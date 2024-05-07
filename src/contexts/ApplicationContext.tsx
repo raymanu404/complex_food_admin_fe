@@ -31,7 +31,7 @@ const useApplicationContext = () => {
   const context = useContext(ApplicationContext)
 
   if (!context) {
-    throw 'You need to put Provider in your root tree'
+    throw new Error('You need to put Provider in your root tree')
   }
 
   return context

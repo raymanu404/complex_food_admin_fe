@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  CategoryProductEnum,
-  GetOrdersResponseBeI,
-  OrderFeI,
-  OrderItemFeI,
-  OrderStatusEnum,
-} from '@/api/interfaces/orders'
+import { GetOrdersResponseBeI, OrderFeI, OrderItemFeI, OrderStatusEnum } from '@/api/interfaces/orders'
+import { CategoryProductEnum } from '@/api/interfaces/products'
+import { RO_CURRENCY } from '@/common/utils/constants'
+import { formatDate } from '@/common/utils/helpers'
 // import { formatDate } from '@/common/utils/helpers'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 
@@ -47,7 +44,7 @@ const orders_columns = ({
     size: 150,
     filterVariant: 'date',
     //TODO: fix filtering by date
-    Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(),
+    Cell: ({ cell }) => formatDate(cell.getValue<Date>()),
     enableEditing: false,
   },
   {
@@ -61,14 +58,14 @@ const orders_columns = ({
     accessorKey: 'totalPrice',
     header: 'Total Price',
     size: 150,
-    Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+    Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
     filterVariant: 'range-slider',
     filterFn: 'betweenInclusive', // default (or between)
     muiFilterSliderProps: {
       //no need to specify min/max/step if using faceted values
       marks: true,
       step: 10,
-      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: 'RON' }),
+      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
     },
     enableEditing: false,
   },
