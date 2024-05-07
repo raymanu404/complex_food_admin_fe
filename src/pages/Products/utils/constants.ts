@@ -5,8 +5,8 @@ const DEFAULT_PRODUCT_FE: ProductFormUpdate = {
   description: '',
   category: CategoryProductEnum.Soup,
   image: '',
-  isInStock: true,
-  price: 0,
+  isInStock: false,
+  price: 0.01,
 }
 
 export { DEFAULT_PRODUCT_FE }

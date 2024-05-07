@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useUpdateProduct } from '@/api/hooks/productHooks'
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
 import { NumericInput, Spinner } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
@@ -9,10 +8,10 @@ import { DEFAULT_PRODUCT_FE } from '../utils/constants'
 // import { useMemo } from 'react'
 
 interface PropsI {
-  productId?: number
+  isLoading?: boolean
   defaultData?: ProductFormUpdate | null
   onCloseHandler: () => void
-  refetch: () => void
+  onSubmitHandler: SubmitHandler<ProductFormUpdate>
 }
 
 type SelectOption = {
@@ -29,7 +28,7 @@ const categoriesOptions: SelectOption[] = Object.entries(CategoryProductEnum)
     }
   })
 
-const ProductForm = ({ defaultData, productId, onCloseHandler, refetch }: PropsI) => {
+const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, onSubmitHandler }: PropsI) => {
   const {
     control,
     handleSubmit,
@@ -43,22 +42,10 @@ const ProductForm = ({ defaultData, productId, onCloseHandler, refetch }: PropsI
   })
   // const values = getValues()
 
-  const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
-
-  const onSubmit: SubmitHandler<ProductFormUpdate> = async (data) => {
-    await mutateAsync({
-      productId: productId ?? 0,
-      productToUpdate: { ...data },
-    }).then(() => {
-      onCloseHandler()
-      refetch()
-    })
-  }
-
   // const idDirtySubmitButton = useMemo(() => !arePropsEqual(values, defaultValues), [defaultValues, values])
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmitHandler)}>
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
         <Controller name="title" control={control} render={({ field }) => <TextField {...field} label="Title" />} />
         <Controller
@@ -112,7 +99,7 @@ const ProductForm = ({ defaultData, productId, onCloseHandler, refetch }: PropsI
         <Button onClick={onCloseHandler}>Cancel</Button>
         <Button
           type="submit"
-          startIcon={(isLoadingForm || isUpdatingProduct) && <Spinner size={2.3} />}
+          startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
           // disabled={idDirtySubmitButton}
         >
           Submit

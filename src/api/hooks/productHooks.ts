@@ -1,10 +1,11 @@
 import { transformProductsData } from '@/pages/Products/utils/mapper'
-import { getListProductsAsync, updateProduct } from '../data/products'
+import { createProduct, getListProductsAsync, updateProduct } from '../data/products'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
-import { ProductBodyToUpdate } from '../interfaces/products'
+import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
 import { toast } from 'react-toastify'
 
+//GET
 const useGetListProducts = ({
   columnFilters,
   searchTerm,
@@ -30,6 +31,7 @@ const useGetListProducts = ({
   })
 }
 
+//UPDATE
 const useUpdateProduct = () => {
   return useMutation({
     mutationKey: ['update-product-mutation-key'],
@@ -44,4 +46,19 @@ const useUpdateProduct = () => {
   })
 }
 
-export { useGetListProducts, useUpdateProduct }
+//CREATE
+const useCreateProduct = () => {
+  return useMutation({
+    mutationKey: ['create-product-mutation-key'],
+    mutationFn: async ({ productToCreate }: { productToCreate: ProductBodyToCreate }) =>
+      await createProduct(productToCreate),
+    onError: (error) => {
+      toast.error(`You cannot create product .\n${error.message}`)
+    },
+    onSuccess: () => {
+      toast.success(`Product was created successfully!`)
+    },
+  })
+}
+
+export { useGetListProducts, useUpdateProduct, useCreateProduct }

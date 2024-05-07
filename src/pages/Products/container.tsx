@@ -135,9 +135,7 @@ export const ProductsContainer = () => {
     renderRowActions: ({ row }) => (
       <ActionsCell row={row} openEditModal={handleOpenEditModal} openDeleteModal={handleOpenDeleteModal} />
     ),
-    // onEditingRowSave: handleEditProduct,
-    // editDisplayMode: 'custom',
-    // editDisplayMode: 'modal',
+    editDisplayMode: 'custom',
     // onEditingRowSave: handleEditProduct,
     // renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
     //   <>
@@ -150,7 +148,7 @@ export const ProductsContainer = () => {
     //     </DialogActions>
     //   </>
     // ),
-    // createDisplayMode: 'modal',
+    createDisplayMode: 'custom',
     // renderCreateRowDialogContent: ({ row, table }) => {
     //   console.log(`isCreateModalOpen ${isCreateModalOpen}`)
     //   return (
@@ -160,18 +158,11 @@ export const ProductsContainer = () => {
     //   )
     // },
     // muiCreateRowModalProps: { open: isCreateModalOpen, onClose: handleCloseCreateModal },
-    renderTopToolbarCustomActions: ({ table }) => (
+    renderTopToolbarCustomActions: () => (
       <Button
         variant="contained"
         onClick={() => {
           openCreateModal()
-          //  table.setCreatingRow(true) //simplest way to open the create row modal with no default values
-          //or you can pass in a row object to set default values with the `createRow` helper function
-          // table.setCreatingRow(
-          //   createRow(table, {
-          //     //optionally pass in default values for the new row, useful for nested data or other complex scenarios
-          //   }),
-          // );
         }}
       >
         Create New Product
@@ -196,6 +187,9 @@ export const ProductsContainer = () => {
       </FlexCard>
       {isEditModalOpen && (
         <EditProductModal close={closeEditModal} isOpen={isEditModalOpen} product={editProduct} refetch={refetch} />
+      )}
+      {isCreateModalOpen && (
+        <CreateProductModal close={closeCreateModal} isOpen={isCreateModalOpen} refetch={refetch} />
       )}
     </FlexBoxCentered>
   )
