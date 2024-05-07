@@ -5,7 +5,7 @@ import { Box, Checkbox } from '@mui/material'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 import ImageCell from '../components/ImageCell'
 import { OverflowTooltip } from '@/common/components'
-import { stringToEnum } from '@/common/utils/helpers'
+import { formatDate, stringToEnum } from '@/common/utils/helpers'
 import { DEFAULT_PRODUCT_FE } from './constants'
 
 const productCategories: DropdownOption[] = Object.keys(CategoryProductEnum)
@@ -85,7 +85,7 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     id: 'dateCreated',
     accessorFn: (originalRow) => (originalRow.dateCreated ? new Date(originalRow.dateCreated) : DEFAULT_NA),
     header: 'Date created',
-    Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(),
+    Cell: ({ cell }) => formatDate(cell.getValue<Date>()),
     size: 150,
     filterVariant: 'date',
     enableEditing: true,
@@ -94,7 +94,7 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     id: 'dateUpdated',
     accessorFn: (originalRow) => (originalRow.dateUpdated ? new Date(originalRow.dateUpdated) : DEFAULT_NA),
     header: 'Date Updated',
-    Cell: ({ cell }) => cell.getValue<Date>().toDateString(),
+    Cell: ({ cell }) => formatDate(cell.getValue<Date>()),
     size: 150,
     filterVariant: 'date',
     enableEditing: true,

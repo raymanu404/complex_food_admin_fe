@@ -1,5 +1,5 @@
 import { transformProductsData } from '@/pages/Products/utils/mapper'
-import { createProduct, getListProductsAsync, updateProduct } from '../data/products'
+import { createProduct, deleteProduct, getListProductsAsync, updateProduct } from '../data/products'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
@@ -41,7 +41,7 @@ const useUpdateProduct = () => {
       toast.error(`You cannot update product .\n${error.message}`)
     },
     onSuccess: (_, { productId }) => {
-      toast.success(`Product ${productId} was updated successfully!`)
+      toast.success(`Product with ID: ${productId} was updated successfully!`)
     },
   })
 }
@@ -61,4 +61,18 @@ const useCreateProduct = () => {
   })
 }
 
-export { useGetListProducts, useUpdateProduct, useCreateProduct }
+//DELETE
+const useDeleteProduct = () => {
+  return useMutation({
+    mutationKey: ['delete-product-mutation-key'],
+    mutationFn: async ({ productId }: { productId: number }) => await deleteProduct(productId),
+    onError: (error) => {
+      toast.error(`You cannot delete product .\n${error.message}`)
+    },
+    onSuccess: () => {
+      toast.success(`Product was deleted successfully!`)
+    },
+  })
+}
+
+export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct }

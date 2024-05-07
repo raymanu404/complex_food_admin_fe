@@ -48,4 +48,8 @@ const createProduct = async (productBody: ProductBodyToCreate) => {
   await axiosInstance.post(`${BACKEND_ADMIN_PATH}/products/create`, productBody)
 }
 
-export { getListProductsAsync, updateProduct, createProduct }
+const deleteProduct = async (productId: number) => {
+  await axiosInstance.delete(`${BACKEND_ADMIN_PATH}/products/${productId}`)
+}
+
+export { getListProductsAsync, updateProduct, createProduct, deleteProduct }

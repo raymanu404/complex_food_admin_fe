@@ -2,23 +2,22 @@ import { useCallback, useMemo, useState } from 'react'
 import {
   MRT_ColumnDef,
   MRT_ColumnFiltersState,
-  MRT_EditActionButtons,
   MRT_PaginationState,
   MRT_SortingState,
-  MRT_TableOptions,
   MaterialReactTable,
   useMaterialReactTable,
 } from 'material-react-table'
-import { Box, Button, DialogActions, DialogContent, DialogTitle } from '@mui/material'
+import { Button } from '@mui/material'
 import { products_columns } from './utils/mapper'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
-import { CategoryProductEnum, ProductFeI } from '@/api/interfaces/products'
+import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
-import { useGetListProducts, useUpdateProduct } from '@/api/hooks/productHooks'
+import { useGetListProducts } from '@/api/hooks/productHooks'
 import ActionsCell from './components/ActionsCell'
 import EditProductModal from './components/EditProductModal'
 import { useModal } from '@/common/utils/hooks/useModal'
 import CreateProductModal from './components/CreateProductModal'
+import DeleteProductModal from './components/DeleteProductModal'
 
 export const ProductsContainer = () => {
   const [columnFilters, setColumnFilters] = useState<MRT_ColumnFiltersState>([])
@@ -40,29 +39,6 @@ export const ProductsContainer = () => {
     sorting,
     pagination,
   })
-
-  // const handleEditProduct: MRT_TableOptions<ProductFeI>['onEditingRowSave'] = async ({ values }) => {
-  //   console.log({ values })
-  //   // table.setEditingRow(null) //exit editing mode
-  // }
-
-  //TODO: CHECK IF THIS SHOULD BE DELETED
-  // const handleEditProduct: MRT_TableOptions<ProductFeI>['onEditingRowSave'] = async ({ values, table }) => {
-  //   console.log(values)
-  //   // await updateUser(values);
-  //   await mutateAsync({
-  //     productId: values.id,
-  //     productToUpdate: {
-  //       category: stringToEnum(CategoryProductEnum, `${values.category}`) ?? 1,
-  //       description: values.description,
-  //       image: values.image,
-  //       isInStock: values.isInStock,
-  //       price: values.price,
-  //       title: values.title,
-  //     },
-  //   })
-  //   table.setEditingRow(null) //exit editing mode
-  // }
 
   const handleOpenEditModal = useCallback(
     async (product: ProductFeI) => {
@@ -87,10 +63,6 @@ export const ProductsContainer = () => {
     },
     [openDeleteModal]
   )
-
-  const handleCloseCreateModal = useCallback(() => {
-    closeCreateModal()
-  }, [closeCreateModal])
 
   const products = useMemo(() => data?.data ?? [], [data?.data])
 
@@ -136,28 +108,7 @@ export const ProductsContainer = () => {
       <ActionsCell row={row} openEditModal={handleOpenEditModal} openDeleteModal={handleOpenDeleteModal} />
     ),
     editDisplayMode: 'custom',
-    // onEditingRowSave: handleEditProduct,
-    // renderEditRowDialogContent: ({ table, row, internalEditComponents }) => (
-    //   <>
-    //     <DialogTitle variant="h3">Edit User</DialogTitle>
-    //     <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-    //       {internalEditComponents} {/* or render custom edit components here */}
-    //     </DialogContent>
-    //     <DialogActions>
-    //       <MRT_EditActionButtons variant="text" table={table} row={row} />
-    //     </DialogActions>
-    //   </>
-    // ),
     createDisplayMode: 'custom',
-    // renderCreateRowDialogContent: ({ row, table }) => {
-    //   console.log(`isCreateModalOpen ${isCreateModalOpen}`)
-    //   return (
-    //     isCreateModalOpen && (
-    //       <CreateProductModal row={row} close={handleCloseCreateModal} isOpen={isCreateModalOpen} table={table} />
-    //     )
-    //   )
-    // },
-    // muiCreateRowModalProps: { open: isCreateModalOpen, onClose: handleCloseCreateModal },
     renderTopToolbarCustomActions: () => (
       <Button
         variant="contained"
@@ -190,6 +141,14 @@ export const ProductsContainer = () => {
       )}
       {isCreateModalOpen && (
         <CreateProductModal close={closeCreateModal} isOpen={isCreateModalOpen} refetch={refetch} />
+      )}
+      {isDeleteModalOpen && (
+        <DeleteProductModal
+          close={closeDeleteModal}
+          isOpen={isDeleteModalOpen}
+          refetch={refetch}
+          productId={productId}
+        />
       )}
     </FlexBoxCentered>
   )

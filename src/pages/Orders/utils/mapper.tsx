@@ -2,6 +2,7 @@
 import { GetOrdersResponseBeI, OrderFeI, OrderItemFeI, OrderStatusEnum } from '@/api/interfaces/orders'
 import { CategoryProductEnum } from '@/api/interfaces/products'
 import { RO_CURRENCY } from '@/common/utils/constants'
+import { formatDate } from '@/common/utils/helpers'
 // import { formatDate } from '@/common/utils/helpers'
 import { DropdownOption, MRT_ColumnDef } from 'material-react-table'
 
@@ -43,7 +44,7 @@ const orders_columns = ({
     size: 150,
     filterVariant: 'date',
     //TODO: fix filtering by date
-    Cell: ({ cell }) => cell.getValue<Date>().toLocaleDateString(),
+    Cell: ({ cell }) => formatDate(cell.getValue<Date>()),
     enableEditing: false,
   },
   {

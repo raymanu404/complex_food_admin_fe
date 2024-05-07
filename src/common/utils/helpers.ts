@@ -4,7 +4,7 @@ import { SyntheticEvent } from 'react'
 import PlaceholderImage from '@/common/assets/placeholder-image.png'
 
 const formatDate = (date: Date): string => {
-  const formattedDate = format(date, 'yyyy dd MM HH mm ss')
+  const formattedDate = format(date, 'dd/MM/yyyy HH:mm:ss')
 
   return formattedDate
 }

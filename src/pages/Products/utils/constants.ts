@@ -5,7 +5,7 @@ const DEFAULT_PRODUCT_FE: ProductFormUpdate = {
   description: '',
   category: CategoryProductEnum.Soup,
   image: '',
-  isInStock: false,
+  isInStock: true,
   price: 0.01,
 }
 
