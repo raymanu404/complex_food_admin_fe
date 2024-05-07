@@ -71,7 +71,7 @@ export const ProductsContainer = () => {
   const productsTable = useMaterialReactTable({
     columns,
     data: products,
-    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] }, isFullScreen: true },
+    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] }, isFullScreen: false },
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: false, //turn off built-in client-side sorting
