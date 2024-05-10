@@ -93,7 +93,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
           />
         </Box>
         {/* TODO: Handle images later */}
-        <Controller name="image" control={control} render={({ field }) => <ImageDropZone/>} />
+        <Controller name="image" control={control} render={({ field }) => <ImageDropZone />} />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
