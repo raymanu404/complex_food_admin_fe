@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
-import { NumericInput, Spinner } from '@/common/components'
+import { ImageDropZone, NumericInput, Spinner } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
@@ -93,7 +93,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
           />
         </Box>
         {/* TODO: Handle images later */}
-        {/* <Controller name="image" control={control} render={({ field }) => <TextField {...field} label="Title" />} /> */}
+        <Controller name="image" control={control} render={({ field }) => <ImageDropZone/>} />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
