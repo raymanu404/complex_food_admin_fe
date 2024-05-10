@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {useCallback, useMemo, useState} from 'react'
-import {useDropzone} from 'react-dropzone'
+import { useDropzone} from 'react-dropzone'
 
 const thumbsContainer = {
   display: 'flex',
@@ -27,11 +27,7 @@ const thumbInner = {
   overflow: 'hidden'
 };
 
-const img = {
-  display: 'block',
-  width: 'auto',
-  height: '100%'
-};
+
 
 const baseStyle = {
   flex: 1,
@@ -63,23 +59,31 @@ const rejectStyle = {
 
 const allowedFiles =  ['.jpeg', '.png']
 
-const ImageDropZone = () => {
+interface PropsI{
+  fileHandler : (file:File) =>void
+}
 
-  const [file, setFile] = useState<string | undefined>();
+const ImageDropZone = ({fileHandler}:PropsI) => {
+
+  const [previewFile, setPreviewFile] = useState<string | undefined>();
 
 
-  const onDropHandler = useCallback((acceptedFiles: Array<File>) => {
+  const onDropHandler = useCallback((acceptedFiles: Array<File>, ) => {
     const reader = new FileReader();
   
-  reader.onload = function() {
+  reader.onload =  function() {
     const result = reader.result; // This will be a data URL
     if (typeof result === 'string') {
-      setFile(result);
+      setPreviewFile(result);
     }
+
+    const file = acceptedFiles[0]
+    fileHandler(file)
   };
   
   reader.readAsDataURL(acceptedFiles[0]);
-  }, [])
+  }, [fileHandler])
+
 
   const {
     getRootProps,
@@ -87,7 +91,7 @@ const ImageDropZone = () => {
     isFocused,
     isDragAccept,
     isDragReject
-  } = useDropzone({accept: {'image/*': allowedFiles},   onDrop: (acceptedFiles)=> onDropHandler(acceptedFiles)});
+  } = useDropzone({accept: {'image/*': allowedFiles},  onDrop: (acceptedFiles, )=> onDropHandler(acceptedFiles )} );
 
   const style : any= useMemo(() => ({
     ...baseStyle,
@@ -102,11 +106,11 @@ const ImageDropZone = () => {
 
   return (
     <div className="container">
-      <div {...getRootProps({style})}>
+      <div {...getRootProps({style})} >
         <input {...getInputProps()} />
         <p>{`Drag 'n' drop ${allowedFiles.map(x => x + ' ')} files here, or click to select files`}</p>
       </div>
-    {file && <img src={file} height={300} width={300} alt='file-upload'/>}
+    {previewFile && <img src={previewFile} height={300} width={300} alt='file-upload' style={{objectFit:'contain'}}/>}
     </div>
   );
 }
