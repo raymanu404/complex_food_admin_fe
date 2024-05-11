@@ -18,25 +18,28 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
   const productObj = transformFromFeToFormData(product)
 
   const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
-  const enableUploadFile = useUploadFile()
+  const { setFileHandler, uploadFileHandler } = useUploadFile()
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
-      console.log(data.file)
-      const imageUrl = data.file ? createFullPathStorageFile(data.file.name) : ''
+      let imageUrl = ''
+      if (data.file) {
+        setFileHandler(data.file)
+      }
+
+      await uploadFileHandler().then((value) => {
+        console.log(value)
+      })
 
       await mutateAsync({
         productId: product?.id ?? 0,
         productToUpdate: { ...data, image: imageUrl },
       }).then(() => {
-        if (data.file) {
-          enableUploadFile(true, data.file)
-        }
         close()
         refetch()
       })
     },
-    [close, enableUploadFile, mutateAsync, product?.id, refetch]
+    [close, mutateAsync, product?.id, refetch, setFileHandler, uploadFileHandler]
   )
   return (
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>

@@ -60,7 +60,13 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   }, [])
 
   return (
-    <form onSubmit={handleSubmit(onSubmitLocal)}>
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault()
+
+        handleSubmit(onSubmitLocal)()
+      }}
+    >
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
         <Controller name="title" control={control} render={({ field }) => <TextField {...field} label="Title" />} />
         <Controller
@@ -118,7 +124,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
         <Button
           type="submit"
           startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          disabled={idDirtySubmitButton}
+          // disabled={idDirtySubmitButton}
         >
           Submit
         </Button>

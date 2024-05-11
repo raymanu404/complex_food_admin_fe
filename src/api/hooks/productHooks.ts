@@ -80,37 +80,26 @@ const useDeleteProduct = () => {
 
 //UPLOAD IMAGE TO STORAGE
 const useUploadFile = () => {
-  const [isEnabled, setIsEnabled] = useState(false)
   const [file, setFile] = useState<File | undefined>()
 
-  useEffect(() => {
-    if (isEnabled) {
-      console.log(isEnabled)
-      const uploadFileHandler = async () => {
-        if (file) {
-          const { data, error } = await supabase.storage
-            .from(SUPABASE_PRODUCTS_STORAGE_NAME)
-            .upload(`${file.name}`, file, {
-              cacheControl: '3600',
-              upsert: true,
-            })
-
-          return { data, error }
-        }
-
-        return null
-      }
-
-      uploadFileHandler().then((value) => {
-        console.log(value?.data)
+  const uploadFileHandler = async () => {
+    if (file) {
+      const { data, error } = await supabase.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).upload(`${file.name}`, file, {
+        cacheControl: '3600',
+        upsert: true,
       })
-    }
-  }, [file, isEnabled])
 
-  return (isEnabled: boolean, file: File) => {
-    setIsEnabled(isEnabled)
+      return { data, error }
+    }
+
+    return null
+  }
+
+  const setFileHandler = (file: File) => {
     setFile(file)
   }
+
+  return { setFileHandler, uploadFileHandler }
 }
 
 export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct, useUploadFile }
