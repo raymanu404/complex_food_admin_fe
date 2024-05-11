@@ -22,6 +22,7 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
+      //check to update properly image path after uploading was successfully saved
       let imageUrl = ''
       if (data.file) {
         setFileHandler(data.file)

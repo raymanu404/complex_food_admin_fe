@@ -15,8 +15,9 @@ const CreateProductModal = ({ close, isOpen, refetch, ...rest }: PropsI) => {
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
+      //same like in edit
       await mutateAsync({
-        productToCreate: { ...data,  },
+        productToCreate: { ...data },
       }).then(() => {
         close()
         refetch()
