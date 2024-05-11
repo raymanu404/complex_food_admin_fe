@@ -4,10 +4,9 @@ import { ImageDropZone, NumericInput, Spinner } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
-import { useCallback } from 'react'
-import { supabase } from '@/common/config/application_config'
-// import { arePropsEqual, arrayOfProps } from '@/common/utils/helpers'
-// import { useMemo } from 'react'
+import { useCallback, useState } from 'react'
+import { arePropsEqual } from '@/common/utils/helpers'
+import { useMemo } from 'react'
 
 interface PropsI {
   isLoading?: boolean
@@ -34,32 +33,34 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   const {
     control,
     handleSubmit,
-    // getValues,
-    formState: {
-      isLoading: isLoadingForm,
-      // defaultValues
-    },
+    getValues,
+    formState: { isLoading: isLoadingForm, touchedFields, defaultValues },
   } = useForm<ProductFormUpdate>({
     defaultValues: defaultData ? { ...defaultData } : DEFAULT_PRODUCT_FE,
   })
-  // const values = getValues()
 
-  // const idDirtySubmitButton = useMemo(() => !arePropsEqual(values, defaultValues), [defaultValues, values])
+  const [dropedFile, setDropedFile] = useState<File | undefined>()
 
-  const onFileUploadHandler = useCallback(async (file:File)=>{
-    const { data, error } = await supabase
-  .storage
-  .from('products')
-  .upload(`public/${file.name}`, file, {
-    cacheControl: '3600',
-    upsert: true
-  })
+  const values = getValues()
 
-  console.log({error, data}) //this should be save in my own db (get full path from data) //TODO:handle form errors and defaults value
-  },[])
+  const idDirtySubmitButton = useMemo(
+    () => arePropsEqual(values, defaultValues) || Object.values(touchedFields).every((x) => !x),
+    [defaultValues, touchedFields, values]
+  )
+
+  const onSubmitLocal: SubmitHandler<ProductFormUpdate> = useCallback(
+    (data) => {
+      onSubmitHandler({ ...data, file: dropedFile })
+    },
+    [dropedFile, onSubmitHandler]
+  )
+
+  const onFileUploadHandler = useCallback((file: File) => {
+    setDropedFile(file)
+  }, [])
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
+    <form onSubmit={handleSubmit(onSubmitLocal)}>
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
         <Controller name="title" control={control} render={({ field }) => <TextField {...field} label="Title" />} />
         <Controller
@@ -106,15 +107,18 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
             )}
           />
         </Box>
-        {/* TODO: Handle images later */}
-        <Controller name="image" control={control} render={({ field }) => <ImageDropZone fileHandler={onFileUploadHandler}/>} />
+        <Controller
+          name="image"
+          control={control}
+          render={({ field }) => <ImageDropZone src={field.value} fileHandler={onFileUploadHandler} />}
+        />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
         <Button
           type="submit"
           startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          // disabled={idDirtySubmitButton}
+          disabled={idDirtySubmitButton}
         >
           Submit
         </Button>

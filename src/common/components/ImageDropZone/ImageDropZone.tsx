@@ -1,33 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {useCallback, useMemo, useState} from 'react'
-import { useDropzone} from 'react-dropzone'
-
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
-
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-
+import { useCallback, useMemo, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 
 const baseStyle = {
   flex: 1,
@@ -42,77 +15,75 @@ const baseStyle = {
   backgroundColor: '#fafafa',
   color: '#bdbdbd',
   outline: 'none',
-  transition: 'border .24s ease-in-out'
-};
-
-const focusedStyle = {
-  borderColor: '#2196f3'
-};
-
-const acceptStyle = {
-  borderColor: '#00e676'
-};
-
-const rejectStyle = {
-  borderColor: '#ff1744'
-};
-
-const allowedFiles =  ['.jpeg', '.png']
-
-interface PropsI{
-  fileHandler : (file:File) =>void
+  transition: 'border .24s ease-in-out',
 }
 
-const ImageDropZone = ({fileHandler}:PropsI) => {
+const focusedStyle = {
+  borderColor: '#2196f3',
+}
 
-  const [previewFile, setPreviewFile] = useState<string | undefined>();
+const acceptStyle = {
+  borderColor: '#00e676',
+}
 
+const rejectStyle = {
+  borderColor: '#ff1744',
+}
 
-  const onDropHandler = useCallback((acceptedFiles: Array<File>, ) => {
-    const reader = new FileReader();
-  
-  reader.onload =  function() {
-    const result = reader.result; // This will be a data URL
-    if (typeof result === 'string') {
-      setPreviewFile(result);
-    }
+const allowedFiles = ['.jpeg', '.png']
 
-    const file = acceptedFiles[0]
-    fileHandler(file)
-  };
-  
-  reader.readAsDataURL(acceptedFiles[0]);
-  }, [fileHandler])
+interface PropsI {
+  fileHandler: (file: File) => void
+  src?: string
+}
 
+const ImageDropZone = ({ fileHandler, src }: PropsI) => {
+  const [previewFile, setPreviewFile] = useState<string | undefined>(src)
 
-  const {
-    getRootProps,
-    getInputProps,
-    isFocused,
-    isDragAccept,
-    isDragReject
-  } = useDropzone({accept: {'image/*': allowedFiles},  onDrop: (acceptedFiles, )=> onDropHandler(acceptedFiles )} );
+  const onDropHandler = useCallback(
+    (acceptedFiles: Array<File>) => {
+      const reader = new FileReader()
+      const file = acceptedFiles[0]
+      reader.onload = function () {
+        const result = reader.result // This will be a data URL
+        if (typeof result === 'string') {
+          setPreviewFile(result)
+        }
 
-  const style : any= useMemo(() => ({
-    ...baseStyle,
-    ...(isFocused ? focusedStyle : {}),
-    ...(isDragAccept ? acceptStyle : {}),
-    ...(isDragReject ? rejectStyle : {})
-  }), [
-    isFocused,
-    isDragAccept,
-    isDragReject
-  ]);
+        fileHandler(file)
+      }
+
+      reader.readAsDataURL(file)
+    },
+    [fileHandler]
+  )
+
+  const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } = useDropzone({
+    accept: { 'image/*': allowedFiles },
+    onDrop: (acceptedFiles) => onDropHandler(acceptedFiles),
+  })
+
+  const style: any = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isFocused ? focusedStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isFocused, isDragAccept, isDragReject]
+  )
 
   return (
     <div className="container">
-      <div {...getRootProps({style})} >
+      <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>{`Drag 'n' drop ${allowedFiles.map(x => x + ' ')} files here, or click to select files`}</p>
+        <p>{`Drag 'n' drop ${allowedFiles.map((x) => x + ' ')} files here, or click to select files`}</p>
       </div>
-    {previewFile && <img src={previewFile} height={300} width={300} alt='file-upload' style={{objectFit:'contain'}}/>}
+      {previewFile && (
+        <img src={previewFile} height={300} width={300} alt="file-upload" style={{ objectFit: 'contain' }} />
+      )}
     </div>
-  );
+  )
 }
 
 export default ImageDropZone

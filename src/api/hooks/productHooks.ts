@@ -4,6 +4,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
 import { toast } from 'react-toastify'
+import { SUPABASE_PRODUCTS_STORAGE_NAME } from '@/common/utils/constants'
+import { supabase } from '@/common/config/application_config'
+import { useEffect, useState } from 'react'
 
 //GET
 const useGetListProducts = ({
@@ -75,4 +78,39 @@ const useDeleteProduct = () => {
   })
 }
 
-export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct }
+//UPLOAD IMAGE TO STORAGE
+const useUploadFile = () => {
+  const [isEnabled, setIsEnabled] = useState(false)
+  const [file, setFile] = useState<File | undefined>()
+
+  useEffect(() => {
+    if (isEnabled) {
+      console.log(isEnabled)
+      const uploadFileHandler = async () => {
+        if (file) {
+          const { data, error } = await supabase.storage
+            .from(SUPABASE_PRODUCTS_STORAGE_NAME)
+            .upload(`${file.name}`, file, {
+              cacheControl: '3600',
+              upsert: true,
+            })
+
+          return { data, error }
+        }
+
+        return null
+      }
+
+      uploadFileHandler().then((value) => {
+        console.log(value?.data)
+      })
+    }
+  }, [file, isEnabled])
+
+  return (isEnabled: boolean, file: File) => {
+    setIsEnabled(isEnabled)
+    setFile(file)
+  }
+}
+
+export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct, useUploadFile }
