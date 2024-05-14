@@ -3,7 +3,6 @@ import { QueryClient, keepPreviousData } from '@tanstack/react-query'
 import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
 
-
 const axiosInstance = axios.create({
   baseURL: `${BACKEND_BASE_API_URL}`,
 })
@@ -20,7 +19,11 @@ const queryClient = new QueryClient({
   },
 })
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY_API)
 
-export { axiosInstance, queryClient, supabase }
+export { axiosInstance, queryClient, supabase, corsHeaders }

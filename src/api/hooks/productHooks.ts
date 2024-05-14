@@ -6,7 +6,7 @@ import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products
 import { toast } from 'react-toastify'
 import { SUPABASE_PRODUCTS_STORAGE_NAME } from '@/common/utils/constants'
 import { supabase } from '@/common/config/application_config'
-import { useEffect, useState } from 'react'
+import { createFullPathStorageFile } from '@/common/utils/helpers'
 
 //GET
 const useGetListProducts = ({
@@ -80,26 +80,25 @@ const useDeleteProduct = () => {
 
 //UPLOAD IMAGE TO STORAGE
 const useUploadFile = () => {
-  const [file, setFile] = useState<File | undefined>()
-
-  const uploadFileHandler = async () => {
+  const uploadFileHandler = async (file: File | undefined) => {
+    let imageUrl = ''
     if (file) {
-      const { data, error } = await supabase.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).upload(`${file.name}`, file, {
-        cacheControl: '3600',
-        upsert: true,
-      })
+      const { name } = file
 
-      return { data, error }
+      const { data, error } = await supabase.storage
+        .from(SUPABASE_PRODUCTS_STORAGE_NAME)
+        .upload(`public/${name}`, file, {
+          upsert: true,
+        })
+
+      imageUrl = createFullPathStorageFile(name)
+      return { error, data, imageUrl }
     }
 
     return null
   }
 
-  const setFileHandler = (file: File) => {
-    setFile(file)
-  }
-
-  return { setFileHandler, uploadFileHandler }
+  return { uploadFileHandler }
 }
 
 export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct, useUploadFile }

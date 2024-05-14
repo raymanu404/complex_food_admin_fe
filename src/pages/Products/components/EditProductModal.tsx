@@ -5,7 +5,7 @@ import ProductForm from './ProductForm'
 import { transformFromFeToFormData } from '../utils/mapper'
 import { useUpdateProduct, useUploadFile } from '@/api/hooks/productHooks'
 import { SubmitHandler } from 'react-hook-form'
-import { createFullPathStorageFile } from '@/common/utils/helpers'
+import { toast } from 'react-toastify'
 
 interface PropsI extends Omit<DialogProps, 'open' | 'onClose'>, PropsWithChildren {
   product: ProductFeI | undefined
@@ -18,29 +18,30 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
   const productObj = transformFromFeToFormData(product)
 
   const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
-  const { setFileHandler, uploadFileHandler } = useUploadFile()
+  const { uploadFileHandler } = useUploadFile()
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
-      //check to update properly image path after uploading was successfully saved
-      let imageUrl = ''
-      if (data.file) {
-        setFileHandler(data.file)
+      const result = await uploadFileHandler(data.file)
+      if (result) {
+        const { imageUrl, error } = result
+        if (error) {
+          toast.error(`Unable to upload file to storage. ${error.message}`)
+          return
+        }
+
+        await mutateAsync({
+          productId: product?.id ?? 0,
+          productToUpdate: { ...data, image: imageUrl },
+        }).then(() => {
+          close()
+          refetch()
+        })
+      } else {
+        toast.error(`Unable to get file`)
       }
-
-      await uploadFileHandler().then((value) => {
-        console.log(value)
-      })
-
-      await mutateAsync({
-        productId: product?.id ?? 0,
-        productToUpdate: { ...data, image: imageUrl },
-      }).then(() => {
-        close()
-        refetch()
-      })
     },
-    [close, mutateAsync, product?.id, refetch, setFileHandler, uploadFileHandler]
+    [close, mutateAsync, product?.id, refetch, uploadFileHandler]
   )
   return (
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>
