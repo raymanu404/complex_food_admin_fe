@@ -24,22 +24,20 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
   {
     accessorKey: 'title',
     header: 'Title',
-    Cell: ({ row }) => (
-      <Box sx={{ width: '15em' }}>
-        <OverflowTooltip text={`${row.original.title}`} />
-      </Box>
-    ),
+    Cell: ({ row }) => {
+      const { title } = row.original
+      return <Box sx={{ width: '15em' }}>{title ? <OverflowTooltip text={`${title}`} /> : DEFAULT_NA}</Box>
+    },
     enableClickToCopy: true,
     enableEditing: true,
   },
   {
     accessorKey: 'description',
     header: 'Description',
-    Cell: ({ row }) => (
-      <Box sx={{ width: '15em' }}>
-        <OverflowTooltip text={`${row.original.description}`} />
-      </Box>
-    ),
+    Cell: ({ row }) => {
+      const { description } = row.original
+      return <Box sx={{ width: '15em' }}>{description ? <OverflowTooltip text={`${description}`} /> : DEFAULT_NA}</Box>
+    },
     enableClickToCopy: true,
     enableEditing: true,
   },

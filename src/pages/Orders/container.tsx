@@ -52,7 +52,12 @@ export const OrdersContainer = () => {
   const ordersTable = useMaterialReactTable({
     columns,
     data: orders,
-    initialState: { showColumnFilters: false, columnPinning: { right: ['status'] } }, //default to false
+    initialState: {
+      showColumnFilters: false,
+      columnPinning: { right: ['status'] },
+      isFullScreen: false,
+      density: 'compact',
+    }, //default to false
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: true, //turn off built-in client-side sorting
@@ -78,7 +83,7 @@ export const OrdersContainer = () => {
     },
     muiTablePaperProps: {
       sx: {
-        // maxHeight: '70vh',
+        // minHeight: '50vh',
         overflow: 'auto',
       },
     },
