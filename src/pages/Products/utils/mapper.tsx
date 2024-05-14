@@ -103,7 +103,9 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     accessorKey: 'image',
     header: 'Image',
     size: 20,
-    Cell: ({ cell }) => <ImageCell imagePath={cell.row.original.image} title={cell.row.original.title} />,
+    Cell: ({ cell }) => {
+      return <ImageCell imagePath={cell.row.original.image} title={cell.row.original.title} />
+    },
     enableEditing: false,
     enableSorting: false,
     enableColumnFilter: false,

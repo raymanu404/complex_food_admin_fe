@@ -44,8 +44,8 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   const values = getValues()
 
   const idDirtySubmitButton = useMemo(
-    () => arePropsEqual(values, defaultValues) || Object.values(touchedFields).every((x) => !x),
-    [defaultValues, touchedFields, values]
+    () => (arePropsEqual(values, defaultValues) && !dropedFile) || Object.values(touchedFields).some((x) => !x),
+    [defaultValues, dropedFile, touchedFields, values]
   )
 
   const onSubmitLocal: SubmitHandler<ProductFormUpdate> = useCallback(
@@ -124,7 +124,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
         <Button
           type="submit"
           startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          // disabled={idDirtySubmitButton}
+          disabled={idDirtySubmitButton}
         >
           Submit
         </Button>

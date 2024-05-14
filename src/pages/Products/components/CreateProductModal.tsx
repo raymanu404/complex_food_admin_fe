@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle } from '@mui/material'
+import { Dialog, DialogContent, DialogProps, DialogTitle } from '@mui/material'
 import ProductForm from './ProductForm'
 import { useCallback } from 'react'
 import { ProductFormUpdate } from '@/api/interfaces/products'
@@ -44,7 +44,6 @@ const CreateProductModal = ({ close, isOpen, refetch, ...rest }: PropsI) => {
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
         <ProductForm onCloseHandler={close} onSubmitHandler={onSubmit} isLoading={isCreatingProduct} />
       </DialogContent>
-      <DialogActions></DialogActions>
     </Dialog>
   )
 }

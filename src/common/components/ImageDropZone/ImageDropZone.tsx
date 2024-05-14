@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { handleImageError } from '@/common/utils/helpers'
 import { useCallback, useMemo, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
+import Spinner from '../Spinner/Spinner'
+import { FlexBoxCentered } from '@/common/styles/styled-components'
 
 const baseStyle = {
   flex: 1,
@@ -35,9 +38,10 @@ const allowedFiles = ['.jpeg', '.png']
 interface PropsI {
   fileHandler: (file: File) => void
   src?: string
+  isLoading?: boolean
 }
 
-const ImageDropZone = ({ fileHandler, src }: PropsI) => {
+const ImageDropZone = ({ fileHandler, src, isLoading }: PropsI) => {
   const [previewFile, setPreviewFile] = useState<string | undefined>(src)
 
   const onDropHandler = useCallback(
@@ -79,9 +83,20 @@ const ImageDropZone = ({ fileHandler, src }: PropsI) => {
         <input {...getInputProps()} />
         <p>{`Drag 'n' drop ${allowedFiles.map((x) => x + ' ')} files here, or click to select files`}</p>
       </div>
-      {previewFile && (
-        <img src={previewFile} height={300} width={300} alt="file-upload" style={{ objectFit: 'contain' }} />
-      )}
+
+      <FlexBoxCentered>
+        {isLoading && <Spinner size={'3.5rem'} />}
+        {previewFile && !isLoading && (
+          <img
+            src={previewFile}
+            height={300}
+            width={300}
+            alt="file-upload"
+            style={{ objectFit: 'contain' }}
+            onError={handleImageError}
+          />
+        )}
+      </FlexBoxCentered>
     </div>
   )
 }

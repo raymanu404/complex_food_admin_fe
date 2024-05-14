@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import { SUPABASE_PRODUCTS_STORAGE_NAME } from '@/common/utils/constants'
 import { supabase } from '@/common/config/application_config'
 import { createFullPathStorageFile } from '@/common/utils/helpers'
+import { useState } from 'react'
 
 //GET
 const useGetListProducts = ({
@@ -101,4 +102,23 @@ const useUploadFile = () => {
   return { uploadFileHandler }
 }
 
-export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct, useUploadFile }
+//GET IMAGE FROM STORAGE !EXPERIMENTAL!
+const useGetFileFromStorage = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const getFileHandler = async (path: string) => {
+    const { data } = supabase.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).getPublicUrl(path)
+    setIsLoading(false)
+    return data
+  }
+
+  return { getFileHandler, isLoading }
+}
+
+export {
+  useGetListProducts,
+  useUpdateProduct,
+  useCreateProduct,
+  useDeleteProduct,
+  useUploadFile,
+  useGetFileFromStorage,
+}
