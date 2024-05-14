@@ -42,7 +42,10 @@ interface GetProductsResponseBeI {
 //TODO: see how to update images, for now we dont update them
 type ProductBodyToUpdate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated'>
 type ProductBodyToCreate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated'>
-type ProductFormUpdate = Omit<ProductFeI, 'id' | 'dateUpdated' | 'dateCreated' | 'category'> & { category: number }
+type ProductFormUpdate = Omit<ProductFeI, 'id' | 'dateUpdated' | 'dateCreated' | 'category'> & {
+  category: number
+  file?: File
+}
 
 export { CategoryProductEnum }
 export type {

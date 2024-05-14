@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
-import { NumericInput, Spinner } from '@/common/components'
+import { ImageDropZone, NumericInput, Spinner } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
-// import { arePropsEqual, arrayOfProps } from '@/common/utils/helpers'
-// import { useMemo } from 'react'
+import { useCallback, useState } from 'react'
+import { arePropsEqual } from '@/common/utils/helpers'
+import { useMemo } from 'react'
 
 interface PropsI {
   isLoading?: boolean
@@ -32,20 +33,34 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   const {
     control,
     handleSubmit,
-    // getValues,
-    formState: {
-      isLoading: isLoadingForm,
-      // defaultValues
-    },
+    getValues,
+    formState: { isLoading: isLoadingForm, touchedFields, defaultValues },
   } = useForm<ProductFormUpdate>({
     defaultValues: defaultData ? { ...defaultData } : DEFAULT_PRODUCT_FE,
   })
-  // const values = getValues()
 
-  // const idDirtySubmitButton = useMemo(() => !arePropsEqual(values, defaultValues), [defaultValues, values])
+  const [dropedFile, setDropedFile] = useState<File | undefined>()
+
+  const values = getValues()
+
+  const idDirtySubmitButton = useMemo(
+    () => (arePropsEqual(values, defaultValues) && !dropedFile) || Object.values(touchedFields).some((x) => !x),
+    [defaultValues, dropedFile, touchedFields, values]
+  )
+
+  const onSubmitLocal: SubmitHandler<ProductFormUpdate> = useCallback(
+    (data) => {
+      onSubmitHandler({ ...data, file: dropedFile })
+    },
+    [dropedFile, onSubmitHandler]
+  )
+
+  const onFileUploadHandler = useCallback((file: File) => {
+    setDropedFile(file)
+  }, [])
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHandler)}>
+    <form onSubmit={handleSubmit(onSubmitLocal)}>
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
         <Controller name="title" control={control} render={({ field }) => <TextField {...field} label="Title" />} />
         <Controller
@@ -92,15 +107,18 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
             )}
           />
         </Box>
-        {/* TODO: Handle images later */}
-        {/* <Controller name="image" control={control} render={({ field }) => <TextField {...field} label="Title" />} /> */}
+        <Controller
+          name="image"
+          control={control}
+          render={({ field }) => <ImageDropZone src={field.value} fileHandler={onFileUploadHandler} />}
+        />
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
         <Button
           type="submit"
           startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          // disabled={idDirtySubmitButton}
+          disabled={idDirtySubmitButton}
         >
           Submit
         </Button>

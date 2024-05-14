@@ -4,6 +4,10 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
 import { toast } from 'react-toastify'
+import { SUPABASE_PRODUCTS_STORAGE_NAME } from '@/common/utils/constants'
+import { supabase } from '@/common/config/application_config'
+import { createFullPathStorageFile } from '@/common/utils/helpers'
+import { useState } from 'react'
 
 //GET
 const useGetListProducts = ({
@@ -75,4 +79,46 @@ const useDeleteProduct = () => {
   })
 }
 
-export { useGetListProducts, useUpdateProduct, useCreateProduct, useDeleteProduct }
+//UPLOAD IMAGE TO STORAGE
+const useUploadFile = () => {
+  const uploadFileHandler = async (file: File | undefined) => {
+    let imageUrl = ''
+    if (file) {
+      const { name } = file
+
+      const { data, error } = await supabase.storage
+        .from(SUPABASE_PRODUCTS_STORAGE_NAME)
+        .upload(`public/${name}`, file, {
+          upsert: true,
+        })
+
+      imageUrl = createFullPathStorageFile(name)
+      return { error, data, imageUrl }
+    }
+
+    return null
+  }
+
+  return { uploadFileHandler }
+}
+
+//GET IMAGE FROM STORAGE !EXPERIMENTAL!
+const useGetFileFromStorage = () => {
+  const [isLoading, setIsLoading] = useState(true)
+  const getFileHandler = async (path: string) => {
+    const { data } = supabase.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).getPublicUrl(path)
+    setIsLoading(false)
+    return data
+  }
+
+  return { getFileHandler, isLoading }
+}
+
+export {
+  useGetListProducts,
+  useUpdateProduct,
+  useCreateProduct,
+  useDeleteProduct,
+  useUploadFile,
+  useGetFileFromStorage,
+}

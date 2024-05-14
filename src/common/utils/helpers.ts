@@ -2,6 +2,12 @@
 import { format } from 'date-fns'
 import { SyntheticEvent } from 'react'
 import PlaceholderImage from '@/common/assets/placeholder-image.png'
+import {
+  SUPABASE_PRODUCTS_STORAGE_NAME,
+  SUPABASE_STORAGE_PUBLIC_FOLDER,
+  SUPABASE_STORAGE_RELATIVE,
+  SUPABASE_URL,
+} from './constants'
 
 const formatDate = (date: Date): string => {
   const formattedDate = format(date, 'dd/MM/yyyy HH:mm:ss')
@@ -35,8 +41,8 @@ const arrayOfProps = (obj: any) =>
 
 function arePropsEqual(obj1: any, obj2: any): boolean {
   // Deep copy obj1 and obj2 using JSON methods
-  const copiedObj1 = JSON.parse(JSON.stringify(obj1))
-  const copiedObj2 = JSON.parse(JSON.stringify(obj2))
+  const copiedObj1 = { ...obj1 }
+  const copiedObj2 = { ...obj2 }
 
   // Sort the keys of the copied objects to ensure consistent order
   const keys1 = Object.keys(copiedObj1).sort()
@@ -66,4 +72,15 @@ function arePropsEqual(obj1: any, obj2: any): boolean {
   return true
 }
 
-export { formatDate, handleImageError, enumToString, stringToEnum, arrayOfProps, arePropsEqual }
+const createFullPathStorageFile = (fileName: string, storageName = SUPABASE_PRODUCTS_STORAGE_NAME): string =>
+  [SUPABASE_URL, SUPABASE_STORAGE_RELATIVE, storageName, SUPABASE_STORAGE_PUBLIC_FOLDER, fileName].join('/')
+
+export {
+  formatDate,
+  handleImageError,
+  enumToString,
+  stringToEnum,
+  arrayOfProps,
+  arePropsEqual,
+  createFullPathStorageFile,
+}

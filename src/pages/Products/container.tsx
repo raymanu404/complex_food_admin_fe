@@ -71,7 +71,12 @@ export const ProductsContainer = () => {
   const productsTable = useMaterialReactTable({
     columns,
     data: products,
-    initialState: { showColumnFilters: false, columnPinning: { right: ['mrt-row-actions'] }, isFullScreen: false },
+    initialState: {
+      showColumnFilters: false,
+      columnPinning: { right: ['mrt-row-actions'] },
+      isFullScreen: false,
+      density: 'compact',
+    },
     manualFiltering: false, //lets filter data on client-side for now, later we see how to do that on server side
     manualPagination: true, //turn off built-in client-side pagination
     manualSorting: false, //turn off built-in client-side sorting
@@ -90,7 +95,9 @@ export const ProductsContainer = () => {
       color: 'primary',
     },
     muiTablePaperProps: {
-      sx: { overflow: 'auto' },
+      sx: {
+        overflow: 'auto',
+      },
     },
     muiPaginationProps: {
       color: 'primary',

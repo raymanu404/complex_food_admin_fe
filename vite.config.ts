@@ -29,7 +29,7 @@ export default defineConfig(() => {
         clientPort: 34,
         protocol: 'ws',
       },
-      open: true,
+      // open: true,
     },
     test: {
       globals: true,
@@ -42,4 +42,3 @@ export default defineConfig(() => {
     },
   }
 })
-
