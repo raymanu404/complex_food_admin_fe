@@ -7,17 +7,20 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { queryClient } from './common/config/application_config'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AuthContextProvider } from './contexts/AuthContext'
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <StyledEngineProvider injectFirst>
         <QueryClientProvider client={queryClient}>
-          <ApplicationContextProvider>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Router />
-            </LocalizationProvider>
-          </ApplicationContextProvider>
+          <AuthContextProvider>
+            <ApplicationContextProvider>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Router />
+              </LocalizationProvider>
+            </ApplicationContextProvider>
+          </AuthContextProvider>
         </QueryClientProvider>
       </StyledEngineProvider>
     </ThemeProvider>

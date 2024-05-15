@@ -24,6 +24,6 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY_API)
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY_API)
 
-export { axiosInstance, queryClient, supabase, corsHeaders }
+export { axiosInstance, queryClient, supabaseClient, corsHeaders }

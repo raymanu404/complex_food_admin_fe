@@ -17,6 +17,7 @@ const ProductsPage = lazy(() =>
 )
 const LoginPage = lazy(() => import('@/pages/Login/container').then((module) => ({ default: module.default })))
 
+//create a component that provides redirecting if user is not authenticated or authorzied
 const RoutePaths: RouteI[] = [
   {
     name: 'default',
