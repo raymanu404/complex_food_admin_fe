@@ -8,20 +8,23 @@ import { queryClient } from './common/config/application_config'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { AuthContextProvider } from './contexts/AuthContext'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <StyledEngineProvider injectFirst>
-        <QueryClientProvider client={queryClient}>
-          <AuthContextProvider>
+        <BrowserRouter>
+          <QueryClientProvider client={queryClient}>
             <ApplicationContextProvider>
-              <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Router />
-              </LocalizationProvider>
+              <AuthContextProvider>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <Router />
+                </LocalizationProvider>
+              </AuthContextProvider>
             </ApplicationContextProvider>
-          </AuthContextProvider>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </BrowserRouter>
       </StyledEngineProvider>
     </ThemeProvider>
   )

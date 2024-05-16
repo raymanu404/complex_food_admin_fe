@@ -1,7 +1,10 @@
-import { APP_CLIENT_PATH_HOME } from '@/common/utils/constants'
+import { PATHS } from '@/common/utils/constants'
+import { PathEnum } from '@/common/utils/interfaces'
 import NotFound from '@/pages/NotFound/NotFound'
 import { lazy } from 'react'
 import { Navigate, RouteProps } from 'react-router-dom'
+import DefaultRouter from '../components/DefaultRouter'
+import RedirectRouter from '../components/RedirectRouter'
 
 interface RouteI {
   name: string
@@ -21,31 +24,55 @@ const LoginPage = lazy(() => import('@/pages/Login/container').then((module) => 
 const RoutePaths: RouteI[] = [
   {
     name: 'default',
-    routeProps: { path: `/`, element: <Navigate to={`${APP_CLIENT_PATH_HOME}`} replace /> },
+    routeProps: { path: `${PATHS[PathEnum.DEFAULT]}`, element: <DefaultRouter /> },
   },
   {
     name: 'Home',
-    routeProps: { path: `${APP_CLIENT_PATH_HOME}`, element: <HomePage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.HOME]}`,
+      element: (
+        <RedirectRouter>
+          <HomePage />
+        </RedirectRouter>
+      ),
+    },
   },
   {
     name: 'Orders',
-    routeProps: { path: `/orders`, element: <OrdersPage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.ORDERS]}`,
+      element: (
+        <RedirectRouter>
+          <OrdersPage />
+        </RedirectRouter>
+      ),
+    },
   },
   {
     name: 'Products',
-    routeProps: { path: `/products`, element: <ProductsPage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.PRODUCTS]}`,
+      element: (
+        <RedirectRouter>
+          <ProductsPage />
+        </RedirectRouter>
+      ),
+    },
   },
   {
     name: 'Login',
-    routeProps: { path: `/login`, element: <LoginPage /> },
+    routeProps: { path: `${PATHS[PathEnum.LOGIN]}`, element: <LoginPage /> },
   },
   {
     name: 'not-found',
-    routeProps: { path: `/not-found`, element: <NotFound /> },
+    routeProps: { path: `${PATHS[PathEnum.NOT_FOUND]}`, element: <NotFound /> },
   },
   {
     name: 'whatever',
-    routeProps: { path: `*`, element: <Navigate to={`/not-found`} replace /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.EVERYTHING]}`,
+      element: <Navigate to={`${PATHS[PathEnum.NOT_FOUND]}`} replace />,
+    },
   },
 ]
 
