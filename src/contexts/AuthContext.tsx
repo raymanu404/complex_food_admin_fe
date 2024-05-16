@@ -71,7 +71,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     })
 
     return () => subscription.unsubscribe()
-  }, [closeDrawer, navigate])
+  }, [switchAuthEventActionHandler])
 
   const signOutHandler = async () => {
     await supabaseClient.auth.signOut()
