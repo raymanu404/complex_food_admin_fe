@@ -1,13 +1,12 @@
-import { supabaseClient } from '@/common/config/application_config'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
+import { supabaseClient } from '@/common/config/application_config'
 
 const Login = () => {
   return (
-    <>
-      {/* generate magic links for admins to get into app */}
+    <div>
       <Auth supabaseClient={supabaseClient} appearance={{ theme: ThemeSupa }} />
-    </>
+    </div>
   )
 }
 
