@@ -10,53 +10,75 @@ import { PathEnum } from '@/common/utils/interfaces'
 interface AuthContextI {
   session: Session | null
   signOutHandler: () => void
+  isSessionLoading: boolean
+  sessionTypeEvent: AuthChangeEvent | null
 }
 
 const DefaultContext: AuthContextI = {
   session: null,
   signOutHandler: () => ({}),
+  isSessionLoading: true,
+  sessionTypeEvent: null,
 }
 
 const AuthContext = createContext<AuthContextI>(DefaultContext)
 
 const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null)
+  const [isSessionLoading, setIsSessionLoading] = useState(true)
+  const [sessionTypeEvent, setSessionTypeEvent] = useState<AuthChangeEvent | null>(null)
+
   const navigate = useNavigate()
   const { closeDrawer } = useApplicationContext()
 
-  const authContextChangingHandler = () => {
+  const authContextChangingHandler = useCallback(() => {
     closeDrawer()
-  }
+  }, [closeDrawer])
 
-  const switchAuthEventActionHandler = useCallback((typeEvent: AuthChangeEvent) => {
-    console.log(typeEvent)
-    switch (typeEvent) {
-      case 'INITIAL_SESSION': {
-        break
+  const switchAuthEventActionHandler = useCallback(
+    (typeEvent: AuthChangeEvent, session: Session | null) => {
+      console.log(typeEvent)
+      console.log(session)
+      setSessionTypeEvent(typeEvent)
+      console.log({ sessionTypeEvent })
+      switch (typeEvent) {
+        case 'INITIAL_SESSION': {
+          setIsSessionLoading(false)
+          break
+        }
+        case 'USER_UPDATED': {
+          break
+        }
+        case 'MFA_CHALLENGE_VERIFIED': {
+          break
+        }
+        case 'SIGNED_IN': {
+          if (sessionTypeEvent === 'INITIAL_SESSION') {
+            authContextChangingHandler()
+            navigate(`${PATHS[PathEnum.HOME]}`)
+          }
+          setIsSessionLoading(false)
+
+          break
+        }
+        case 'SIGNED_OUT': {
+          // setIsSessionLoading(true)
+          authContextChangingHandler()
+          break
+        }
+        case 'PASSWORD_RECOVERY': {
+          break
+        }
+        case 'TOKEN_REFRESHED': {
+          break
+        }
+        default: {
+          break
+        }
       }
-      case 'USER_UPDATED': {
-        break
-      }
-      case 'MFA_CHALLENGE_VERIFIED': {
-        break
-      }
-      case 'SIGNED_IN': {
-        break
-      }
-      case 'SIGNED_OUT': {
-        break
-      }
-      case 'PASSWORD_RECOVERY': {
-        break
-      }
-      case 'TOKEN_REFRESHED': {
-        break
-      }
-      default: {
-        break
-      }
-    }
-  }, [])
+    },
+    [authContextChangingHandler, navigate, sessionTypeEvent]
+  )
 
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
@@ -66,7 +88,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-      switchAuthEventActionHandler(_event)
+      switchAuthEventActionHandler(_event, session)
       setSession(session)
     })
 
@@ -75,10 +97,13 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   const signOutHandler = async () => {
     await supabaseClient.auth.signOut()
-    authContextChangingHandler()
   }
 
-  return <AuthContext.Provider value={{ session, signOutHandler }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 const useAuthContext = () => {

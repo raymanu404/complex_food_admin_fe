@@ -45,8 +45,8 @@ const Drawer = () => {
 
   const logoutHandler = useCallback(() => {
     signOutHandler()
-    console.log('call logout')
-  }, [signOutHandler])
+    closeModalLogout()
+  }, [closeModalLogout, signOutHandler])
 
   return (
     <Box>
