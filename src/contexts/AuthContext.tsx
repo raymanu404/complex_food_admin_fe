@@ -5,13 +5,14 @@ import { PropsWithChildren, createContext, useCallback, useContext, useEffect, u
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
 import { PATHS } from '@/common/utils/constants'
-import { PathEnum } from '@/common/utils/interfaces'
+import { PathEnum, ReturnAuthData } from '@/common/utils/interfaces'
 
 interface AuthContextI {
   session: Session | null
   signOutHandler: () => void
   isSessionLoading: boolean
   sessionTypeEvent: AuthChangeEvent | null
+  sendMagicLinkHandler: (email: string, isEmailValid?: boolean) 
 }
 
 const DefaultContext: AuthContextI = {
@@ -19,6 +20,7 @@ const DefaultContext: AuthContextI = {
   signOutHandler: () => ({}),
   isSessionLoading: true,
   sessionTypeEvent: null,
+  sendMagicLinkHandler: () => ({}),
 }
 
 const AuthContext = createContext<AuthContextI>(DefaultContext)
@@ -99,8 +101,25 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     await supabaseClient.auth.signOut()
   }
 
+  const sendMagicLinkHandler = async (email: string, isEmailValid = true) => {
+    if (isEmailValid) {
+      const { data, error } = await supabaseClient.auth.signInWithOtp({
+        email: email,
+        options: {
+          // set this to false if you do not want the user to be automatically signed up
+          shouldCreateUser: false,
+          emailRedirectTo: 'https://example.com/welcome',
+        },
+      })
+
+      return { data, error }
+    }
+
+    return null
+  }
+
   return (
-    <AuthContext.Provider value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent }}>
+    <AuthContext.Provider value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent, sendMagicLinkHandler }}>
       {children}
     </AuthContext.Provider>
   )

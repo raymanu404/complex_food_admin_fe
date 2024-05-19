@@ -1,15 +1,19 @@
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { useEmailField } from '@/common/utils/hooks/useValidField'
-import { Box, Button, TextField, Typography } from '@mui/material'
+import { useAuthContext } from '@/contexts/AuthContext'
+import { Button, TextField, Typography } from '@mui/material'
 
 const InvitationPage = () => {
   const { value, error, helperText, handleChange, validate } = useEmailField()
+  const { sendMagicLinkHandler } = useAuthContext()
 
   const handleBlur = () => {
     validate()
   }
 
-  const sendInvitationLinkHandler = () => {}
+  const sendInvitationLinkHandler = async () => {
+    await sendMagicLinkHandler(value, !error)
+  }
 
   return (
     <FlexBoxCentered>

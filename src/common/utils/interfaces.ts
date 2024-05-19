@@ -1,3 +1,5 @@
+import { AuthError, User } from '@supabase/supabase-js'
+
 enum PathEnum {
   HOME = 'HOME',
   ORDERS = 'ORDERS',
@@ -10,7 +12,12 @@ enum PathEnum {
   INVITE_ADMIN = 'INVITE_ADMIN',
 }
 
+type ReturnAuthData = {
+  user?: User | null
+  error?: AuthError | null
+}
+
 type PathRecord = Record<string, string>
 
 export { PathEnum }
-export type { PathRecord }
+export type { PathRecord, ReturnAuthData }
