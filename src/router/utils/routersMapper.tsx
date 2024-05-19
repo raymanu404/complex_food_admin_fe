@@ -18,7 +18,12 @@ const OrdersPage = lazy(() =>
 const ProductsPage = lazy(() =>
   import('@/pages/Products/container').then((module) => ({ default: module.ProductsContainer }))
 )
+
+//auth and create admins
 const LoginPage = lazy(() => import('@/pages/Auth/AuthContainer').then((module) => ({ default: module.default })))
+const InvitationPage = lazy(() =>
+  import('@/pages/InviteAdmin/InvitationPage').then((module) => ({ default: module.default }))
+)
 
 //create a component that provides redirecting if user is not authenticated or authorzied
 const RoutePaths: RouteI[] = [
@@ -55,6 +60,17 @@ const RoutePaths: RouteI[] = [
       element: (
         <RedirectRouter>
           <ProductsPage />
+        </RedirectRouter>
+      ),
+    },
+  },
+  {
+    name: 'Invite_Admin',
+    routeProps: {
+      path: `${PATHS[PathEnum.INVITE_ADMIN]}`,
+      element: (
+        <RedirectRouter>
+          <InvitationPage />
         </RedirectRouter>
       ),
     },

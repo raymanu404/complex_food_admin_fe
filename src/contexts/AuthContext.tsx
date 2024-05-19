@@ -55,7 +55,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         case 'SIGNED_IN': {
           if (sessionTypeEvent === 'INITIAL_SESSION') {
             authContextChangingHandler()
-            navigate(`${PATHS[PathEnum.HOME]}`)
+            // navigate(`${PATHS[PathEnum.HOME]}`) //TODO: figure out how to redirect to home page when user is signup only!!!
           }
           setIsSessionLoading(false)
 

@@ -1,12 +1,11 @@
-import React from 'react'
 import Login from './components/Login'
+import { FlexBoxCentered } from '@/common/styles/styled-components'
 
 const AuthContainer = () => {
   return (
-    <>
-      {/* generate magic links for admins to get into app */}
+    <FlexBoxCentered>
       <Login />
-    </>
+    </FlexBoxCentered>
   )
 }
 

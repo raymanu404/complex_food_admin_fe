@@ -2,7 +2,6 @@ import { Backdrop } from '@/common/components'
 import { PATHS } from '@/common/utils/constants'
 import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthContext } from '@/contexts/AuthContext'
-import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 const DefaultRouter = () => {
