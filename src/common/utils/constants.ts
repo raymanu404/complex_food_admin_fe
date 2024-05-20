@@ -4,6 +4,7 @@ const BACKEND_BASE_API_URL = import.meta.env.VITE_BACKEND_BASE_API_URL
 const BACKEND_ADMIN_PATH = import.meta.env.VITE_ADMIN_API_PATH
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_PUBLIC_KEY_API = import.meta.env.VITE_SUPABASE_PUBLIC_KEY_API
+const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_APP_URL
 
 const APP_CLIENT_PATH_HOME = '/home'
 
@@ -21,6 +22,7 @@ const PATHS: PathRecord = {
   EVERYTHING: '*',
   USERS: '/users',
   INVITE_ADMIN: '/invite_admin',
+  CONFIRM_ACCOUNT: '/confirm_account',
   DEFAULT: '/',
 }
 
@@ -41,4 +43,5 @@ export {
   SUPABASE_STORAGE_RELATIVE,
   SUPABASE_STORAGE_PUBLIC_FOLDER,
   PATHS,
+  CLIENT_APP_URL,
 }

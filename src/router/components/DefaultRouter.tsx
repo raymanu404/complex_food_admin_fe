@@ -7,10 +7,11 @@ import { Navigate } from 'react-router-dom'
 const DefaultRouter = () => {
   const { session, isSessionLoading } = useAuthContext()
 
+  console.log(session)
   // if (isSessionLoading) {
   //   return <Backdrop isOpen={isSessionLoading} />
   // }
-  if (!session && !isSessionLoading) {
+  if (!session) {
     return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
   }
 

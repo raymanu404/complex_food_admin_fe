@@ -25,6 +25,10 @@ const InvitationPage = lazy(() =>
   import('@/pages/InviteAdmin/InvitationPage').then((module) => ({ default: module.default }))
 )
 
+const ConfirmAccount = lazy(() =>
+  import('@/pages/Auth/components/ConfirmAccount').then((module) => ({ default: module.default }))
+)
+
 //create a component that provides redirecting if user is not authenticated or authorzied
 const RoutePaths: RouteI[] = [
   {
@@ -65,12 +69,23 @@ const RoutePaths: RouteI[] = [
     },
   },
   {
-    name: 'Invite_Admin',
+    name: 'InviteAdmin',
     routeProps: {
       path: `${PATHS[PathEnum.INVITE_ADMIN]}`,
       element: (
         <RedirectRouter>
           <InvitationPage />
+        </RedirectRouter>
+      ),
+    },
+  },
+  {
+    name: 'ConfirmAccount',
+    routeProps: {
+      path: `${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
+      element: (
+        <RedirectRouter>
+          <ConfirmAccount />
         </RedirectRouter>
       ),
     },

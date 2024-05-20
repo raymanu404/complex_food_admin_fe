@@ -10,6 +10,7 @@ enum PathEnum {
   DEFAULT = 'DEFAULT',
   USERS = 'USERS',
   INVITE_ADMIN = 'INVITE_ADMIN',
+  CONFIRM_ACCOUNT = 'CONFIRM_ACCOUNT',
 }
 
 type ReturnAuthData = {

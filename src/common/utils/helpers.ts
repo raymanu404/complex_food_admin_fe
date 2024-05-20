@@ -75,6 +75,16 @@ function arePropsEqual(obj1: any, obj2: any): boolean {
 const createFullPathStorageFile = (fileName: string, storageName = SUPABASE_PRODUCTS_STORAGE_NAME): string =>
   [SUPABASE_URL, SUPABASE_STORAGE_RELATIVE, storageName, SUPABASE_STORAGE_PUBLIC_FOLDER, fileName].join('/')
 
+/**
+ * Checks if the given expiration timestamp is expired.
+ * @param {number} expiresAt - The expiration timestamp in milliseconds.
+ * @returns {boolean} - True if expired, false otherwise.
+ */
+function isDateExpired(expiresAt: number): boolean {
+  const currentTime = Date.now()
+  return currentTime > expiresAt
+}
+
 export {
   formatDate,
   handleImageError,
@@ -83,4 +93,5 @@ export {
   arrayOfProps,
   arePropsEqual,
   createFullPathStorageFile,
+  isDateExpired,
 }

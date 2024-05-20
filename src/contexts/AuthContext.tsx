@@ -4,7 +4,7 @@ import { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
-import { PATHS } from '@/common/utils/constants'
+import { CLIENT_APP_URL, PATHS } from '@/common/utils/constants'
 import { PathEnum, ReturnAuthData } from '@/common/utils/interfaces'
 
 interface AuthContextI {
@@ -12,7 +12,7 @@ interface AuthContextI {
   signOutHandler: () => void
   isSessionLoading: boolean
   sessionTypeEvent: AuthChangeEvent | null
-  sendMagicLinkHandler: (email: string, isEmailValid?: boolean) 
+  sendMagicLinkHandler: (email: string, isEmailValid?: boolean) => void
 }
 
 const DefaultContext: AuthContextI = {
@@ -42,7 +42,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       console.log(typeEvent)
       console.log(session)
       setSessionTypeEvent(typeEvent)
-      console.log({ sessionTypeEvent })
+      // console.log({ sessionTypeEvent })
       switch (typeEvent) {
         case 'INITIAL_SESSION': {
           setIsSessionLoading(false)
@@ -85,17 +85,19 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
+      console.log(session)
     })
 
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-      switchAuthEventActionHandler(_event, session)
       setSession(session)
+      switchAuthEventActionHandler(_event, session)
     })
 
     return () => subscription.unsubscribe()
-  }, [switchAuthEventActionHandler])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const signOutHandler = async () => {
     await supabaseClient.auth.signOut()
@@ -108,7 +110,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         options: {
           // set this to false if you do not want the user to be automatically signed up
           shouldCreateUser: false,
-          emailRedirectTo: 'https://example.com/welcome',
+          emailRedirectTo: `${CLIENT_APP_URL}${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
         },
       })
 

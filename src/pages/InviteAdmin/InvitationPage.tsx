@@ -1,10 +1,15 @@
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
-import { useEmailField } from '@/common/utils/hooks/useValidField'
+import { useTextField } from '@/common/utils/hooks/useValidField'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Button, TextField, Typography } from '@mui/material'
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const InvitationPage = () => {
-  const { value, error, helperText, handleChange, validate } = useEmailField()
+  const { value, error, helperText, handleChange, validate } = useTextField({
+    fieldRegex: emailRegex,
+    errorMessage: 'Invalid email address!',
+  })
   const { sendMagicLinkHandler } = useAuthContext()
 
   const handleBlur = () => {
@@ -40,7 +45,9 @@ const InvitationPage = () => {
           fullWidth
         />
 
-        <Button onClick={sendInvitationLinkHandler}>Invite</Button>
+        <Button onClick={sendInvitationLinkHandler} disabled={error || value.length === 0}>
+          Invite
+        </Button>
       </FlexCard>
     </FlexBoxCentered>
   )

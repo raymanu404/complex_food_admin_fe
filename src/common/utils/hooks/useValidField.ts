@@ -8,12 +8,15 @@ interface EmailFieldState {
   validate: () => boolean
 }
 
-const useEmailField = (): EmailFieldState => {
+interface PropsI {
+  fieldRegex?: RegExp
+  errorMessage?: string
+}
+
+const useTextField = ({ fieldRegex, errorMessage = 'Invalid field.' }: PropsI): EmailFieldState => {
   const [value, setValue] = useState('')
   const [error, setError] = useState(false)
   const [helperText, setHelperText] = useState('')
-
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value
@@ -23,16 +26,19 @@ const useEmailField = (): EmailFieldState => {
     }
   }
 
-  const validate = (email: string = value): boolean => {
-    if (emailRegex.test(email)) {
-      setError(false)
-      setHelperText('')
-      return true
-    } else {
-      setError(true)
-      setHelperText('Invalid email address.')
-      return false
-    }
+  const validate = (field: string = value): boolean => {
+    if (fieldRegex)
+      if (fieldRegex.test(field)) {
+        setError(false)
+        setHelperText('')
+        return true
+      } else {
+        setError(true)
+        setHelperText(errorMessage)
+        return false
+      }
+
+    return true
   }
 
   return {
@@ -44,4 +50,4 @@ const useEmailField = (): EmailFieldState => {
   }
 }
 
-export { useEmailField }
+export { useTextField }

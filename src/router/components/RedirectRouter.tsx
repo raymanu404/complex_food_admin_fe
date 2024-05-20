@@ -13,9 +13,9 @@ const RedirectRouter = ({ children }: PropsI) => {
   //   return <Backdrop isOpen={isSessionLoading} />
   // }
 
-  if (!session && !isSessionLoading) {
-    return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
-  }
+  // if (!session) {
+  //   return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
+  // }
 
   return <Fragment>{children}</Fragment>
 }
