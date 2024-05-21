@@ -1,4 +1,4 @@
-import { AuthError, User } from '@supabase/supabase-js'
+import { AuthError } from '@supabase/supabase-js'
 
 enum PathEnum {
   HOME = 'HOME',
@@ -13,12 +13,22 @@ enum PathEnum {
   CONFIRM_ACCOUNT = 'CONFIRM_ACCOUNT',
 }
 
-type ReturnAuthData = {
-  user?: User | null
-  error?: AuthError | null
-}
+type ReturnMagicLinkData = {
+  data:
+    | {
+        user: null
+        session: null
+        messageId?: string | null | undefined
+      }
+    | {
+        user: null
+        session: null
+        messageId?: string | null | undefined
+      }
+  error: AuthError | null
+} | null
 
 type PathRecord = Record<string, string>
 
 export { PathEnum }
-export type { PathRecord, ReturnAuthData }
+export type { PathRecord, ReturnMagicLinkData }

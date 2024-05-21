@@ -11,11 +11,11 @@ const DefaultRouter = () => {
   // if (isSessionLoading) {
   //   return <Backdrop isOpen={isSessionLoading} />
   // }
-  if (!session) {
-    return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
-  }
+  // if (!session) {
+  //   return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
+  // }
 
-  return <Navigate to={`${PATHS[PathEnum.HOME]}`} replace />
+  return <Navigate to={`${PATHS[PathEnum.HOME]}`} />
 }
 
 export default DefaultRouter

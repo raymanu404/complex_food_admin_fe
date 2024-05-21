@@ -2,6 +2,7 @@ import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { useTextField } from '@/common/utils/hooks/useValidField'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Button, TextField, Typography } from '@mui/material'
+import { toast } from 'react-toastify'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -17,7 +18,15 @@ const InvitationPage = () => {
   }
 
   const sendInvitationLinkHandler = async () => {
-    await sendMagicLinkHandler(value, !error)
+    const result = await sendMagicLinkHandler(value, !error)
+    if (result) {
+      const { data, error } = result
+      if (error) {
+        toast.error(`${error.message}`)
+      }
+    } else {
+      toast.error('Email is invalid!')
+    }
   }
 
   return (

@@ -38,6 +38,8 @@ const useTextField = ({ fieldRegex, errorMessage = 'Invalid field.' }: PropsI): 
         return false
       }
 
+    setError(false)
+    setHelperText('')
     return true
   }
 

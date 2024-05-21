@@ -1,4 +1,3 @@
-import { Backdrop } from '@/common/components'
 import { PATHS } from '@/common/utils/constants'
 import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthContext } from '@/contexts/AuthContext'
@@ -8,13 +7,13 @@ import { Navigate } from 'react-router-dom'
 interface PropsI extends PropsWithChildren {}
 
 const RedirectRouter = ({ children }: PropsI) => {
-  const { session, isSessionLoading } = useAuthContext()
+  const { session } = useAuthContext()
   // if (isSessionLoading) {
   //   return <Backdrop isOpen={isSessionLoading} />
   // }
 
   // if (!session) {
-  //   return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} replace />
+  //   return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} />
   // }
 
   return <Fragment>{children}</Fragment>

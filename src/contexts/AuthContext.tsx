@@ -1,18 +1,19 @@
 /* eslint-disable react-refresh/only-export-components */
 import { supabaseClient } from '@/common/config/application_config'
-import { AuthChangeEvent, Session } from '@supabase/supabase-js'
-import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { AuthChangeEvent, Session, UserResponse } from '@supabase/supabase-js'
+import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
 import { CLIENT_APP_URL, PATHS } from '@/common/utils/constants'
-import { PathEnum, ReturnAuthData } from '@/common/utils/interfaces'
+import { PathEnum, ReturnMagicLinkData } from '@/common/utils/interfaces'
 
 interface AuthContextI {
   session: Session | null
   signOutHandler: () => void
   isSessionLoading: boolean
   sessionTypeEvent: AuthChangeEvent | null
-  sendMagicLinkHandler: (email: string, isEmailValid?: boolean) => void
+  sendMagicLinkHandler: (email: string, isEmailValid?: boolean) => Promise<ReturnMagicLinkData>
+  updateUserPassword: (password: string) => Promise<UserResponse>
 }
 
 const DefaultContext: AuthContextI = {
@@ -20,7 +21,8 @@ const DefaultContext: AuthContextI = {
   signOutHandler: () => ({}),
   isSessionLoading: true,
   sessionTypeEvent: null,
-  sendMagicLinkHandler: () => ({}),
+  sendMagicLinkHandler: () => new Promise(() => null),
+  updateUserPassword: (password: string) => new Promise(() => password),
 }
 
 const AuthContext = createContext<AuthContextI>(DefaultContext)
@@ -29,58 +31,65 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
   const [sessionTypeEvent, setSessionTypeEvent] = useState<AuthChangeEvent | null>(null)
+  const isFirstSignInRef = useRef(false)
 
   const navigate = useNavigate()
-  const { closeDrawer } = useApplicationContext()
+  const { closeDrawer, isOpenDrawer } = useApplicationContext()
 
-  const authContextChangingHandler = useCallback(() => {
-    closeDrawer()
-  }, [closeDrawer])
+  const navigateToHome = useCallback(() => navigate(`${PATHS[PathEnum.HOME]}`), [navigate])
+  const navigateToLogin = () => navigate(`${PATHS[PathEnum.LOGIN]}`)
 
-  const switchAuthEventActionHandler = useCallback(
-    (typeEvent: AuthChangeEvent, session: Session | null) => {
-      console.log(typeEvent)
-      console.log(session)
-      setSessionTypeEvent(typeEvent)
-      // console.log({ sessionTypeEvent })
-      switch (typeEvent) {
-        case 'INITIAL_SESSION': {
-          setIsSessionLoading(false)
-          break
-        }
-        case 'USER_UPDATED': {
-          break
-        }
-        case 'MFA_CHALLENGE_VERIFIED': {
-          break
-        }
-        case 'SIGNED_IN': {
-          if (sessionTypeEvent === 'INITIAL_SESSION') {
-            authContextChangingHandler()
-            // navigate(`${PATHS[PathEnum.HOME]}`) //TODO: figure out how to redirect to home page when user is signup only!!!
-          }
-          setIsSessionLoading(false)
+  // const authContextChangingHandler = useCallback(() => {
+  //   closeDrawer()
+  // }, [closeDrawer])
 
-          break
-        }
-        case 'SIGNED_OUT': {
-          // setIsSessionLoading(true)
-          authContextChangingHandler()
-          break
-        }
-        case 'PASSWORD_RECOVERY': {
-          break
-        }
-        case 'TOKEN_REFRESHED': {
-          break
-        }
-        default: {
-          break
-        }
+  const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
+    setSessionTypeEvent(typeEvent)
+
+    console.log(isFirstSignInRef.current)
+    console.log({ typeEvent })
+    console.log({ session })
+
+    //TODO: fix this, how to handle redirect when user is sign in only
+    // if (typeEvent === 'SIGNED_IN' && session && !isFirstSignInRef.current) {
+    //   isFirstSignInRef.current = true
+    //   navigateToHome()
+    //   console.log(`isFirstSignInRef.current ${isFirstSignInRef.current}`)
+    // }
+
+    switch (typeEvent) {
+      case 'INITIAL_SESSION': {
+        setIsSessionLoading(false)
+        break
       }
-    },
-    [authContextChangingHandler, navigate, sessionTypeEvent]
-  )
+      case 'USER_UPDATED': {
+        navigateToHome()
+        break
+      }
+      case 'MFA_CHALLENGE_VERIFIED': {
+        break
+      }
+      case 'SIGNED_IN': {
+        setIsSessionLoading(false)
+        break
+      }
+      case 'SIGNED_OUT': {
+        // setIsSessionLoading(true)
+        // authContextChangingHandler()
+        isFirstSignInRef.current = false
+        break
+      }
+      case 'PASSWORD_RECOVERY': {
+        break
+      }
+      case 'TOKEN_REFRESHED': {
+        break
+      }
+      default: {
+        break
+      }
+    }
+  }
 
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
@@ -101,6 +110,10 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   const signOutHandler = async () => {
     await supabaseClient.auth.signOut()
+    if (isOpenDrawer) {
+      closeDrawer()
+    }
+    navigateToLogin()
   }
 
   const sendMagicLinkHandler = async (email: string, isEmailValid = true) => {
@@ -109,7 +122,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         email: email,
         options: {
           // set this to false if you do not want the user to be automatically signed up
-          shouldCreateUser: false,
+          shouldCreateUser: true,
           emailRedirectTo: `${CLIENT_APP_URL}${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
         },
       })
@@ -120,8 +133,14 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     return null
   }
 
+  const updateUserPassword = async (newPassword: string) => {
+    return await supabaseClient.auth.updateUser({ password: newPassword })
+  }
+
   return (
-    <AuthContext.Provider value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent, sendMagicLinkHandler }}>
+    <AuthContext.Provider
+      value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent, sendMagicLinkHandler, updateUserPassword }}
+    >
       {children}
     </AuthContext.Provider>
   )
