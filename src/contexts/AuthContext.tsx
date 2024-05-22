@@ -4,8 +4,9 @@ import { AuthChangeEvent, Session, UserResponse } from '@supabase/supabase-js'
 import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
-import { CLIENT_APP_URL, PATHS } from '@/common/utils/constants'
+import { CLIENT_APP_URL, LOCAL_STORAGE_EMAIL_ARRAY_KEY, PATHS } from '@/common/utils/constants'
 import { PathEnum, ReturnMagicLinkData } from '@/common/utils/interfaces'
+import { removeArrayFromLocalStorage } from '@/common/utils/helpers'
 
 interface AuthContextI {
   session: Session | null
@@ -113,6 +114,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     if (isOpenDrawer) {
       closeDrawer()
     }
+    removeArrayFromLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY)
     navigateToLogin()
   }
 

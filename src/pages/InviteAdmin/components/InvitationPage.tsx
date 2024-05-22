@@ -7,7 +7,7 @@ import SendIcon from '@mui/icons-material/Send'
 import { toast } from 'react-toastify'
 import { PrimaryButton, Spinner } from '@/common/components'
 import { LOCAL_STORAGE_EMAIL_ARRAY_KEY } from '@/common/utils/constants'
-import { saveArrayToLocalStorage } from '../utils/helpers'
+import { saveArrayToLocalStorage } from '@/common/utils/helpers'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -17,7 +17,7 @@ interface PropsI {
 }
 
 const InvitationPage = ({ emailList, setEmailList }: PropsI) => {
-  const { value, error, helperText, handleChange, validate } = useTextField({
+  const { value, error, helperText, handleChange, validate, resetState } = useTextField({
     fieldRegex: emailRegex,
     errorMessage: 'Invalid email address!',
   })
@@ -44,6 +44,7 @@ const InvitationPage = ({ emailList, setEmailList }: PropsI) => {
       const newArray = [...emailList, value]
       setEmailList(newArray)
       saveArrayToLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY, newArray)
+      resetState()
     } else {
       toast.error('Email is invalid!')
     }
