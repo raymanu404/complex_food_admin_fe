@@ -21,8 +21,8 @@ const ProductsPage = lazy(() =>
 
 //auth and create admins
 const LoginPage = lazy(() => import('@/pages/Auth/AuthContainer').then((module) => ({ default: module.default })))
-const InvitationPage = lazy(() =>
-  import('@/pages/InviteAdmin/InvitationPage').then((module) => ({ default: module.default }))
+const InviteAdminPage = lazy(() =>
+  import('@/pages/InviteAdmin/InviteAdmin').then((module) => ({ default: module.default }))
 )
 
 const ConfirmAccount = lazy(() =>
@@ -74,7 +74,7 @@ const RoutePaths: RouteI[] = [
       path: `${PATHS[PathEnum.INVITE_ADMIN]}`,
       element: (
         <RedirectRouter>
-          <InvitationPage />
+          <InviteAdminPage />
         </RedirectRouter>
       ),
     },

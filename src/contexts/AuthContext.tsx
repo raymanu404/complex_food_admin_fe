@@ -37,7 +37,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const { closeDrawer, isOpenDrawer } = useApplicationContext()
 
   const navigateToHome = useCallback(() => navigate(`${PATHS[PathEnum.HOME]}`), [navigate])
-  const navigateToLogin = () => navigate(`${PATHS[PathEnum.LOGIN]}`)
+  const navigateToLogin = useCallback(() => navigate(`${PATHS[PathEnum.LOGIN]}`), [navigate])
 
   // const authContextChangingHandler = useCallback(() => {
   //   closeDrawer()
@@ -94,7 +94,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     supabaseClient.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
-      console.log(session)
     })
 
     const {
@@ -102,6 +101,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       switchAuthEventActionHandler(_event, session)
+      console.log(session)
     })
 
     return () => subscription.unsubscribe()
@@ -121,7 +121,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       const { data, error } = await supabaseClient.auth.signInWithOtp({
         email: email,
         options: {
-          // set this to false if you do not want the user to be automatically signed up
           shouldCreateUser: true,
           emailRedirectTo: `${CLIENT_APP_URL}${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
         },

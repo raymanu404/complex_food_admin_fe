@@ -5,6 +5,7 @@ import { supabaseClient } from '@/common/config/application_config'
 const Login = () => {
   return (
     <div>
+      {/* TODO: create a custom login, reset password, signup...  to handle redirect and other stuff custom!!!*/}
       <Auth supabaseClient={supabaseClient} appearance={{ theme: ThemeSupa }} />
     </div>
   )

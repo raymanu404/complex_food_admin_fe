@@ -1,20 +1,23 @@
 import { PATHS } from '@/common/utils/constants'
 import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthContext } from '@/contexts/AuthContext'
-import { Fragment, PropsWithChildren } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Fragment, PropsWithChildren, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 interface PropsI extends PropsWithChildren {}
 
 const RedirectRouter = ({ children }: PropsI) => {
   const { session } = useAuthContext()
-  // if (isSessionLoading) {
-  //   return <Backdrop isOpen={isSessionLoading} />
-  // }
+  const navigate = useNavigate()
 
-  // if (!session) {
-  //   return <Navigate to={`${PATHS[PathEnum.LOGIN]}`} />
-  // }
+  useEffect(() => {
+    const navigateToLogin = () => navigate(`${PATHS[PathEnum.LOGIN]}`)
+
+    if (!session) {
+      console.log(`session: ${session}`)
+      navigateToLogin()
+    }
+  }, [navigate, session])
 
   return <Fragment>{children}</Fragment>
 }
