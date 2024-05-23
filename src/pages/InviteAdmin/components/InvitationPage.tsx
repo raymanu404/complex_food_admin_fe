@@ -76,6 +76,8 @@ const InvitationPage = ({ emailList, setEmailList }: PropsI) => {
         fullWidth
       />
 
+      {/* TODO: disable this button if user input email is founded in list of emails, put toasts messages */}
+      {/* TODO: disable this button if the user already sent email to, wait 60 seconds for next invitation ??? */}
       <PrimaryButton
         text={'Invite'}
         icon={isLoading ? <Spinner size={'1.2rem'} /> : <SendIcon />}

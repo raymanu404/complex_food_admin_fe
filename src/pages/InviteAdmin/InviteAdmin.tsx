@@ -10,7 +10,8 @@ const InviteAdmin = () => {
   const emails = getArrayFromLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY)
   const [emailList, setEmailList] = useState<string[]>(emails)
 
-  const { data } = useGetListAdmin()
+  const { data, refetch } = useGetListAdmin({})
+
   console.log({ data })
   return (
     <FlexBoxCentered sx={{ gap: '30px' }}>

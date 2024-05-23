@@ -17,7 +17,7 @@ const useMagicLinkAdminByEmail = () => {
   }
 }
 
-const useGetListAdmin = ({ isEnabled = false }: { isEnabled: boolean }) => {
+const useGetListAdmin = ({ isEnabled = false }: { isEnabled?: boolean }) => {
   const getListAdminQuery = useQuery({
     queryKey: ['get-list-admin-from-supabase'],
     queryFn: async () => await supabaseAdminClient.listUsers(),
