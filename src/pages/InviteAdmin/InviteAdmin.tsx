@@ -4,11 +4,14 @@ import EmailListContainer from './components/EmailListContainer'
 import { LOCAL_STORAGE_EMAIL_ARRAY_KEY } from '@/common/utils/constants'
 import { useState } from 'react'
 import { getArrayFromLocalStorage } from '@/common/utils/helpers'
+import { useGetListAdmin } from '@/api/hooks/adminHooks'
 
 const InviteAdmin = () => {
   const emails = getArrayFromLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY)
   const [emailList, setEmailList] = useState<string[]>(emails)
 
+  const { data } = useGetListAdmin()
+  console.log({ data })
   return (
     <FlexBoxCentered sx={{ gap: '30px' }}>
       <InvitationPage emailList={emailList} setEmailList={setEmailList} />

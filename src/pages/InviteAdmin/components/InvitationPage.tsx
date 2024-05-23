@@ -1,6 +1,5 @@
 import { FlexCard } from '@/common/styles/styled-components'
 import { useTextField } from '@/common/utils/hooks/useValidField'
-import { useAuthContext } from '@/contexts/AuthContext'
 import { TextField, Typography } from '@mui/material'
 import { useState } from 'react'
 import SendIcon from '@mui/icons-material/Send'
@@ -8,6 +7,7 @@ import { toast } from 'react-toastify'
 import { PrimaryButton, Spinner } from '@/common/components'
 import { LOCAL_STORAGE_EMAIL_ARRAY_KEY } from '@/common/utils/constants'
 import { saveArrayToLocalStorage } from '@/common/utils/helpers'
+import { useMagicLinkAdminByEmail } from '@/api/hooks/adminHooks'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -24,7 +24,7 @@ const InvitationPage = ({ emailList, setEmailList }: PropsI) => {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const { sendMagicLinkHandler } = useAuthContext()
+  const sendMagicLinkHandler = useMagicLinkAdminByEmail()
 
   const handleBlur = () => {
     validate()

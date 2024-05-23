@@ -11,10 +11,10 @@ const RedirectRouter = ({ children }: PropsI) => {
   const navigate = useNavigate()
 
   useEffect(() => {
+    // const blackListPaths = [PATHS[PathEnum.CONFIRM_ACCOUNT]]
     const navigateToLogin = () => navigate(`${PATHS[PathEnum.LOGIN]}`)
 
     if (!session) {
-      console.log(`session: ${session}`)
       navigateToLogin()
     }
   }, [navigate, session])

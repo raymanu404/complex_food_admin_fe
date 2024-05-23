@@ -83,11 +83,7 @@ const RoutePaths: RouteI[] = [
     name: 'ConfirmAccount',
     routeProps: {
       path: `${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
-      element: (
-        <RedirectRouter>
-          <ConfirmAccount />
-        </RedirectRouter>
-      ),
+      element: <ConfirmAccount />,
     },
   },
   {
