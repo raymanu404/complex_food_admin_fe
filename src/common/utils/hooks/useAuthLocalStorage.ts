@@ -15,7 +15,6 @@ const useAuthLocalStorage = () => {
   const [isEnabled, setIsEnabled] = useState(false)
 
   useEffect(() => {
-    console.log({ isEnabled })
     const getDataFromLocalStorage = () => {
       try {
         const jsonString = getItemByPartialKey(partiallyAuthKey)

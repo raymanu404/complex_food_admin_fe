@@ -115,6 +115,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       closeDrawer()
     }
     removeArrayFromLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY)
+    setIsEnabled(false)
     navigateToLogin()
   }
 
