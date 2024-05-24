@@ -7,6 +7,7 @@ import { useApplicationContext } from './ApplicationContext'
 import { CLIENT_APP_URL, LOCAL_STORAGE_EMAIL_ARRAY_KEY, PATHS } from '@/common/utils/constants'
 import { PathEnum, ReturnMagicLinkData } from '@/common/utils/interfaces'
 import { removeArrayFromLocalStorage } from '@/common/utils/helpers'
+import { useAuthLocalStorage } from '@/common/utils/hooks/useAuthLocalStorage'
 
 interface AuthContextI {
   session: Session | null
@@ -29,7 +30,7 @@ const DefaultContext: AuthContextI = {
 const AuthContext = createContext<AuthContextI>(DefaultContext)
 
 const AuthContextProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState<Session | null>(null)
+  const { session, setIsEnabled, setSession } = useAuthLocalStorage()
   const [isSessionLoading, setIsSessionLoading] = useState(true)
   const [sessionTypeEvent, setSessionTypeEvent] = useState<AuthChangeEvent | null>(null)
   const isFirstSignInRef = useRef(false)
@@ -49,7 +50,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
     console.log(isFirstSignInRef.current)
     console.log({ typeEvent })
-    console.log({ session })
+    // console.log({ session })
 
     //TODO: fix this, how to handle redirect when user is sign in only
     // if (typeEvent === 'SIGNED_IN' && session && !isFirstSignInRef.current) {
@@ -93,8 +94,8 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   }
 
   useEffect(() => {
-    supabaseClient.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
+    supabaseClient.auth.getSession().then(() => {
+      setIsEnabled(true)
     })
 
     const {
@@ -102,7 +103,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       switchAuthEventActionHandler(_event, session)
-      console.log(session)
     })
 
     return () => subscription.unsubscribe()

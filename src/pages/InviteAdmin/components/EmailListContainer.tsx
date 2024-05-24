@@ -2,9 +2,7 @@ import { useState } from 'react'
 import {
   Accordion,
   AccordionDetails,
-  AccordionSlots,
   AccordionSummary,
-  Fade,
   List,
   ListItem,
   ListItemText,
@@ -32,7 +30,6 @@ const EmailListContainer = ({ emailList }: PropsI) => {
         expanded={expanded}
         disabled={emailList.length === 0}
         onChange={handleExpansion}
-        slots={{ transition: Fade as AccordionSlots['transition'] }}
         slotProps={{ transition: { timeout: 400 } }}
         sx={{
           '& .MuiAccordion-region': { height: expanded ? 'auto' : 0 },

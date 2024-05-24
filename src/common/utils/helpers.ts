@@ -105,7 +105,23 @@ const removeArrayFromLocalStorage = (key: string) => {
   localStorage.removeItem(key)
 }
 
-export { saveArrayToLocalStorage, getArrayFromLocalStorage, removeArrayFromLocalStorage }
+/**
+ * Finds and returns the value of the first LocalStorage item whose key includes the partial key.
+ *
+ * @param {string} partialKey - The partial key to search for.
+ * @returns {string | null} - The value of the matched LocalStorage item, or null if not found.
+ */
+function getItemByPartialKey(partialKey: string) {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    if (key && (key.includes(partialKey) || key.endsWith(partialKey))) {
+      return localStorage.getItem(key)
+    }
+  }
+  return null
+}
+
+export { saveArrayToLocalStorage, getArrayFromLocalStorage, removeArrayFromLocalStorage, getItemByPartialKey }
 
 export {
   formatDate,
