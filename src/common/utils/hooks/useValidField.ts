@@ -7,6 +7,8 @@ interface EmailFieldState {
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   validate: () => boolean
   resetState: () => void
+  setError: React.Dispatch<React.SetStateAction<boolean>>
+  setHelperText: React.Dispatch<React.SetStateAction<string>>
 }
 
 interface PropsI {
@@ -57,6 +59,8 @@ const useTextField = ({ fieldRegex, errorMessage = 'Invalid field.' }: PropsI): 
     handleChange,
     validate,
     resetState,
+    setError,
+    setHelperText,
   }
 }
 

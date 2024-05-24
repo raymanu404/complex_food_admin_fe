@@ -25,10 +25,10 @@ const useGetListAdmin = ({ isEnabled = false }: { isEnabled?: boolean }) => {
     enabled: isEnabled,
   })
 
-  const { data, isLoading } = getListAdminQuery
+  const { data } = getListAdminQuery
 
   const users = data?.data.users ?? []
-  return { users, isLoading }
+  return { users: users, ...getListAdminQuery }
 }
 
 export { useMagicLinkAdminByEmail, useGetListAdmin }

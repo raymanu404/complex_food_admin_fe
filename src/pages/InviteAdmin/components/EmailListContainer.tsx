@@ -14,9 +14,10 @@ import { SecondaryCard } from '@/common/styles/styled-components'
 
 interface PropsI {
   emailList: string[]
+  isLoading: boolean
 }
 
-const EmailListContainer = ({ emailList }: PropsI) => {
+const EmailListContainer = ({ emailList, isLoading }: PropsI) => {
   const theme = useTheme()
   const [expanded, setExpanded] = useState(false)
 
@@ -28,7 +29,7 @@ const EmailListContainer = ({ emailList }: PropsI) => {
     <SecondaryCard sx={{ width: '30rem', padding: '20px 20px' }}>
       <Accordion
         expanded={expanded}
-        disabled={emailList.length === 0}
+        disabled={isLoading || emailList.length === 0}
         onChange={handleExpansion}
         slotProps={{ transition: { timeout: 400 } }}
         sx={{
@@ -38,7 +39,7 @@ const EmailListContainer = ({ emailList }: PropsI) => {
         }}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content" id="panel1-header">
-          <Typography>List of email already sent</Typography>
+          <Typography>List of emails already sent </Typography>
         </AccordionSummary>
         <AccordionDetails>
           <List dense={true}>

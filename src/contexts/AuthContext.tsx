@@ -4,9 +4,8 @@ import { AuthChangeEvent, Session, UserResponse } from '@supabase/supabase-js'
 import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
-import { CLIENT_APP_URL, LOCAL_STORAGE_EMAIL_ARRAY_KEY, PATHS } from '@/common/utils/constants'
+import { CLIENT_APP_URL, PATHS } from '@/common/utils/constants'
 import { PathEnum, ReturnMagicLinkData } from '@/common/utils/interfaces'
-import { removeArrayFromLocalStorage } from '@/common/utils/helpers'
 import { useAuthLocalStorage } from '@/common/utils/hooks/useAuthLocalStorage'
 
 interface AuthContextI {
@@ -45,10 +44,10 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   //   closeDrawer()
   // }, [closeDrawer])
 
-  const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
+  const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent) => {
     setSessionTypeEvent(typeEvent)
 
-    console.log(isFirstSignInRef.current)
+    // console.log(isFirstSignInRef.current)
     console.log({ typeEvent })
     // console.log({ session })
 
@@ -102,7 +101,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
       setSession(session)
-      switchAuthEventActionHandler(_event, session)
+      switchAuthEventActionHandler(_event)
     })
 
     return () => subscription.unsubscribe()
@@ -114,7 +113,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     if (isOpenDrawer) {
       closeDrawer()
     }
-    removeArrayFromLocalStorage(LOCAL_STORAGE_EMAIL_ARRAY_KEY)
     setIsEnabled(false)
     navigateToLogin()
   }
