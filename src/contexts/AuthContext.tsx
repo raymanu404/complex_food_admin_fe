@@ -32,7 +32,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const { session, setIsEnabled, setSession } = useAuthLocalStorage()
   const [isSessionLoading, setIsSessionLoading] = useState(true)
   const [sessionTypeEvent, setSessionTypeEvent] = useState<AuthChangeEvent | null>(null)
-  const isFirstSignInRef = useRef(false)
+  const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const { closeDrawer, isOpenDrawer } = useApplicationContext()
@@ -44,10 +44,11 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   //   closeDrawer()
   // }, [closeDrawer])
 
-  const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent) => {
+  const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
     setSessionTypeEvent(typeEvent)
 
     // console.log(isFirstSignInRef.current)
+    console.log({ sessionTypeEvent })
     console.log({ typeEvent })
     // console.log({ session })
 
@@ -58,8 +59,12 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     //   console.log(`isFirstSignInRef.current ${isFirstSignInRef.current}`)
     // }
 
+    // console.log({ session })
+
     switch (typeEvent) {
       case 'INITIAL_SESSION': {
+        console.log({ session })
+        setIsUserSignedIn(true)
         setIsSessionLoading(false)
         break
       }
@@ -71,13 +76,15 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         break
       }
       case 'SIGNED_IN': {
+        if (!sessionTypeEvent) {
+          console.log('sign in')
+        }
         setIsSessionLoading(false)
         break
       }
       case 'SIGNED_OUT': {
         // setIsSessionLoading(true)
         // authContextChangingHandler()
-        isFirstSignInRef.current = false
         break
       }
       case 'PASSWORD_RECOVERY': {
@@ -100,8 +107,10 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     const {
       data: { subscription },
     } = supabaseClient.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
-      switchAuthEventActionHandler(_event)
+      setTimeout(() => {
+        setSession(session)
+        switchAuthEventActionHandler(_event, session)
+      }, 1)
     })
 
     return () => subscription.unsubscribe()
