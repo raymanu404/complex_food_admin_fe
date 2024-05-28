@@ -40,16 +40,11 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const navigateToHome = useCallback(() => navigate(`${PATHS[PathEnum.HOME]}`), [navigate])
   const navigateToLogin = useCallback(() => navigate(`${PATHS[PathEnum.LOGIN]}`), [navigate])
 
-  // const authContextChangingHandler = useCallback(() => {
-  //   closeDrawer()
-  // }, [closeDrawer])
-
   const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
     setSessionTypeEvent(typeEvent)
 
-    // console.log(isFirstSignInRef.current)
-    console.log({ sessionTypeEvent })
     console.log({ typeEvent })
+    console.log({ sessionTypeEvent })
     // console.log({ session })
 
     //TODO: fix this, how to handle redirect when user is sign in only
@@ -61,10 +56,10 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
     // console.log({ session })
 
+    console.log({ session })
     switch (typeEvent) {
       case 'INITIAL_SESSION': {
-        console.log({ session })
-        setIsUserSignedIn(true)
+        // setIsUserSignedIn(true)
         setIsSessionLoading(false)
         break
       }
@@ -76,9 +71,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         break
       }
       case 'SIGNED_IN': {
-        if (!sessionTypeEvent) {
-          console.log('sign in')
-        }
         setIsSessionLoading(false)
         break
       }
@@ -126,6 +118,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
     navigateToLogin()
   }
 
+  //this method is used to invite usual users, not with admin role
   const sendMagicLinkHandler = async (email: string, isEmailValid = true) => {
     if (isEmailValid) {
       const { data, error } = await supabaseClient.auth.signInWithOtp({
