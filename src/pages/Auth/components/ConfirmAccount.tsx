@@ -1,5 +1,7 @@
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
+import { PATHS } from '@/common/utils/constants'
 import { useTextField } from '@/common/utils/hooks/useValidField'
+import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
@@ -13,6 +15,8 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 
 interface ShowPassword {
   password: boolean
@@ -45,7 +49,7 @@ const ConfirmAccount = () => {
     validate: validateRePassword,
   } = useTextField({})
 
-  const { updateUserPassword } = useAuthContext()
+  const navigate = useNavigate()
 
   const handlePasswordOnBlur = () => {
     validatePassword()
@@ -57,7 +61,6 @@ const ConfirmAccount = () => {
 
   const handleClickShowPassword = (type: InputType) => {
     const typeString = InputType[type] as string
-    console.log(InputType.password.toString())
     const booleanValue = typeString === InputType.password.toString() ? showPassword.password : showPassword.re_password
     setShowPassword((prev) => ({ ...prev, [typeString]: !booleanValue }))
   }
@@ -66,10 +69,14 @@ const ConfirmAccount = () => {
   }
 
   const signUpHandler = async () => {
-    // if (password === rePassword && !errorPassword && !errorRePassword) {
-    const result = await updateUserPassword(password)
-    console.log(result)
-    // }
+    if (password === rePassword && !errorPassword && !errorRePassword) {
+      // const result = await updateUserPassword(password)
+      // console.log(result)
+      // if (result.data) {
+      //   toast.success(`Congrats! You have successfully confirmed your account!`)
+      //   navigate(PATHS[PathEnum.HOME])
+      // }
+    }
   }
   return (
     <FlexBoxCentered>

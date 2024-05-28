@@ -21,6 +21,9 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       placeholderData: keepPreviousData,
     },
+    mutations: {
+      retry: false,
+    },
   },
 })
 
