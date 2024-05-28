@@ -13,6 +13,10 @@ const sendMagicLink = async ({ email }: { email: string; redirectTo?: string; ac
   })
 }
 
+const updateUserPassword = async (newPassword: string) => {
+  return await supabaseClient.auth.updateUser({ password: newPassword })
+}
+
 const sendMagicLinkAdmin = async ({ email }: { email: string }) => {
   const { data, error } = await supabaseAdminClient.inviteUserByEmail(email, {
     redirectTo: `${CLIENT_APP_URL}${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
@@ -21,8 +25,8 @@ const sendMagicLinkAdmin = async ({ email }: { email: string }) => {
   return { data, error }
 }
 
-const updateUserPassword = async (newPassword: string) => {
-  return await supabaseClient.auth.updateUser({ password: newPassword })
+const updateAdminPassword = async ({ newPassword, userId }: { newPassword: string; userId: string }) => {
+  return await supabaseAdminClient.updateUserById(userId, { password: newPassword })
 }
 
-export { sendMagicLink, updateUserPassword, sendMagicLinkAdmin }
+export { sendMagicLink, updateUserPassword, sendMagicLinkAdmin, updateAdminPassword }

@@ -5,7 +5,7 @@ import { useState } from 'react'
 import SendIcon from '@mui/icons-material/Send'
 import { toast } from 'react-toastify'
 import { PrimaryButton, Spinner } from '@/common/components'
-import { useMagicLink, useMagicLinkAdminByEmail } from '@/api/hooks/usersHooks'
+import { useMagicLinkAdminByEmail } from '@/api/hooks/usersHooks'
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const emailSentMessage = 'This email is already sent!'
@@ -23,8 +23,6 @@ const InvitationPage = ({ disableSentButton, refetch, emailList }: PropsI) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const { mutateAsync: sendMagicLinkHandler } = useMagicLinkAdminByEmail()
-
-  // const sendMagicLinkHandler = useMagicLinkAdminByEmail()
 
   const handleDuplicateEmail = () => {
     setError(true)

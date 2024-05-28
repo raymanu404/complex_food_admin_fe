@@ -1,7 +1,7 @@
+import { useUpdateAdminPassword } from '@/api/hooks/usersHooks'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
-import { PATHS } from '@/common/utils/constants'
+import { useRedirect } from '@/common/utils/hooks/useRedirect'
 import { useTextField } from '@/common/utils/hooks/useValidField'
-import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
@@ -15,7 +15,6 @@ import {
   Typography,
 } from '@mui/material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 interface ShowPassword {
@@ -27,7 +26,7 @@ enum InputType {
   password = 'password',
   re_password = 're_password',
 }
-
+//TODO: update onBlur when user doent comply with passwords
 const ConfirmAccount = () => {
   const [showPassword, setShowPassword] = useState<ShowPassword>({
     password: false,
@@ -49,7 +48,10 @@ const ConfirmAccount = () => {
     validate: validateRePassword,
   } = useTextField({})
 
-  const navigate = useNavigate()
+  const { navigateToHome } = useRedirect()
+
+  const { mutateAsync, isPending } = useUpdateAdminPassword()
+  const { session } = useAuthContext()
 
   const handlePasswordOnBlur = () => {
     validatePassword()
@@ -70,12 +72,22 @@ const ConfirmAccount = () => {
 
   const signUpHandler = async () => {
     if (password === rePassword && !errorPassword && !errorRePassword) {
-      // const result = await updateUserPassword(password)
-      // console.log(result)
-      // if (result.data) {
-      //   toast.success(`Congrats! You have successfully confirmed your account!`)
-      //   navigate(PATHS[PathEnum.HOME])
-      // }
+      const id = session?.user.id ?? ''
+      const result = await mutateAsync({ newPassword: password, userId: id })
+      if (result) {
+        const { error, data } = result
+
+        if (data) {
+          toast.success(`You have confirmed your account!`)
+          navigateToHome()
+        }
+
+        if (error) {
+          toast.error(`${error.message}`)
+        }
+      } else {
+        toast.error('Something went wrong!')
+      }
     }
   }
   return (
@@ -145,7 +157,7 @@ const ConfirmAccount = () => {
           <FormHelperText id="component-helper-text-re-password">{helperTextRePassword}</FormHelperText>
         </FormControl>
 
-        <Button onClick={signUpHandler} disabled={errorPassword || errorRePassword}>
+        <Button onClick={signUpHandler} disabled={errorPassword || errorRePassword || isPending}>
           Sign up
         </Button>
       </FlexCard>

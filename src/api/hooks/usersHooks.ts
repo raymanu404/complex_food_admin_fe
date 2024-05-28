@@ -1,8 +1,9 @@
 import { supabaseAdminClient } from '@/common/config/application_config'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { sendMagicLink, sendMagicLinkAdmin } from '../data/users'
+import { sendMagicLink, sendMagicLinkAdmin, updateAdminPassword } from '../data/users'
 
 //HOOKS FOR GENERAL USERS
+//TODO: Check
 const useMagicLink = () => {
   const mutation = useMutation({
     mutationKey: ['send-magic-link-to-user'],
@@ -27,12 +28,22 @@ const useMagicLinkAdminByEmail = () => {
     mutationFn: async ({ email, isEmailValid = true }: { email: string; isEmailValid: boolean }) => {
       if (isEmailValid) {
         const { data, error } = await sendMagicLinkAdmin({ email })
-        console.log({ data })
-        console.log({ error })
         return { data, error }
       }
 
       return null
+    },
+  })
+
+  return mutation
+}
+
+const useUpdateAdminPassword = () => {
+  const mutation = useMutation({
+    mutationKey: ['update-admin-password'],
+    mutationFn: async ({ newPassword, userId }: { newPassword: string; userId: string }) => {
+      const { data, error } = await updateAdminPassword({ newPassword, userId })
+      return { data, error }
     },
   })
 
@@ -53,4 +64,4 @@ const useGetListAdmin = ({ isEnabled = false }: { isEnabled?: boolean }) => {
   return { users: users, ...getListAdminQuery }
 }
 
-export { useGetListAdmin, useMagicLink, useMagicLinkAdminByEmail }
+export { useGetListAdmin, useMagicLink, useMagicLinkAdminByEmail, useUpdateAdminPassword }

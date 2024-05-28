@@ -2,12 +2,10 @@
 /* eslint-disable react-refresh/only-export-components */
 import { supabaseClient } from '@/common/config/application_config'
 import { AuthChangeEvent, Session } from '@supabase/supabase-js'
-import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { PropsWithChildren, createContext, useContext, useEffect, useState } from 'react'
 import { useApplicationContext } from './ApplicationContext'
-import { PATHS } from '@/common/utils/constants'
-import { PathEnum } from '@/common/utils/interfaces'
 import { useAuthLocalStorage } from '@/common/utils/hooks/useAuthLocalStorage'
+import { useRedirect } from '@/common/utils/hooks/useRedirect'
 
 interface AuthContextI {
   session: Session | null
@@ -27,11 +25,8 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const { session, setIsEnabled, setSession } = useAuthLocalStorage()
   const [isSessionLoading, setIsSessionLoading] = useState(true)
 
-  const navigate = useNavigate()
   const { closeDrawer, isOpenDrawer } = useApplicationContext()
-
-  const navigateToHome = useCallback(() => navigate(`${PATHS[PathEnum.HOME]}`), [navigate])
-  const navigateToLogin = useCallback(() => navigate(`${PATHS[PathEnum.LOGIN]}`), [navigate])
+  const { navigateToHome, navigateToLogin } = useRedirect()
 
   const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
     switch (typeEvent) {
