@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-refresh/only-export-components */
 import { supabaseClient } from '@/common/config/application_config'
 import { AuthChangeEvent, Session, UserResponse } from '@supabase/supabase-js'
-import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { PropsWithChildren, createContext, useCallback, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useApplicationContext } from './ApplicationContext'
 import { CLIENT_APP_URL, PATHS } from '@/common/utils/constants'
@@ -12,7 +13,6 @@ interface AuthContextI {
   session: Session | null
   signOutHandler: () => void
   isSessionLoading: boolean
-  sessionTypeEvent: AuthChangeEvent | null
   sendMagicLinkHandler: (email: string, isEmailValid?: boolean) => Promise<ReturnMagicLinkData>
   updateUserPassword: (password: string) => Promise<UserResponse>
 }
@@ -21,7 +21,6 @@ const DefaultContext: AuthContextI = {
   session: null,
   signOutHandler: () => ({}),
   isSessionLoading: true,
-  sessionTypeEvent: null,
   sendMagicLinkHandler: () => new Promise(() => null),
   updateUserPassword: (password: string) => new Promise(() => password),
 }
@@ -31,8 +30,6 @@ const AuthContext = createContext<AuthContextI>(DefaultContext)
 const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const { session, setIsEnabled, setSession } = useAuthLocalStorage()
   const [isSessionLoading, setIsSessionLoading] = useState(true)
-  const [sessionTypeEvent, setSessionTypeEvent] = useState<AuthChangeEvent | null>(null)
-  const [isUserSignedIn, setIsUserSignedIn] = useState<boolean>(false)
 
   const navigate = useNavigate()
   const { closeDrawer, isOpenDrawer } = useApplicationContext()
@@ -41,25 +38,8 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
   const navigateToLogin = useCallback(() => navigate(`${PATHS[PathEnum.LOGIN]}`), [navigate])
 
   const switchAuthEventActionHandler = (typeEvent: AuthChangeEvent, session: Session | null) => {
-    setSessionTypeEvent(typeEvent)
-
-    console.log({ typeEvent })
-    console.log({ sessionTypeEvent })
-    // console.log({ session })
-
-    //TODO: fix this, how to handle redirect when user is sign in only
-    // if (typeEvent === 'SIGNED_IN' && session && !isFirstSignInRef.current) {
-    //   isFirstSignInRef.current = true
-    //   navigateToHome()
-    //   console.log(`isFirstSignInRef.current ${isFirstSignInRef.current}`)
-    // }
-
-    // console.log({ session })
-
-    console.log({ session })
     switch (typeEvent) {
       case 'INITIAL_SESSION': {
-        // setIsUserSignedIn(true)
         setIsSessionLoading(false)
         break
       }
@@ -75,8 +55,6 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
         break
       }
       case 'SIGNED_OUT': {
-        // setIsSessionLoading(true)
-        // authContextChangingHandler()
         break
       }
       case 'PASSWORD_RECOVERY': {
@@ -141,7 +119,7 @@ const AuthContextProvider = ({ children }: PropsWithChildren) => {
 
   return (
     <AuthContext.Provider
-      value={{ session, signOutHandler, isSessionLoading, sessionTypeEvent, sendMagicLinkHandler, updateUserPassword }}
+      value={{ session, signOutHandler, isSessionLoading, sendMagicLinkHandler, updateUserPassword }}
     >
       {children}
     </AuthContext.Provider>
