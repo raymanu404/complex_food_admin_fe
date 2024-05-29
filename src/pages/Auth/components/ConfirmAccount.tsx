@@ -1,52 +1,31 @@
 import { useUpdateAdminPassword } from '@/api/hooks/usersHooks'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { useRedirect } from '@/common/utils/hooks/useRedirect'
-import { useTextField } from '@/common/utils/hooks/useValidField'
+import { usePasswordField, useTextField } from '@/common/utils/hooks/useValidField'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  Typography,
-} from '@mui/material'
+import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material'
 import { useState } from 'react'
 import { toast } from 'react-toastify'
+import ValidatorsList from './ValidatorsList'
 
-interface ShowPassword {
-  password: boolean
-  re_password: boolean
-}
-
-enum InputType {
-  password = 'password',
-  re_password = 're_password',
-}
 //TODO: update onBlur when user doent comply with passwords
 const ConfirmAccount = () => {
-  const [showPassword, setShowPassword] = useState<ShowPassword>({
-    password: false,
-    re_password: false,
-  })
-
+  const [errorMessage, setErrorMessage] = useState('')
   const {
-    value: password,
-    error: errorPassword,
-    helperText: helperTextPassword,
-    handleChange: handleChangePassword,
-    validate: validatePassword,
-  } = useTextField({})
+    password,
+    handleClickShowPassword,
+    handlePasswordChange,
+    showPassword,
+    validation: validationPassword,
+  } = usePasswordField()
   const {
-    value: rePassword,
-    error: errorRePassword,
-    helperText: helperTextRePassword,
-    handleChange: handleChangeRePassword,
-    validate: validateRePassword,
-  } = useTextField({})
+    password: rePassword,
+    handlePasswordChange: handleChangeRePassword,
+    showPassword: showRePassword,
+    handleClickShowPassword: handleClickShowRePassword,
+    validation: validationRePassword,
+  } = usePasswordField()
 
   const { navigateToHome } = useRedirect()
 
@@ -54,24 +33,23 @@ const ConfirmAccount = () => {
   const { session } = useAuthContext()
 
   const handlePasswordOnBlur = () => {
-    validatePassword()
+    //setErrorMessage
+    // validatePassword()
   }
 
   const handleRePasswordOnBlur = () => {
-    validateRePassword()
+    // validateRePassword()
+    //setErrorMessage
   }
 
-  const handleClickShowPassword = (type: InputType) => {
-    const typeString = InputType[type] as string
-    const booleanValue = typeString === InputType.password.toString() ? showPassword.password : showPassword.re_password
-    setShowPassword((prev) => ({ ...prev, [typeString]: !booleanValue }))
-  }
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault()
   }
 
   const signUpHandler = async () => {
-    if (password === rePassword && !errorPassword && !errorRePassword) {
+    const validationPassArray = Object.values(validationPassword)
+    console.log({ validationPassArray })
+    if (password === rePassword) {
       const id = session?.user.id ?? ''
       const result = await mutateAsync({ newPassword: password, userId: id })
       if (result) {
@@ -94,7 +72,6 @@ const ConfirmAccount = () => {
     <FlexBoxCentered>
       <FlexCard
         sx={{
-          height: '20rem',
           width: '30rem',
           padding: '20px 20px',
           gap: '20px',
@@ -105,33 +82,33 @@ const ConfirmAccount = () => {
       >
         <Typography variant="h4">Confirm your account</Typography>
 
-        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined" error={errorPassword}>
+        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={showPassword.password ? 'text' : 'password'}
+            type={showPassword ? 'text' : 'password'}
             value={password}
-            onChange={handleChangePassword}
+            onChange={handlePasswordChange}
             onBlur={handlePasswordOnBlur}
             name={'password'}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle password visibility"
-                  onClick={() => handleClickShowPassword(InputType.password)}
+                  onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {!showPassword.password ? <VisibilityOff /> : <Visibility />}
+                  {!showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }
             label="Password"
           />
-          <FormHelperText id="component-helper-text-password">{helperTextPassword}</FormHelperText>
+          <ValidatorsList validation={validationPassword} />
         </FormControl>
 
-        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined" error={errorRePassword}>
+        <FormControl sx={{ m: 1, width: '100%' }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Confirm Password</InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
@@ -139,25 +116,26 @@ const ConfirmAccount = () => {
             value={rePassword}
             onChange={handleChangeRePassword}
             onBlur={handleRePasswordOnBlur}
-            type={showPassword.re_password ? 'text' : 'password'}
+            type={showRePassword ? 'text' : 'password'}
             name={'re_password'}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
                   aria-label="toggle re-password visibility"
-                  onClick={() => handleClickShowPassword(InputType.re_password)}
+                  onClick={handleClickShowRePassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
                 >
-                  {!showPassword.re_password ? <VisibilityOff /> : <Visibility />}
+                  {!showRePassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>
               </InputAdornment>
             }
           />
-          <FormHelperText id="component-helper-text-re-password">{helperTextRePassword}</FormHelperText>
+          <ValidatorsList validation={validationRePassword} />
         </FormControl>
+        <Typography id="component-helper-text-pasword">{errorMessage}</Typography>
 
-        <Button onClick={signUpHandler} disabled={errorPassword || errorRePassword || isPending}>
+        <Button onClick={signUpHandler} disabled={isPending}>
           Sign up
         </Button>
       </FlexCard>
