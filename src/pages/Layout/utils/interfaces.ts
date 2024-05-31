@@ -11,7 +11,6 @@ enum NavRouterTypeEnum {
   Products = 'products',
   Orders = 'orders',
   Home = 'home',
-  // Users = 'users',
   Invite_admin = 'invite_admin',
   Logout = 'logout',
 }

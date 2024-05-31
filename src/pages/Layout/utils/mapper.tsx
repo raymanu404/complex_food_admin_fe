@@ -1,6 +1,5 @@
 import StorefrontIcon from '@mui/icons-material/Storefront'
 import HomeIcon from '@mui/icons-material/Home'
-import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline'
 import ListAltIcon from '@mui/icons-material/ListAlt'
 import ForwardToInboxIcon from '@mui/icons-material/ForwardToInbox'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
@@ -25,12 +24,6 @@ const drawerList = ({ onClick }: { onClick: (id: string) => void }): DrawerListI
     value: NavRouterTypeEnum.Orders,
     onClick: onClick,
   },
-  // {
-  //   text: 'Users',
-  //   icon: <PeopleOutlineIcon className="custom-icon-drawer-class" />,
-  //   value: NavRouterTypeEnum.Users,
-  //   onClick: onClick,
-  // },
   {
     text: 'Invite Admin',
     icon: <ForwardToInboxIcon className="custom-icon-drawer-class" />,
