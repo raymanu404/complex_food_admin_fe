@@ -1,7 +1,10 @@
-import { APP_CLIENT_PATH_HOME } from '@/common/utils/constants'
+import { PATHS } from '@/common/utils/constants'
+import { PathEnum } from '@/common/utils/interfaces'
 import NotFound from '@/pages/NotFound/NotFound'
 import { lazy } from 'react'
 import { Navigate, RouteProps } from 'react-router-dom'
+import DefaultRouter from '../components/DefaultRouter'
+import RedirectRouter from '../components/RedirectRouter'
 
 interface RouteI {
   name: string
@@ -15,36 +18,88 @@ const OrdersPage = lazy(() =>
 const ProductsPage = lazy(() =>
   import('@/pages/Products/container').then((module) => ({ default: module.ProductsContainer }))
 )
-const LoginPage = lazy(() => import('@/pages/Login/container').then((module) => ({ default: module.default })))
 
+//auth and create admins
+const LoginPage = lazy(() => import('@/pages/Auth/AuthContainer').then((module) => ({ default: module.default })))
+const InviteAdminPage = lazy(() =>
+  import('@/pages/InviteAdmin/InviteAdmin').then((module) => ({ default: module.default }))
+)
+
+const ConfirmAccount = lazy(() =>
+  import('@/pages/Auth/components/ConfirmAccount').then((module) => ({ default: module.default }))
+)
+
+//create a component that provides redirecting if user is not authenticated or authorzied
 const RoutePaths: RouteI[] = [
   {
     name: 'default',
-    routeProps: { path: `/`, element: <Navigate to={`${APP_CLIENT_PATH_HOME}`} replace /> },
+    routeProps: { path: `${PATHS[PathEnum.DEFAULT]}`, element: <DefaultRouter /> },
   },
   {
     name: 'Home',
-    routeProps: { path: `${APP_CLIENT_PATH_HOME}`, element: <HomePage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.HOME]}`,
+      element: (
+        <RedirectRouter>
+          <HomePage />
+        </RedirectRouter>
+      ),
+    },
   },
   {
     name: 'Orders',
-    routeProps: { path: `/orders`, element: <OrdersPage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.ORDERS]}`,
+      element: (
+        <RedirectRouter>
+          <OrdersPage />
+        </RedirectRouter>
+      ),
+    },
   },
   {
     name: 'Products',
-    routeProps: { path: `/products`, element: <ProductsPage /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.PRODUCTS]}`,
+      element: (
+        <RedirectRouter>
+          <ProductsPage />
+        </RedirectRouter>
+      ),
+    },
+  },
+  {
+    name: 'InviteAdmin',
+    routeProps: {
+      path: `${PATHS[PathEnum.INVITE_ADMIN]}`,
+      element: (
+        <RedirectRouter>
+          <InviteAdminPage />
+        </RedirectRouter>
+      ),
+    },
+  },
+  {
+    name: 'ConfirmAccount',
+    routeProps: {
+      path: `${PATHS[PathEnum.CONFIRM_ACCOUNT]}`,
+      element: <ConfirmAccount />,
+    },
   },
   {
     name: 'Login',
-    routeProps: { path: `/login`, element: <LoginPage /> },
+    routeProps: { path: `${PATHS[PathEnum.LOGIN]}`, element: <LoginPage /> },
   },
   {
     name: 'not-found',
-    routeProps: { path: `/not-found`, element: <NotFound /> },
+    routeProps: { path: `${PATHS[PathEnum.NOT_FOUND]}`, element: <NotFound /> },
   },
   {
     name: 'whatever',
-    routeProps: { path: `*`, element: <Navigate to={`/not-found`} replace /> },
+    routeProps: {
+      path: `${PATHS[PathEnum.EVERYTHING]}`,
+      element: <Navigate to={`${PATHS[PathEnum.NOT_FOUND]}`} replace />,
+    },
   },
 ]
 

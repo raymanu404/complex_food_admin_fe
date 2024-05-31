@@ -75,6 +75,54 @@ function arePropsEqual(obj1: any, obj2: any): boolean {
 const createFullPathStorageFile = (fileName: string, storageName = SUPABASE_PRODUCTS_STORAGE_NAME): string =>
   [SUPABASE_URL, SUPABASE_STORAGE_RELATIVE, storageName, SUPABASE_STORAGE_PUBLIC_FOLDER, fileName].join('/')
 
+/**
+ * Checks if the given expiration timestamp is expired.
+ * @param {number} expiresAt - The expiration timestamp in milliseconds.
+ * @returns {boolean} - True if expired, false otherwise.
+ */
+function isDateExpired(expiresAt: number): boolean {
+  const currentTime = Date.now()
+  return currentTime > expiresAt
+}
+
+const saveArrayToLocalStorage = (key: string, array: string[]) => {
+  const jsonString = JSON.stringify(array)
+  localStorage.setItem(key, jsonString)
+}
+
+// Function to retrieve an array from localStorage
+const getArrayFromLocalStorage = (key: string): string[] => {
+  try {
+    const jsonString = localStorage.getItem(key)
+    return jsonString ? JSON.parse(jsonString) : []
+  } catch (error) {
+    console.error('Error parsing JSON from localStorage', error)
+    return []
+  }
+}
+
+const removeArrayFromLocalStorage = (key: string) => {
+  localStorage.removeItem(key)
+}
+
+/**
+ * Finds and returns the value of the first LocalStorage item whose key includes the partial key.
+ *
+ * @param {string} partialKey - The partial key to search for.
+ * @returns {string | null} - The value of the matched LocalStorage item, or null if not found.
+ */
+function getItemByPartialKey(partialKey: string) {
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i)
+    if (key && (key.includes(partialKey) || key.endsWith(partialKey))) {
+      return localStorage.getItem(key)
+    }
+  }
+  return null
+}
+
+export { saveArrayToLocalStorage, getArrayFromLocalStorage, removeArrayFromLocalStorage, getItemByPartialKey }
+
 export {
   formatDate,
   handleImageError,
@@ -83,4 +131,5 @@ export {
   arrayOfProps,
   arePropsEqual,
   createFullPathStorageFile,
+  isDateExpired,
 }

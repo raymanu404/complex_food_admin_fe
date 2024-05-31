@@ -12,14 +12,24 @@ import {
 import { drawerList } from '../utils/mapper'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useModal } from '@/common/utils/hooks/useModal'
+import { NavRouterTypeEnum } from '../utils/interfaces'
+import { Modal } from '@/common/components'
+import { useAuthContext } from '@/contexts/AuthContext'
 
 const Drawer = () => {
   const theme = useTheme()
   const { isOpenDrawer, closeDrawer, openDrawer } = useApplicationContext()
+  const { signOutHandler } = useAuthContext()
+  const { openModal: openModalLogout, closeModal: closeModalLogout, isOpen: isOpenLogout } = useModal()
   const navigate = useNavigate()
 
   const onClickDrawerItemHandler = useCallback(
     async (id: string) => {
+      if (id === NavRouterTypeEnum.Logout) {
+        openModalLogout()
+        return
+      }
       const closePromise = new Promise((resolve) => {
         closeDrawer()
         resolve('OK')
@@ -29,8 +39,13 @@ const Drawer = () => {
 
       await closePromise
     },
-    [closeDrawer, navigate]
+    [closeDrawer, navigate, openModalLogout]
   )
+
+  const logoutHandler = useCallback(() => {
+    signOutHandler()
+    closeModalLogout()
+  }, [closeModalLogout, signOutHandler])
 
   return (
     <Box>
@@ -77,6 +92,13 @@ const Drawer = () => {
           </List>
         </Box>
       </SwipeableDrawer>
+      <Modal
+        isOpen={isOpenLogout}
+        onClose={closeModalLogout}
+        onConfirm={logoutHandler}
+        titleMessage="Logout"
+        contentMessage="Are you sure you want to logout?"
+      />
     </Box>
   )
 }

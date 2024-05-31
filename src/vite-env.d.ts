@@ -5,9 +5,10 @@ interface ImportMetaEnv {
   readonly VITE_BACKEND_URL: string
   readonly VITE_SUPABASE_URL: string
   readonly VITE_SUPABASE_PUBLIC_KEY_API: string
+  readonly VITE_CLIENT_APP_URL: string
+  readonly VITE_SUPABASE_SERVICE_ROLE_KEY_API: string
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
-

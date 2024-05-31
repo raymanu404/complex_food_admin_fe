@@ -1,7 +1,7 @@
 import { ReactNode } from 'react'
 
 interface DrawerListItem {
-  value: NavRouterTypeEnum
+  value: string
   icon: ReactNode
   onClick: (id: string) => void
   text: string
@@ -11,8 +11,9 @@ enum NavRouterTypeEnum {
   Products = 'products',
   Orders = 'orders',
   Home = 'home',
-  Users = 'users',
+  // Users = 'users',
   Invite_admin = 'invite_admin',
+  Logout = 'logout',
 }
 
 export type { DrawerListItem }

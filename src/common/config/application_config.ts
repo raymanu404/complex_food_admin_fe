@@ -1,4 +1,9 @@
-import { BACKEND_BASE_API_URL, SUPABASE_PUBLIC_KEY_API, SUPABASE_URL } from '@/common/utils/constants'
+import {
+  BACKEND_BASE_API_URL,
+  SUPABASE_PUBLIC_KEY_API,
+  SUPABASE_SERVICE_ROLE_KEY_API,
+  SUPABASE_URL,
+} from '@/common/utils/constants'
 import { QueryClient, keepPreviousData } from '@tanstack/react-query'
 import axios from 'axios'
 import { createClient } from '@supabase/supabase-js'
@@ -16,6 +21,9 @@ const queryClient = new QueryClient({
       refetchOnReconnect: true,
       placeholderData: keepPreviousData,
     },
+    mutations: {
+      retry: false,
+    },
   },
 })
 
@@ -24,6 +32,12 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY_API)
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_PUBLIC_KEY_API)
+const supabaseAdminClient = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY_API, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+}).auth.admin
 
-export { axiosInstance, queryClient, supabase, corsHeaders }
+export { axiosInstance, queryClient, supabaseClient, corsHeaders, supabaseAdminClient }

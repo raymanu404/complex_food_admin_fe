@@ -42,4 +42,14 @@ const FlipCard = styled(Card)(() => ({
   padding: '20px 5px',
 }))
 
-export { FlexBox, FlexBoxCentered, FlexCard, TooltipCustom, FlipCard }
+const SecondaryCard = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'stretch',
+  backgroundColor: theme.customPalette.utility.background,
+  borderRadius: '20px',
+  boxShadow: '0px 2px 4px 0px rgba(0,0,0, .15)',
+  flexGrow: 1,
+}))
+
+export { FlexBox, FlexBoxCentered, FlexCard, TooltipCustom, FlipCard, SecondaryCard }
