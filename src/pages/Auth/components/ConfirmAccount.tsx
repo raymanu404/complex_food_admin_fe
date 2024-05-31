@@ -1,7 +1,7 @@
 import { useUpdateAdminPassword } from '@/api/hooks/usersHooks'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { useRedirect } from '@/common/utils/hooks/useRedirect'
-import { ValidatorI, usePasswordField, useTextField } from '@/common/utils/hooks/useValidField'
+import { ValidatorI, usePasswordField } from '@/common/utils/hooks/useValidField'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material'
@@ -13,7 +13,6 @@ const errorsMessages = {
   NOT_EQUAL: 'Passwords are different!',
 }
 
-//TODO: update onBlur when user doent comply with passwords
 const ConfirmAccount = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const {
@@ -37,15 +36,11 @@ const ConfirmAccount = () => {
   const { session } = useAuthContext()
 
   const handlePasswordOnBlur = () => {
-    //setErrorMessage
-    // validatePassword()
     setErrorMessage('')
   }
 
   const handleRePasswordOnBlur = () => {
-    // validateRePassword()
     setErrorMessage('')
-    //setErrorMessage
   }
 
   const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
