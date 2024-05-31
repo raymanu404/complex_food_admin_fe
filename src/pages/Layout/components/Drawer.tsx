@@ -26,7 +26,6 @@ const Drawer = () => {
 
   const onClickDrawerItemHandler = useCallback(
     async (id: string) => {
-      console.log(id)
       if (id === NavRouterTypeEnum.Logout) {
         openModalLogout()
         return

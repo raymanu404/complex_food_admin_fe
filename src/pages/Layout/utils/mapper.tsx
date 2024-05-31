@@ -25,12 +25,12 @@ const drawerList = ({ onClick }: { onClick: (id: string) => void }): DrawerListI
     value: NavRouterTypeEnum.Orders,
     onClick: onClick,
   },
-  {
-    text: 'Users',
-    icon: <PeopleOutlineIcon className="custom-icon-drawer-class" />,
-    value: NavRouterTypeEnum.Users,
-    onClick: onClick,
-  },
+  // {
+  //   text: 'Users',
+  //   icon: <PeopleOutlineIcon className="custom-icon-drawer-class" />,
+  //   value: NavRouterTypeEnum.Users,
+  //   onClick: onClick,
+  // },
   {
     text: 'Invite Admin',
     icon: <ForwardToInboxIcon className="custom-icon-drawer-class" />,
