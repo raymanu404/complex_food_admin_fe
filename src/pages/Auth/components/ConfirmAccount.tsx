@@ -1,13 +1,17 @@
 import { useUpdateAdminPassword } from '@/api/hooks/usersHooks'
 import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
 import { useRedirect } from '@/common/utils/hooks/useRedirect'
-import { usePasswordField, useTextField } from '@/common/utils/hooks/useValidField'
+import { ValidatorI, usePasswordField, useTextField } from '@/common/utils/hooks/useValidField'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { Button, FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Typography } from '@mui/material'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
 import ValidatorsList from './ValidatorsList'
+
+const errorsMessages = {
+  NOT_EQUAL: 'Passwords are different!',
+}
 
 //TODO: update onBlur when user doent comply with passwords
 const ConfirmAccount = () => {
@@ -35,10 +39,12 @@ const ConfirmAccount = () => {
   const handlePasswordOnBlur = () => {
     //setErrorMessage
     // validatePassword()
+    setErrorMessage('')
   }
 
   const handleRePasswordOnBlur = () => {
     // validateRePassword()
+    setErrorMessage('')
     //setErrorMessage
   }
 
@@ -46,10 +52,31 @@ const ConfirmAccount = () => {
     event.preventDefault()
   }
 
+  const areEqualPasswords = useMemo(() => password === rePassword, [password, rePassword])
+
+  const isCleanPassword = useMemo(() => {
+    const validationPassArray = Object.values(validationPassword) as ValidatorI[]
+    const validationRePassArray = Object.values(validationRePassword) as ValidatorI[]
+
+    const isValidPassword = validationPassArray.every((x) => x.value)
+    const isValidRePassword = validationRePassArray.every((x) => x.value)
+
+    if (isValidPassword && isValidRePassword && password.length > 0 && rePassword.length > 0) {
+      return true
+    }
+
+    return false
+  }, [password.length, rePassword.length, validationPassword, validationRePassword])
+
   const signUpHandler = async () => {
-    const validationPassArray = Object.values(validationPassword)
-    console.log({ validationPassArray })
-    if (password === rePassword) {
+    if (!areEqualPasswords) {
+      setErrorMessage(errorsMessages.NOT_EQUAL)
+      toast.error(errorsMessages.NOT_EQUAL)
+
+      return
+    }
+
+    if (isCleanPassword && areEqualPasswords) {
       const id = session?.user.id ?? ''
       const result = await mutateAsync({ newPassword: password, userId: id })
       if (result) {
@@ -78,6 +105,7 @@ const ConfirmAccount = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
+          height: 'auto',
         }}
       >
         <Typography variant="h4">Confirm your account</Typography>
@@ -133,9 +161,11 @@ const ConfirmAccount = () => {
           />
           <ValidatorsList validation={validationRePassword} />
         </FormControl>
-        <Typography id="component-helper-text-pasword">{errorMessage}</Typography>
+        <Typography id="component-helper-text-pasword" sx={(theme) => ({ color: theme.palette.error.main })}>
+          {errorMessage}
+        </Typography>
 
-        <Button onClick={signUpHandler} disabled={isPending}>
+        <Button onClick={signUpHandler} disabled={isPending || !isCleanPassword}>
           Sign up
         </Button>
       </FlexCard>
