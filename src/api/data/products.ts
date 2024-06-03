@@ -1,6 +1,12 @@
 import { axiosInstance } from '@/common/config/application_config'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
-import { GetProductsResponseBeI, ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
+import {
+  GetProductsResponseBeI,
+  MostOrderedProductsDataResponse,
+  ProductBodyToCreate,
+  ProductBodyToUpdate,
+  ProductsStatisticsResponse,
+} from '../interfaces/products'
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
 
 const getListProductsAsync = async ({
@@ -52,4 +58,31 @@ const deleteProduct = async (productId: number) => {
   await axiosInstance.delete(`${BACKEND_ADMIN_PATH}/products/${productId}`)
 }
 
-export { getListProductsAsync, updateProduct, createProduct, deleteProduct }
+const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date; endDate?: Date }) => {
+  let queryParams = `?`
+
+  queryParams += startDate ? `startDate=${startDate.toDateString()}` : ''
+  queryParams += endDate ? `&endDate=${endDate.toDateString()}` : ''
+
+  const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
+  )
+
+  return data
+}
+
+const getMostOrderedProducts = async () => {
+  const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
+    `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
+  )
+  return data
+}
+
+export {
+  getListProductsAsync,
+  updateProduct,
+  createProduct,
+  deleteProduct,
+  getProductsStatistics,
+  getMostOrderedProducts,
+}

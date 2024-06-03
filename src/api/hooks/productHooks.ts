@@ -1,5 +1,12 @@
 import { transformProductsData } from '@/pages/Products/utils/mapper'
-import { createProduct, deleteProduct, getListProductsAsync, updateProduct } from '../data/products'
+import {
+  createProduct,
+  deleteProduct,
+  getListProductsAsync,
+  getMostOrderedProducts,
+  getProductsStatistics,
+  updateProduct,
+} from '../data/products'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
@@ -81,6 +88,7 @@ const useDeleteProduct = () => {
 
 //UPLOAD IMAGE TO STORAGE
 const useUploadFile = () => {
+  //TODO: check
   const uploadFileHandler = async (file: File | undefined) => {
     let imageUrl = ''
     if (file) {
@@ -104,6 +112,7 @@ const useUploadFile = () => {
 
 //GET IMAGE FROM STORAGE !EXPERIMENTAL!
 const useGetFileFromStorage = () => {
+  //TODO: check
   const [isLoading, setIsLoading] = useState(true)
   const getFileHandler = async (path: string) => {
     const { data } = supabaseClient.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).getPublicUrl(path)
@@ -114,6 +123,23 @@ const useGetFileFromStorage = () => {
   return { getFileHandler, isLoading }
 }
 
+//GET PRODUCTS STATISTICS
+const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date; endDate?: Date }) => {
+  return useQuery({
+    queryKey: ['get-products-statistics-query'],
+    queryFn: async () => await getProductsStatistics({ startDate, endDate }),
+    enabled: false,
+  })
+}
+//GET MOST ORDERED PRODUCTS
+const useGetMostOrderedProducts = () => {
+  return useQuery({
+    queryKey: ['get-most-orderded-products-query'],
+    queryFn: async () => await getMostOrderedProducts(),
+    enabled: false,
+  })
+}
+
 export {
   useGetListProducts,
   useUpdateProduct,
@@ -121,4 +147,6 @@ export {
   useDeleteProduct,
   useUploadFile,
   useGetFileFromStorage,
+  useGetProductsStatistics,
+  useGetMostOrderedProducts,
 }

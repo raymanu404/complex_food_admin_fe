@@ -1,10 +1,12 @@
+import { useGetMostOrderedProducts, useGetProductsStatistics } from '@/api/hooks/productHooks'
 import { Box, Typography, useTheme } from '@mui/material'
 
 export const Home = () => {
   const theme = useTheme()
-  return (
-    <Box>
-      <Typography>hello world, this is home page</Typography>
-    </Box>
-  )
+  const { data, refetch } = useGetProductsStatistics({})
+  const { data: mostOrderedData, refetch: getMostOrderedData } = useGetMostOrderedProducts()
+
+  console.log({ data })
+  console.log({ mostOrderedData })
+  return <Box></Box>
 }
