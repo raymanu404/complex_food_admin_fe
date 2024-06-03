@@ -82,19 +82,34 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
           )}
         />
         <Box>
-          <Controller
-            name="price"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label={'Price'}
-                InputProps={{
-                  inputComponent: NumericInput as any,
-                }}
-              />
-            )}
-          />
+          <Box sx={{ display: 'flex', gap: '30px', justifyContent: 'space-between' }}>
+            <Controller
+              name="price"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={'Price'}
+                  InputProps={{
+                    inputComponent: NumericInput as any,
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="merchantPrice"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={'Merchant Price'}
+                  InputProps={{
+                    inputComponent: NumericInput as any,
+                  }}
+                />
+              )}
+            />
+          </Box>
           <Controller
             name="isInStock"
             control={control}

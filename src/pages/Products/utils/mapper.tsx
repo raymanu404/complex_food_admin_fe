@@ -58,6 +58,22 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     },
   },
   {
+    accessorKey: 'merchantPrice',
+    header: 'Merchant Price',
+    size: 50,
+    Cell: ({ cell }) => cell.getValue<number>().toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
+    enableEditing: true,
+    enableSorting: true,
+    filterVariant: 'range-slider',
+    filterFn: 'betweenInclusive', // default (or between)
+    //check filtering
+    muiFilterSliderProps: {
+      marks: true,
+      step: 10,
+      valueLabelFormat: (value) => value.toLocaleString('ro-RO', { style: 'currency', currency: RO_CURRENCY }),
+    },
+  },
+  {
     accessorKey: 'category',
     header: 'Category',
     size: 120,
@@ -98,6 +114,18 @@ const products_columns = (): MRT_ColumnDef<ProductFeI>[] => [
     enableEditing: true,
   },
   {
+    accessorKey: 'mostOrderedProductCount',
+    header: 'Ordered count',
+    size: 20,
+    Cell: ({ cell }) => {
+      return cell.row.original.mostOrderedProductCount.toLocaleString()
+    },
+    enableEditing: false,
+    enableSorting: true,
+    enableColumnFilter: false,
+    enableGlobalFilter: false,
+  },
+  {
     accessorKey: 'image',
     header: 'Image',
     size: 20,
@@ -128,6 +156,8 @@ const transformProductsData = (data: GetProductsResponseBeI): { data: ProductFeI
       isInStock: product.isInStock,
       price: product.price,
       title: product.title,
+      merchantPrice: product.merchantPrice,
+      mostOrderedProductCount: product.mostOrderedProductCount,
     } as ProductFeI
   })
   return { data: mappedProducts, totalCount: data.totalCount }
@@ -142,6 +172,7 @@ const transformFromFeToFormData = (product: ProductFeI | undefined) =>
         image: product.image,
         isInStock: product.isInStock,
         price: product.price,
+        merchantPrice: product.merchantPrice,
       } as ProductFormUpdate)
     : DEFAULT_PRODUCT_FE
 

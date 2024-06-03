@@ -18,6 +18,8 @@ interface ProductBeI {
   dateCreated: string
   dateUpdated: string
   isInStock: boolean
+  merchantPrice: number
+  mostOrderedProductCount: number
 }
 
 interface ProductFeI {
@@ -30,6 +32,8 @@ interface ProductFeI {
   dateCreated: Date | null
   dateUpdated: Date | null
   isInStock: boolean
+  merchantPrice: number
+  mostOrderedProductCount: number
 }
 
 //API RESPONSES
@@ -40,9 +44,12 @@ interface GetProductsResponseBeI {
 }
 
 //TODO: see how to update images, for now we dont update them
-type ProductBodyToUpdate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated'>
-type ProductBodyToCreate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated'>
-type ProductFormUpdate = Omit<ProductFeI, 'id' | 'dateUpdated' | 'dateCreated' | 'category'> & {
+type ProductBodyToUpdate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated' | 'mostOrderedProductCount'>
+type ProductBodyToCreate = Omit<ProductBeI, 'id' | 'dateUpdated' | 'dateCreated' | 'mostOrderedProductCount'>
+type ProductFormUpdate = Omit<
+  ProductFeI,
+  'id' | 'dateUpdated' | 'dateCreated' | 'category' | 'mostOrderedProductCount'
+> & {
   category: number
   file?: File
 }
