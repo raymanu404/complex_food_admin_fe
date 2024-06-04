@@ -1,11 +1,12 @@
 import { ExpandMore } from '@/common/styles/styled-components'
-import { Alert, Box, Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, useTheme } from '@mui/material'
+import { Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, SxProps, useTheme } from '@mui/material'
 import { useMemo, useState } from 'react'
 import RowCard from './RowCard'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import { cardSx } from '../utils/styles'
-import { MAX_CARD_HEIGHT, MAX_CARD_WITDH, TITLE_CARD_OVERVIEW } from '../utils/constants'
+import { cardSx } from '../../utils/styles'
+import { MAX_CARD_WITDH, TITLE_CARD_OVERVIEW } from '../../utils/constants'
 import LoadingCard from './LoadingCard'
+import ErrorCard from './ErrorCard'
 
 interface PropsI {
   data: {
@@ -21,6 +22,7 @@ interface PropsI {
   }
   isLoading: boolean
   isError: boolean
+  extraSx?: SxProps
 }
 
 const ProductStatistcsCard = ({
@@ -37,6 +39,7 @@ const ProductStatistcsCard = ({
   },
   isError = false,
   isLoading = false,
+  extraSx,
 }: PropsI) => {
   const theme = useTheme()
   const [expanded, setExpanded] = useState(false)
@@ -51,18 +54,7 @@ const ProductStatistcsCard = ({
   }
 
   if (isError) {
-    return (
-      <Box
-        sx={() => ({
-          ...cardSx(theme),
-          width: MAX_CARD_WITDH,
-          height: MAX_CARD_HEIGHT,
-          backgroundColor: theme.customPalette.utility.background,
-        })}
-      >
-        <Alert severity="error">Something went wrong!</Alert>
-      </Box>
-    )
+    return <ErrorCard />
   }
 
   return (
@@ -72,6 +64,7 @@ const ProductStatistcsCard = ({
         width: MAX_CARD_WITDH,
         backgroundColor: theme.customPalette.primary.lightest,
         marginBottom: '20px',
+        ...extraSx,
       }}
     >
       <CardHeader title={title} subheader={<RowCard title={'Total products'} value={totalProducts} />} />

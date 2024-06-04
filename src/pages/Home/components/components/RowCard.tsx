@@ -1,7 +1,7 @@
 import { FlexBoxRow } from '@/common/styles/styled-components'
 import { formatNumber } from '@/common/utils/helpers'
 import { Box, Chip, Typography } from '@mui/material'
-import { DEFAULT_TITLE, DEFAULT_VALUE } from '../utils/constants'
+import { DEFAULT_TITLE, DEFAULT_VALUE } from '../../utils/constants'
 
 interface PropsI {
   value: number | undefined

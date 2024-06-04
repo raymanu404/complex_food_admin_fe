@@ -1,10 +1,17 @@
-import { Box, Typography } from '@mui/material'
-import ProductStatisticsContainer from './components/ProductStatisticsContainer'
+import { Box } from '@mui/material'
+import ProductStatisticsContainer from './components/containers/ProductStatisticsContainer'
+import HeaderSection from './components/containers/HeaderSection'
 
 export const Home = () => {
   return (
-    <Box>
-      <Typography variant="h2">Welcome in ComplexFood Admin Dashboard</Typography>
+    <Box
+      sx={{
+        display: 'block',
+        flex: 'none',
+        width: 'auto',
+      }}
+    >
+      {/* <HeaderSection /> */}
       {/* TODO: put general datePicker  */}
       <ProductStatisticsContainer />
       {/* TODO: Add Most ordered feature  */}

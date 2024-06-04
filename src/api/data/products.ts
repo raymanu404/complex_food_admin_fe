@@ -143,24 +143,24 @@ const sampleStatistics: ProductsStatisticsResponse = {
 const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date; endDate?: Date }) => {
   let queryParams = `?`
 
-  // queryParams += startDate ? `startDate=${startDate.toDateString()}` : ''
-  // queryParams += endDate ? `&endDate=${endDate.toDateString()}` : ''
+  queryParams += startDate ? `startDate=${startDate.toDateString()}` : ''
+  queryParams += endDate ? `&endDate=${endDate.toDateString()}` : ''
 
-  // const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
-  //   `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
-  // )
+  const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
+  )
 
-  const promise = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(sampleStatistics)
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     // resolve(sampleStatistics)
+  //     reject('muie la shakali')
+  //     return sampleStatistics
+  //   }, 1000)
+  // })
 
-      return sampleStatistics
-    }, 1000)
-  })
+  // return promise as Promise<ProductsStatisticsResponse>
 
-  return promise as Promise<ProductsStatisticsResponse>
-
-  // return data
+  return data
 }
 
 const getMostOrderedProducts = async () => {

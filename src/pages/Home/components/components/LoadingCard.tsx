@@ -1,6 +1,6 @@
 import { Skeleton } from '@mui/material'
-import { MAX_CARD_HEIGHT, MAX_CARD_WITDH } from '../utils/constants'
-import { cardSx } from '../utils/styles'
+import { MAX_CARD_HEIGHT, MAX_CARD_WITDH } from '../../utils/constants'
+import { cardSx } from '../../utils/styles'
 
 const LoadingCard = () => {
   return (
