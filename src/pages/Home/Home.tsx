@@ -7,6 +7,8 @@ export const Home = () => {
       <Typography variant="h2">Welcome in ComplexFood Admin Dashboard</Typography>
       {/* TODO: put general datePicker  */}
       <ProductStatisticsContainer />
+      {/* TODO: Add Most ordered feature  */}
+      {/* TODO: Add orders statistics  */}
     </Box>
   )
 }

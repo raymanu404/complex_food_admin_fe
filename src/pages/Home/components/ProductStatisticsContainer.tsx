@@ -15,6 +15,7 @@ const ProductStatisticsContainer = () => {
         <Box>
           <ProductStatistcsCard data={overviewData} isError={isError} isLoading={isLoading} />
         </Box>
+        {/* TODO: expand this feature with button */}
         <FlexBoxColumn>
           <Divider orientation="vertical" variant="fullWidth">
             <Chip label="Statistics" size="small" />
