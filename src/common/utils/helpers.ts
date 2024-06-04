@@ -121,7 +121,13 @@ function getItemByPartialKey(partialKey: string) {
   return null
 }
 
-export { saveArrayToLocalStorage, getArrayFromLocalStorage, removeArrayFromLocalStorage, getItemByPartialKey }
+function formatNumber(num: number): string {
+  if (num % 1 === 0) {
+    return num.toString()
+  } else {
+    return num.toFixed(2)
+  }
+}
 
 export {
   formatDate,
@@ -132,4 +138,9 @@ export {
   arePropsEqual,
   createFullPathStorageFile,
   isDateExpired,
+  saveArrayToLocalStorage,
+  getArrayFromLocalStorage,
+  removeArrayFromLocalStorage,
+  getItemByPartialKey,
+  formatNumber,
 }

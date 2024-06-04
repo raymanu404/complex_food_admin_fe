@@ -128,7 +128,7 @@ const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date; en
   return useQuery({
     queryKey: ['get-products-statistics-query'],
     queryFn: async () => await getProductsStatistics({ startDate, endDate }),
-    enabled: false,
+    enabled: true,
   })
 }
 //GET MOST ORDERED PRODUCTS
