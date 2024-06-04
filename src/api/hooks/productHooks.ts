@@ -124,9 +124,9 @@ const useGetFileFromStorage = () => {
 }
 
 //GET PRODUCTS STATISTICS
-const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date; endDate?: Date }) => {
+const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
   return useQuery({
-    queryKey: ['get-products-statistics-query'],
+    queryKey: ['get-products-statistics-query', startDate, endDate],
     queryFn: async () => await getProductsStatistics({ startDate, endDate }),
     enabled: true,
   })

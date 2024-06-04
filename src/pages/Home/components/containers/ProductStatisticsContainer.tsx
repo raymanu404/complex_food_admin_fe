@@ -5,10 +5,15 @@ import ProductStatistcsCard from '../components/ProductStatistcsCard'
 import { useState } from 'react'
 import ParentContainer from '../ParentContainer'
 
-const ProductStatisticsContainer = () => {
+interface PropsI {
+  startDate?: Date | null
+  endDate?: Date | null
+}
+
+const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
   const [isExpandedChildren, setIsExpandedChildren] = useState(false)
 
-  const { data, isError, isLoading } = useGetProductsStatistics({})
+  const { data, isError, isLoading } = useGetProductsStatistics({ startDate, endDate })
   const { calculusData, ...rest } = data ?? {}
   const overviewData = { categoryName: undefined, ...rest }
 
@@ -23,6 +28,9 @@ const ProductStatisticsContainer = () => {
           <Typography variant="h4">Products Statistics</Typography>
         </FlexBoxRow>
       }
+      parentProps={{
+        sx: { overflow: 'auto', maxHeight: '500px' },
+      }}
     >
       <FlexBoxRow sx={{ overflowX: 'auto', maxWidth: '90vw', gap: '20px', maxHeight: '80vh', padding: '40px' }}>
         <Box
@@ -40,7 +48,12 @@ const ProductStatisticsContainer = () => {
         </Box>
         <FlexBoxColumn>
           <Divider orientation="vertical" variant="fullWidth">
-            <Chip label="Statistics" size="small" onClick={onClickHandler} disabled={isError || isError} />
+            <Chip
+              label="Statistics"
+              size="small"
+              onClick={onClickHandler}
+              disabled={isError || isError || !calculusData || calculusData.data.length === 0}
+            />
           </Divider>
         </FlexBoxColumn>
         {isExpandedChildren && (

@@ -8,6 +8,7 @@ import {
   ProductsStatisticsResponse,
 } from '../interfaces/products'
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
+import { formatDateToBe } from '@/common/utils/helpers'
 
 const getListProductsAsync = async ({
   columnFilters,
@@ -140,11 +141,14 @@ const sampleStatistics: ProductsStatisticsResponse = {
   totalOrderedProducts: 222,
 }
 
-const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date; endDate?: Date }) => {
+const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
   let queryParams = `?`
 
-  queryParams += startDate ? `startDate=${startDate.toDateString()}` : ''
-  queryParams += endDate ? `&endDate=${endDate.toDateString()}` : ''
+  const startDateFormated = formatDateToBe(startDate)
+  const endDateFormated = formatDateToBe(endDate)
+
+  queryParams += startDate ? `startDate=${startDateFormated}` : ''
+  queryParams += endDate ? `&endDate=${endDateFormated}` : ''
 
   const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
     `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`

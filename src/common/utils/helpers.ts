@@ -129,6 +129,17 @@ function formatNumber(num: number): string {
   }
 }
 
+const formatDateToBe = (date: Date | null | undefined): string => {
+  if (date) {
+    const year = date.getFullYear()
+    const month = `0${date.getMonth() + 1}`.slice(-2) // getMonth() returns 0-indexed month
+    const day = `0${date.getDate()}`.slice(-2)
+    return `${year}-${month}-${day}`
+  }
+
+  return 'invalid'
+}
+
 export {
   formatDate,
   handleImageError,
@@ -143,4 +154,5 @@ export {
   removeArrayFromLocalStorage,
   getItemByPartialKey,
   formatNumber,
+  formatDateToBe,
 }

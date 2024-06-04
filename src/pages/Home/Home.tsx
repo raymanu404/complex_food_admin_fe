@@ -1,21 +1,35 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box } from '@mui/material'
 import ProductStatisticsContainer from './components/containers/ProductStatisticsContainer'
 import HeaderSection from './components/containers/HeaderSection'
+import { useCallback, useState } from 'react'
+import DateTimeContainer from './components/containers/DateTimeContainer'
+import { FlexBoxColumn } from '@/common/styles/styled-components'
 
 export const Home = () => {
+  const [startDate, setStartDate] = useState<Date | null>(new Date())
+  const [endDate, setEndDate] = useState<Date | null>(null)
+
+  const onChangeDateTimeHandler = useCallback((dates: [Date | null, Date | null]) => {
+    const [start, end] = dates
+    setStartDate(start)
+    setEndDate(end)
+  }, [])
+
   return (
-    <Box
+    <FlexBoxColumn
       sx={{
-        display: 'block',
-        flex: 'none',
-        width: 'auto',
+        overflow: 'auto',
+        maxHeight: '90vh',
+        gap: '30px',
       }}
     >
-      {/* <HeaderSection /> */}
+      <HeaderSection />
+      <DateTimeContainer onChange={onChangeDateTimeHandler} startDate={startDate} endDate={endDate} />
       {/* TODO: put general datePicker  */}
-      <ProductStatisticsContainer />
+      <ProductStatisticsContainer startDate={startDate} endDate={endDate} />
       {/* TODO: Add Most ordered feature  */}
       {/* TODO: Add orders statistics  */}
-    </Box>
+    </FlexBoxColumn>
   )
 }
