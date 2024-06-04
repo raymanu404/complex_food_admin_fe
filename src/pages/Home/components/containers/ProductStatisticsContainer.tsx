@@ -28,9 +28,9 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
           <Typography variant="h4">Products Statistics</Typography>
         </FlexBoxRow>
       }
-      parentProps={{
-        sx: { overflow: 'auto', maxHeight: '500px' },
-      }}
+      // parentProps={{
+      //   sx: { overflow: 'auto', maxHeight: '80vh' },
+      // }}
     >
       <FlexBoxRow sx={{ overflowX: 'auto', maxWidth: '90vw', gap: '20px', maxHeight: '80vh', padding: '40px' }}>
         <Box

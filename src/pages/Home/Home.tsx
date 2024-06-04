@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box } from '@mui/material'
 import ProductStatisticsContainer from './components/containers/ProductStatisticsContainer'
 import HeaderSection from './components/containers/HeaderSection'
 import { useCallback, useState } from 'react'
