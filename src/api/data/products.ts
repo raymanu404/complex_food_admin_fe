@@ -69,10 +69,11 @@ const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date 
   queryParams += startDate ? `startDate=${startDateFormated}` : ''
   queryParams += endDate ? `&endDate=${endDateFormated}` : ''
 
-  // const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
-  //   `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
-  // )
+  const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
+  )
 
+  return data
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(sampleStatistics)
@@ -81,15 +82,13 @@ const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date 
   })
 
   return promise as Promise<ProductsStatisticsResponse>
-
-  // return data
 }
 
 const getMostOrderedProducts = async () => {
-  // const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
-  //   `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
-  // )
-  // return data
+  const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
+    `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
+  )
+  return data
 
   const promise = new Promise((resolve, reject) => {
     setTimeout(() => {

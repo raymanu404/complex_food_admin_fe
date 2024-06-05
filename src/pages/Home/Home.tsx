@@ -6,8 +6,8 @@ import DateTimeContainer from './components/containers/DateTimeContainer'
 import { FlexBoxColumn } from '@/common/styles/styled-components'
 
 export const Home = () => {
-  const [startDate, setStartDate] = useState<Date | null>(new Date())
-  const [endDate, setEndDate] = useState<Date | null>(null)
+  const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
+  const [endDate, setEndDate] = useState<Date | null>(new Date())
 
   const onChangeDateTimeHandler = useCallback((dates: [Date | null, Date | null]) => {
     const [start, end] = dates
