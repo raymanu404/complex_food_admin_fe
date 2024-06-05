@@ -4,6 +4,7 @@ import HeaderSection from './components/containers/HeaderSection'
 import { useCallback, useState } from 'react'
 import DateTimeContainer from './components/containers/DateTimeContainer'
 import { FlexBoxColumn } from '@/common/styles/styled-components'
+import MostOrderedProductsContainer from './components/containers/MostOrderedProductsContainer'
 
 export const Home = () => {
   const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
@@ -24,10 +25,10 @@ export const Home = () => {
       }}
     >
       <HeaderSection />
+      {/* TODO: Add more detailed info about datetime  */}
       <DateTimeContainer onChange={onChangeDateTimeHandler} startDate={startDate} endDate={endDate} />
-      {/* TODO: put general datePicker  */}
       <ProductStatisticsContainer startDate={startDate} endDate={endDate} />
-      {/* TODO: Add Most ordered feature  */}
+      <MostOrderedProductsContainer />
       {/* TODO: Add orders statistics  */}
     </FlexBoxColumn>
   )

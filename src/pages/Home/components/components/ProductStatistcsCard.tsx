@@ -57,6 +57,7 @@ const ProductStatistcsCard = ({
   if (isError) {
     return <ErrorCard />
   }
+  //TODO: get categories images from storage
 
   return (
     <Card
@@ -69,6 +70,7 @@ const ProductStatistcsCard = ({
       }}
     >
       <CardHeader title={title} subheader={<RowCard title={'Total products'} value={totalProducts} />} />
+      {/* TODO: Map somehow from storage images based on category */}
       <CardMedia component="img" height="194" image="src/common/assets/mazare_cu_pui.jpg" alt="Paella dish" />
       <CardContent sx={{ overflowY: 'auto' }}>
         <RowCard title={'Total products in stock'} value={inStock} />

@@ -9,7 +9,7 @@ import {
   SUPABASE_URL,
 } from './constants'
 
-const formatDate = (date: Date): string => {
+const formatDate = (date: Date | string): string => {
   const formattedDate = format(date, 'dd/MM/yyyy HH:mm:ss')
 
   return formattedDate

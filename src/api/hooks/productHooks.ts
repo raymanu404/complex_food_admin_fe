@@ -136,7 +136,7 @@ const useGetMostOrderedProducts = () => {
   return useQuery({
     queryKey: ['get-most-orderded-products-query'],
     queryFn: async () => await getMostOrderedProducts(),
-    enabled: false,
+    enabled: true,
   })
 }
 
