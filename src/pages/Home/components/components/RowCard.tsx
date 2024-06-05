@@ -13,7 +13,7 @@ const RowCard = ({ value, title, isImportant = true }: PropsI) => {
   const valueCalc = formatNumber(value ?? DEFAULT_VALUE)
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Typography variant="h6">{title ?? DEFAULT_TITLE}</Typography>
+      <Typography variant="caption">{title ?? DEFAULT_TITLE}</Typography>
       <FlexBoxRow sx={{ alignItems: 'center', justifyContent: 'center' }}>
         <Chip
           label={valueCalc}

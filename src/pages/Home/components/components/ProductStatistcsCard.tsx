@@ -7,6 +7,7 @@ import { cardSx } from '../../utils/styles'
 import { MAX_CARD_WITDH, TITLE_CARD_OVERVIEW } from '../../utils/constants'
 import LoadingCard from './LoadingCard'
 import ErrorCard from './ErrorCard'
+import { RO_CURRENCY, VAT } from '@/common/utils/constants'
 
 interface PropsI {
   data: {
@@ -79,12 +80,12 @@ const ProductStatistcsCard = ({
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent sx={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
-          <RowCard title={'Total products out of stock'} value={outOfStock} />
-          <RowCard title={'Total ordered products'} value={totalOrderedProducts} />
-          <RowCard title={'Total selling price (RON)'} value={totalPrice} />
-          <RowCard title={'Total merchant price (RON)'} value={totalMerchantPrice} />
-          <RowCard title={'Total profit without VTA (RON)'} value={totalProfitWithoutVTA} />
-          <RowCard title={'Total profit with VTA (RON)'} value={totalProfitWithVTA} />
+          <RowCard title={`Total products out of stock`} value={outOfStock} />
+          <RowCard title={`Total ordered products`} value={totalOrderedProducts} />
+          <RowCard title={`Total selling price (${RO_CURRENCY})`} value={totalPrice} />
+          <RowCard title={`Total merchant price (${RO_CURRENCY})`} value={totalMerchantPrice} />
+          <RowCard title={`Total profit without ${VAT} (${RO_CURRENCY})`} value={totalProfitWithoutVTA} />
+          <RowCard title={`Total profit with ${VAT} (${RO_CURRENCY})`} value={totalProfitWithVTA} />
         </CardContent>
       </Collapse>
     </Card>

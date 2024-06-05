@@ -105,4 +105,5 @@ export type {
   ProductsStatisticsResponse,
   MostOrderedProductsData,
   MostOrderedProductsDataResponse,
+  OrderedProduct,
 }

@@ -57,7 +57,7 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
           </Divider>
         </FlexBoxColumn>
         {isExpandedChildren && (
-          <Box>
+          <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: '30px' }}>
             {!isLoading &&
               calculusData &&
               calculusData.data.length > 0 &&

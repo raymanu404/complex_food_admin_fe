@@ -13,6 +13,7 @@ const DEFAULT_PAGE_SIZE = 10
 
 const DEFAULT_NA = 'N/A'
 const RO_CURRENCY = 'RON'
+const VAT = 'VAT'
 
 const PATHS: PathRecord = {
   HOME: '/home',
@@ -45,5 +46,6 @@ export {
   SUPABASE_STORAGE_PUBLIC_FOLDER,
   PATHS,
   CLIENT_APP_URL,
+  VAT,
   SUPABASE_SERVICE_ROLE_KEY_API,
 }
