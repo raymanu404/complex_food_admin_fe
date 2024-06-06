@@ -31,6 +31,7 @@ const PATHS: PathRecord = {
 const SUPABASE_PRODUCTS_STORAGE_NAME = 'products'
 const SUPABASE_STORAGE_RELATIVE = 'storage/v1/object/public'
 const SUPABASE_STORAGE_PUBLIC_FOLDER = 'public'
+const SUPABASE_STORAGE_CATEGORIES_FOLDER = 'categories'
 
 export {
   BACKEND_BASE_API_URL,
@@ -48,4 +49,5 @@ export {
   CLIENT_APP_URL,
   VAT,
   SUPABASE_SERVICE_ROLE_KEY_API,
+  SUPABASE_STORAGE_CATEGORIES_FOLDER,
 }

@@ -88,12 +88,12 @@ const useDeleteProduct = () => {
 
 //UPLOAD IMAGE TO STORAGE
 const useUploadFile = () => {
-  //TODO: check
+  const [isLoading, setIsLoading] = useState(false)
   const uploadFileHandler = async (file: File | undefined) => {
     let imageUrl = ''
     if (file) {
       const { name } = file
-
+      setIsLoading(true)
       const { data, error } = await supabaseClient.storage
         .from(SUPABASE_PRODUCTS_STORAGE_NAME)
         .upload(`public/${name}`, file, {
@@ -101,13 +101,14 @@ const useUploadFile = () => {
         })
 
       imageUrl = createFullPathStorageFile(name)
+      setIsLoading(false)
       return { error, data, imageUrl }
     }
 
     return null
   }
 
-  return { uploadFileHandler }
+  return { uploadFileHandler, isLoading }
 }
 
 //GET IMAGE FROM STORAGE !EXPERIMENTAL!

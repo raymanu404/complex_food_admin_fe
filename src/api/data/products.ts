@@ -40,7 +40,7 @@ const getListProductsAsync = async ({
     const { pageIndex, pageSize } = pagination
     params = { ...params, pageNumber: pageIndex + 1, pageSize: pageSize }
   }
-  console.log(params)
+  // console.log(params)
   const { data } = await axiosInstance.get<GetProductsResponseBeI>(`${BACKEND_ADMIN_PATH}/products`, {
     params: { ...params },
   })

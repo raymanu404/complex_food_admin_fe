@@ -18,7 +18,9 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
   const productObj = transformFromFeToFormData(product)
 
   const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
-  const { uploadFileHandler } = useUploadFile()
+  const { uploadFileHandler, isLoading } = useUploadFile()
+
+  console.log({ isLoading })
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
@@ -55,7 +57,7 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
           onCloseHandler={close}
           defaultData={productObj}
           onSubmitHandler={onSubmit}
-          isLoading={isUpdatingProduct}
+          isLoading={isUpdatingProduct || isLoading}
         />
       </DialogContent>
     </Dialog>

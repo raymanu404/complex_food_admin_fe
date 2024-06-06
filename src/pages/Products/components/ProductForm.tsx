@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
-import { ImageDropZone, NumericInput, Spinner } from '@/common/components'
+import { Backdrop, ImageDropZone, NumericInput, Spinner } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
@@ -44,8 +44,11 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   const values = getValues()
 
   const idDirtySubmitButton = useMemo(
-    () => (arePropsEqual(values, defaultValues) && !dropedFile) || Object.values(touchedFields).some((x) => !x),
-    [defaultValues, dropedFile, touchedFields, values]
+    () =>
+      (arePropsEqual(values, defaultValues) && !dropedFile) ||
+      Object.values(touchedFields).some((x) => !x) ||
+      isLoadingAction,
+    [defaultValues, dropedFile, isLoadingAction, touchedFields, values]
   )
 
   const onSubmitLocal: SubmitHandler<ProductFormUpdate> = useCallback(
@@ -59,6 +62,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
     setDropedFile(file)
   }, [])
 
+  console.log({ isLoadingAction })
   return (
     <form onSubmit={handleSubmit(onSubmitLocal)}>
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
@@ -138,6 +142,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
           Submit
         </Button>
       </Box>
+      <Backdrop isOpen={isLoadingAction ?? false} />
     </form>
   )
 }

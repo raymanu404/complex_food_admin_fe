@@ -13,7 +13,7 @@ interface PropsI extends Omit<DialogProps, 'open' | 'onClose'> {
 }
 const CreateProductModal = ({ close, isOpen, refetch, ...rest }: PropsI) => {
   const { mutateAsync, isPending: isCreatingProduct } = useCreateProduct()
-  const { uploadFileHandler } = useUploadFile()
+  const { uploadFileHandler, isLoading } = useUploadFile()
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
@@ -46,7 +46,7 @@ const CreateProductModal = ({ close, isOpen, refetch, ...rest }: PropsI) => {
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm" {...rest}>
       <DialogTitle variant="h3">Create Product</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        <ProductForm onCloseHandler={close} onSubmitHandler={onSubmit} isLoading={isCreatingProduct} />
+        <ProductForm onCloseHandler={close} onSubmitHandler={onSubmit} isLoading={isCreatingProduct || isLoading} />
       </DialogContent>
     </Dialog>
   )
