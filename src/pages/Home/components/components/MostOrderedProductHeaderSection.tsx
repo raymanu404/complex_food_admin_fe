@@ -43,7 +43,7 @@ const MostOrderedProductHeaderSection = ({ data: { category, id, mostOrderedProd
           </FlexBoxColumn>
         }
       />
-      <CardMedia component="img" height="194" image={image} alt={title} onError={handleImageError} />
+      <CardMedia component="img" height="194" src={image} alt={title} onError={handleImageError} />
     </>
   )
 }
