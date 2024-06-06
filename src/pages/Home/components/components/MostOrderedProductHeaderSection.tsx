@@ -5,10 +5,14 @@ import { FlexBoxColumn } from '@/common/styles/styled-components'
 import { CategoryProductEnum, OrderedProduct } from '@/api/interfaces/products'
 import { Box, CardHeader, CardMedia } from '@mui/material'
 import { OverflowTooltip } from '@/common/components'
+import { PLACEHOLDER_IMAGE } from '@/common/utils/constants'
+import { MAX_CARD_HEIGHT } from '../../utils/constants'
 
 interface PropsI {
   data: Omit<OrderedProduct, 'description' | 'isInStock' | 'merchantPrice' | 'price' | 'dateUpdated'>
 }
+
+const IMAGE_HEIGHT = MAX_CARD_HEIGHT - 100
 const MostOrderedProductHeaderSection = ({ data: { category, id, mostOrderedProductCount, title, image } }: PropsI) => {
   return (
     <>
@@ -43,7 +47,13 @@ const MostOrderedProductHeaderSection = ({ data: { category, id, mostOrderedProd
           </FlexBoxColumn>
         }
       />
-      <CardMedia component="img" height="194" src={image} alt={title} onError={handleImageError} />
+      <CardMedia
+        component="img"
+        height={IMAGE_HEIGHT}
+        src={image ?? PLACEHOLDER_IMAGE}
+        alt={title}
+        onError={handleImageError}
+      />
     </>
   )
 }

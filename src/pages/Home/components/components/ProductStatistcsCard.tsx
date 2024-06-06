@@ -1,14 +1,17 @@
-import { ExpandMore } from '@/common/styles/styled-components'
+import { ExpandMore, FlexBoxCentered } from '@/common/styles/styled-components'
 import { Card, CardActions, CardContent, CardHeader, CardMedia, Collapse, SxProps, useTheme } from '@mui/material'
 import { useMemo, useState } from 'react'
 import RowCard from './RowCard'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { cardSx } from '../../utils/styles'
-import { MAX_CARD_WITDH, TITLE_CARD_OVERVIEW } from '../../utils/constants'
+import { MAX_CARD_WITDH, TITLE_CARD_OVERVIEW, MAX_CARD_HEIGHT } from '../../utils/constants'
 import LoadingCard from './LoadingCard'
 import ErrorCard from './ErrorCard'
-import { RO_CURRENCY, VAT } from '@/common/utils/constants'
+import { PLACEHOLDER_IMAGE, RO_CURRENCY, VAT } from '@/common/utils/constants'
+import { handleImageError } from '@/common/utils/helpers'
+import { Spinner } from '@/common/components'
 
+const IMAGE_HEIGHT = MAX_CARD_HEIGHT - 100
 interface PropsI {
   data: {
     categoryName?: string
@@ -21,7 +24,9 @@ interface PropsI {
     totalProfitWithVTA?: number
     totalOrderedProducts?: number
   }
+  imageSrc: string
   isLoading: boolean
+  isLoadingImg?: boolean
   isError: boolean
   extraSx?: SxProps
 }
@@ -38,8 +43,10 @@ const ProductStatistcsCard = ({
     totalProfitWithoutVTA,
     categoryName,
   },
+  imageSrc = PLACEHOLDER_IMAGE,
   isError = false,
   isLoading = false,
+  isLoadingImg = false,
   extraSx,
 }: PropsI) => {
   const theme = useTheme()
@@ -57,21 +64,33 @@ const ProductStatistcsCard = ({
   if (isError) {
     return <ErrorCard />
   }
-  //TODO: get categories images from storage
 
   return (
     <Card
       sx={{
         ...cardSx(theme),
-        width: MAX_CARD_WITDH,
+        width: MAX_CARD_WITDH + 50,
         backgroundColor: theme.customPalette.primary.lightest,
         marginBottom: '20px',
         ...extraSx,
       }}
     >
       <CardHeader title={title} subheader={<RowCard title={'Total products'} value={totalProducts} />} />
-      {/* TODO: Map somehow from storage images based on category */}
-      <CardMedia component="img" height="194" src="src/common/assets/mazare_cu_pui.jpg" alt={title} />
+      {isLoadingImg ? (
+        <FlexBoxCentered height={IMAGE_HEIGHT}>
+          <Spinner size={'4rem'} />
+        </FlexBoxCentered>
+      ) : (
+        <CardMedia
+          component="img"
+          height={IMAGE_HEIGHT}
+          sx={{ objectFit: 'cover' }}
+          src={imageSrc ?? PLACEHOLDER_IMAGE}
+          alt={title}
+          onError={handleImageError}
+        />
+      )}
+
       <CardContent sx={{ overflowY: 'auto' }}>
         <RowCard title={'Total products in stock'} value={inStock} />
       </CardContent>

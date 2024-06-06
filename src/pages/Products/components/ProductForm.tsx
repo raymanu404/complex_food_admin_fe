@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
-import { Backdrop, ImageDropZone, NumericInput, Spinner } from '@/common/components'
+import { Backdrop, ImageDropZone, NumericInput } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
@@ -34,7 +34,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
     control,
     handleSubmit,
     getValues,
-    formState: { isLoading: isLoadingForm, touchedFields, defaultValues },
+    formState: { touchedFields, defaultValues },
   } = useForm<ProductFormUpdate>({
     defaultValues: defaultData ? { ...defaultData } : DEFAULT_PRODUCT_FE,
   })
@@ -134,11 +134,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
-        <Button
-          type="submit"
-          startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          disabled={idDirtySubmitButton}
-        >
+        <Button type="submit" disabled={idDirtySubmitButton}>
           Submit
         </Button>
       </Box>

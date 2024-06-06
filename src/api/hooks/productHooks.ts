@@ -111,17 +111,42 @@ const useUploadFile = () => {
   return { uploadFileHandler, isLoading }
 }
 
-//GET IMAGE FROM STORAGE !EXPERIMENTAL!
-const useGetFileFromStorage = () => {
-  //TODO: check
-  const [isLoading, setIsLoading] = useState(true)
-  const getFileHandler = async (path: string) => {
+//GET FILE PATH FROM STORAGE
+const useGetFilePathFromStorage = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const getFileHandler = async ({ srcPathWithExt, folderName }: { srcPathWithExt: string; folderName: string }) => {
+    setIsLoading(true)
+
+    const path = `${folderName}/${srcPathWithExt}`
     const { data } = supabaseClient.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).getPublicUrl(path)
     setIsLoading(false)
+
     return data
   }
 
   return { getFileHandler, isLoading }
+}
+
+//GET FILES NAMES FROM STORAGE
+const useGetListFilesDataFromStorage = ({
+  bucketId = SUPABASE_PRODUCTS_STORAGE_NAME,
+  folderName,
+}: {
+  bucketId?: string
+  folderName: string
+}) => {
+  const query = useQuery({
+    queryKey: ['get-file-list-from-storaget'],
+    queryFn: async () =>
+      await supabaseClient.storage.from(bucketId).list(folderName, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' },
+      }),
+    enabled: true,
+  })
+
+  return query
 }
 
 //GET PRODUCTS STATISTICS
@@ -147,7 +172,8 @@ export {
   useCreateProduct,
   useDeleteProduct,
   useUploadFile,
-  useGetFileFromStorage,
+  useGetFilePathFromStorage,
   useGetProductsStatistics,
   useGetMostOrderedProducts,
+  useGetListFilesDataFromStorage,
 }

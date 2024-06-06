@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { format } from 'date-fns'
 import { SyntheticEvent } from 'react'
-import PlaceholderImage from '@/common/assets/placeholder-image.png'
+
 import {
+  PLACEHOLDER_IMAGE,
   SUPABASE_PRODUCTS_STORAGE_NAME,
   SUPABASE_STORAGE_PUBLIC_FOLDER,
   SUPABASE_STORAGE_RELATIVE,
@@ -18,7 +19,7 @@ const formatDate = (date: Date | string): string => {
 const handleImageError = (event: SyntheticEvent<HTMLImageElement | Event>) => {
   const target = event.target as HTMLImageElement
 
-  target.src = PlaceholderImage
+  target.src = PLACEHOLDER_IMAGE
   target.style.objectFit = 'contain'
   target.style.padding = '20px'
 }

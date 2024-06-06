@@ -4,6 +4,10 @@ import { Box, Chip, Divider, Typography } from '@mui/material'
 import ProductStatistcsCard from '../components/ProductStatistcsCard'
 import { useState } from 'react'
 import ParentContainer from '../ParentContainer'
+// import { SUPABASE_STORAGE_CATEGORIES_FOLDER } from '@/common/utils/constants'
+import { createAbsolutePathLocal } from '../../utils/helpers'
+import { CategoryEnum } from '../../utils/interfaces'
+import { FILE_EXTENSION } from '../../utils/constants'
 
 interface PropsI {
   startDate?: Date | null
@@ -20,6 +24,13 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
   const onClickHandler = () => {
     setIsExpandedChildren((prev) => !prev)
   }
+
+  // const { data: dataFileList, isLoading: isLoadingGetFileList } = useGetListFilesDataFromStorage({
+  //   folderName: SUPABASE_STORAGE_CATEGORIES_FOLDER,
+  // })
+
+  // const fileList = useMemo(() => dataFileList?.data?.map((x) => x.name), [dataFileList?.data])
+  // console.log({ fileList })
 
   return (
     <ParentContainer
@@ -42,6 +53,10 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
         >
           <ProductStatistcsCard
             data={{ ...overviewData, inStock: overviewData.totalInStock, outOfStock: overviewData.totalOutOfStock }}
+            imageSrc={createAbsolutePathLocal({
+              fileName: CategoryEnum.General,
+              fileExt: FILE_EXTENSION,
+            })}
             isError={isError}
             isLoading={isLoading}
           />
@@ -71,7 +86,16 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
               calculusData.data.length > 0 &&
               calculusData.data.map((data) => {
                 return (
-                  <ProductStatistcsCard data={data} isError={isError} isLoading={isLoading} key={data.categoryName} />
+                  <ProductStatistcsCard
+                    data={data}
+                    isError={isError}
+                    isLoading={isLoading}
+                    key={data.categoryName}
+                    imageSrc={createAbsolutePathLocal({
+                      fileName: data.categoryName.toLocaleLowerCase(),
+                      fileExt: FILE_EXTENSION,
+                    })}
+                  />
                 )
               })}
           </Box>
