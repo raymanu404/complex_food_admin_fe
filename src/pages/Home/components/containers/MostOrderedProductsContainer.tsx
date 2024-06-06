@@ -22,13 +22,12 @@ const MostOrderedProductsContainer = () => {
         sx={{
           display: 'flex',
           flexWrap: 'wrap',
-          justifyContent: 'space-between',
           gap: '20px',
           padding: '40px',
           alignItems: 'flex-start',
         }}
       >
-        <LoadingContainer isLoading={isLoading} />
+        {isLoading && <LoadingContainer />}
         {isError && <ErrorCard />}
         {!isLoading &&
           !isError &&

@@ -108,7 +108,7 @@ const generateMockOrderedProduct = (): OrderedProduct => {
 }
 
 const generateMockMostOrderedProductsDataResponse = (): MostOrderedProductsDataResponse => {
-  const mockOrderedProducts: OrderedProduct[] = Array.from({ length: 5 }, generateMockOrderedProduct)
+  const mockOrderedProducts: OrderedProduct[] = Array.from({ length: 3 }, generateMockOrderedProduct)
   return {
     data: {
       data: mockOrderedProducts,

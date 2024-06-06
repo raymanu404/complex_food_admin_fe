@@ -20,7 +20,6 @@ export const Home = () => {
     <FlexBoxColumn
       sx={{
         overflow: 'auto',
-        maxHeight: '90vh',
         gap: '30px',
       }}
     >

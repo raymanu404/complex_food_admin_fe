@@ -5,7 +5,7 @@ import { DEFAULT_TITLE, DEFAULT_VALUE } from '../../utils/constants'
 
 interface PropsI {
   value?: number | string | undefined
-  title?: string | undefined
+  title?: string | undefined | JSX.Element
   isImportant?: boolean
   chipColor?: ChipOwnProps['color']
   customChildren?: React.ReactNode
@@ -23,7 +23,7 @@ const RowCard = ({
   const valueCalc = typeof value === 'number' ? formatNumber(value) : value
   return (
     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Typography variant={titleVariant}>{title}</Typography>
+      {typeof title === 'string' ? <Typography variant={titleVariant}>{title}</Typography> : title}
       <FlexBoxRow sx={{ alignItems: 'center', justifyContent: 'center' }}>
         {customChildren ?? (
           <Chip

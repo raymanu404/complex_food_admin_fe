@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Card, IconButton, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material'
 import { ExpandMoreProps } from '../utils/interfaces'
+import { CSSProperties } from 'react'
 
 const FlexBox = styled(Box)(() => ({
   flex: '1',
@@ -44,12 +45,14 @@ const TooltipCustom = styled(({ className, ...props }: TooltipProps) => (
   },
 })
 
-const FlipCard = styled(Card)(() => ({
-  width: '240px',
-  height: '240px',
-  borderRadius: '16px',
-  padding: '20px 5px',
-}))
+const FlipCard = styled(Card)<{ width?: CSSProperties['width']; height?: CSSProperties['height'] }>(
+  ({ width, height }) => ({
+    width: width ?? '240px',
+    height: height ?? '240px',
+    borderRadius: '16px',
+    padding: '20px 5px',
+  })
+)
 
 const SecondaryCard = styled(Box)(({ theme }) => ({
   display: 'flex',
