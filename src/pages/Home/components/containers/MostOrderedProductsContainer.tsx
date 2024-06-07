@@ -7,7 +7,7 @@ import MostOrderedProductCard from '../components/MostOrderedProductCard'
 import AlertCard from '../components/AlertCard'
 
 const MostOrderedProductsContainer = () => {
-  const { data, isError, isLoading, isFetching } = useGetMostOrderedProducts()
+  const { data, isError, isLoading } = useGetMostOrderedProducts()
   const { data: products } = data ?? {}
 
   return (
@@ -17,7 +17,6 @@ const MostOrderedProductsContainer = () => {
           <Typography variant="h4">Most ordered Products</Typography>
         </FlexBoxRow>
       }
-      isLoading={isFetching && !isLoading}
     >
       <Box
         sx={{

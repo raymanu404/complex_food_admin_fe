@@ -16,7 +16,7 @@ const ParentContainer = ({ title, children, parentProps, isLoading }: PropsI) =>
       {isLoading ? (
         <Skeleton sx={{ width: '96%', height: '110px' }} animation="wave" />
       ) : (
-        <Accordion sx={{ width: '90vw' }}>
+        <Accordion sx={{ width: '90vw' }} defaultExpanded>
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel3-content"

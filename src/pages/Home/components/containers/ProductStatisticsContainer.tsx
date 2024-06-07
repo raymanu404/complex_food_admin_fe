@@ -2,20 +2,27 @@ import { useGetProductsStatistics } from '@/api/hooks/productHooks'
 import { FlexBoxColumn, FlexBoxRow } from '@/common/styles/styled-components'
 import { Box, Chip, Divider, Typography } from '@mui/material'
 import ProductStatistcsCard from '../components/ProductStatistcsCard'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import ParentContainer from '../ParentContainer'
 // import { SUPABASE_STORAGE_CATEGORIES_FOLDER } from '@/common/utils/constants'
 import { createAbsolutePathLocal } from '../../utils/helpers'
 import { CategoryEnum } from '../../utils/interfaces'
 import { FILE_EXTENSION } from '../../utils/constants'
+import DateTimeContainer from './DateTimeContainer'
 
-interface PropsI {
-  startDate?: Date | null
-  endDate?: Date | null
-}
-
-const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
+const ProductStatisticsContainer = () => {
   const [isExpandedChildren, setIsExpandedChildren] = useState(false)
+
+  const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
+  const [endDate, setEndDate] = useState<Date | null>(new Date())
+
+  const onChangeStartDateHandler = useCallback((date: Date | null) => {
+    setStartDate(date)
+  }, [])
+
+  const onChangeEndDateHandler = useCallback((date: Date | null) => {
+    setEndDate(date)
+  }, [])
 
   const { data, isError, isLoading, isFetching } = useGetProductsStatistics({ startDate, endDate })
   const { calculusData, ...rest } = data ?? {}
@@ -44,6 +51,12 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
       //   sx: { overflow: 'auto', maxHeight: '80vh' },
       // }}
     >
+      <DateTimeContainer
+        onChangeStartDate={onChangeStartDateHandler}
+        onChangeEndDate={onChangeEndDateHandler}
+        startDate={startDate}
+        endDate={endDate}
+      />
       <FlexBoxRow sx={{ overflowX: 'auto', maxWidth: '90vw', gap: '20px', maxHeight: '80vh', padding: '40px' }}>
         <Box
           sx={{

@@ -1,17 +1,23 @@
 import { Box, Typography } from '@mui/material'
 import ParentContainer from '../ParentContainer'
 import { useGetOrdersStatistics } from '@/api/hooks/orderHooks'
-import { useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FlexBoxRow } from '@/common/styles/styled-components'
 import StatisticGauge from '../components/StatisticGauge'
 import AlertCard from '../components/AlertCard'
+import DateTimeContainer from './DateTimeContainer'
 
-interface PropsI {
-  startDate?: Date | null
-  endDate?: Date | null
-}
+const OrderStatisticsContainer = () => {
+  const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
+  const [endDate, setEndDate] = useState<Date | null>(new Date())
 
-const OrderStatisticsContainer = ({ endDate, startDate }: PropsI) => {
+  const onChangeStartDateHandler = useCallback((date: Date | null) => {
+    setStartDate(date)
+  }, [])
+
+  const onChangeEndDateHandler = useCallback((date: Date | null) => {
+    setEndDate(date)
+  }, [])
   const { data, isError, isLoading, isFetching } = useGetOrdersStatistics({ startDate, endDate })
 
   const dataInPercents = useMemo(() => data?.dataInPercentsResponse, [data])
@@ -34,6 +40,12 @@ const OrderStatisticsContainer = ({ endDate, startDate }: PropsI) => {
       }
       isLoading={isFetching && !isLoading}
     >
+      <DateTimeContainer
+        onChangeStartDate={onChangeStartDateHandler}
+        onChangeEndDate={onChangeEndDateHandler}
+        startDate={startDate}
+        endDate={endDate}
+      />
       <Box
         sx={{
           display: 'flex',
