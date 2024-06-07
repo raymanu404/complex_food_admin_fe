@@ -1,3 +1,4 @@
+import { OrderStatisticsResponse } from '../interfaces/orders'
 import {
   MostOrderedProductsDataResponse,
   OrderedProduct,
@@ -117,4 +118,25 @@ const generateMockMostOrderedProductsDataResponse = (): MostOrderedProductsDataR
   }
 }
 
-export { sampleStatistics, generateMockOrderedProduct, generateMockMostOrderedProductsDataResponse }
+const mockDataOrdersStatistics: OrderStatisticsResponse = {
+  totalOrders: 100,
+  totalPrice: 1234.56,
+  totalMerchantPrice: 1100.0,
+  totalProfitWithoutVTA: 134.56,
+  totalProfitWithVTA: 150.0,
+}
+
+const mockDataTotalOrdersStatistics: OrderStatisticsResponse = {
+  totalOrders: 420,
+  totalPrice: 1534.56,
+  totalMerchantPrice: 1500.0,
+  totalProfitWithoutVTA: 534.56,
+  totalProfitWithVTA: 250.0,
+}
+
+export {
+  sampleStatistics,
+  generateMockOrderedProduct,
+  generateMockMostOrderedProductsDataResponse,
+  mockDataOrdersStatistics,
+}

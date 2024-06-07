@@ -9,6 +9,7 @@ interface PropsI extends PropsWithChildren {
 
 const ParentContainer = ({ title, children, parentProps }: PropsI) => {
   const theme = useTheme()
+
   return (
     <Box {...parentProps}>
       <Accordion sx={{ width: '90vw' }}>

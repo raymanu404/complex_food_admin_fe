@@ -157,6 +157,7 @@ const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date | n
     enabled: true,
   })
 }
+
 //GET MOST ORDERED PRODUCTS
 const useGetMostOrderedProducts = () => {
   return useQuery({

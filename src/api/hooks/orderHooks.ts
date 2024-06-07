@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { getListOrdersAsync, updateOrderStatus } from '../data/orders'
+import { getListOrdersAsync, getOrdersStatistics, updateOrderStatus } from '../data/orders'
 import { transformOrdersData } from '@/pages/Orders/utils/mapper'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { toast } from 'react-toastify'
@@ -49,4 +49,13 @@ const useUpdateOrderStatus = () => {
   })
 }
 
-export { useGetListOrders, useUpdateOrderStatus }
+//GET ORDERS STATISTICS
+const useGetOrdersStatistics = ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
+  return useQuery({
+    queryKey: ['get-products-statistics-query', startDate, endDate],
+    queryFn: async () => await getOrdersStatistics({ startDate, endDate }),
+    enabled: true,
+  })
+}
+
+export { useGetListOrders, useUpdateOrderStatus, useGetOrdersStatistics }

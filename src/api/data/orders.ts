@@ -1,7 +1,9 @@
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
 import { axiosInstance } from '../../common/config/application_config'
-import { GetOrdersResponseBeI } from '../interfaces/orders'
+import { GetOrdersResponseBeI, OrderStatisticsResponse } from '../interfaces/orders'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
+import { formatDateToBe } from '@/common/utils/helpers'
+import { mockDataOrdersStatistics } from './mockData'
 
 const getListOrdersAsync = async ({
   columnFilters,
@@ -49,4 +51,29 @@ const updateOrderStatus = async (orderId: number, orderStatus: number) => {
   return data
 }
 
-export { getListOrdersAsync, updateOrderStatus }
+const getOrdersStatistics = async ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
+  let queryParams = `?`
+
+  const startDateFormated = formatDateToBe(startDate)
+  const endDateFormated = formatDateToBe(endDate)
+
+  queryParams += startDate ? `startDate=${startDateFormated}` : ''
+  queryParams += endDate ? `&endDate=${endDateFormated}` : ''
+
+  // const { data } = await axiosInstance.get<OrderStatisticsResponse>(
+  //   `${BACKEND_ADMIN_PATH}/orders/statistics${queryParams}`
+  // )
+
+  // return data
+
+  const promise = new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(mockDataOrdersStatistics)
+      return mockDataOrdersStatistics
+    }, 2000)
+  })
+
+  return promise as Promise<OrderStatisticsResponse>
+}
+
+export { getListOrdersAsync, updateOrderStatus, getOrdersStatistics }
