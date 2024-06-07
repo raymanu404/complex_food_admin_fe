@@ -6,7 +6,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import { cardSx } from '../../utils/styles'
 import { MAX_CARD_WITDH, TITLE_CARD_OVERVIEW, MAX_CARD_HEIGHT } from '../../utils/constants'
 import LoadingCard from './LoadingCard'
-import ErrorCard from './ErrorCard'
+import AlertCard from './AlertCard'
 import { PLACEHOLDER_IMAGE, RO_CURRENCY, VAT } from '@/common/utils/constants'
 import { handleImageError } from '@/common/utils/helpers'
 import { Spinner } from '@/common/components'
@@ -62,7 +62,7 @@ const ProductStatistcsCard = ({
   }
 
   if (isError) {
-    return <ErrorCard />
+    return <AlertCard />
   }
 
   return (

@@ -60,20 +60,20 @@ const getOrdersStatistics = async ({ endDate, startDate }: { startDate?: Date | 
   queryParams += startDate ? `startDate=${startDateFormated}` : ''
   queryParams += endDate ? `&endDate=${endDateFormated}` : ''
 
-  // const { data } = await axiosInstance.get<OrderStatisticsResponse>(
-  //   `${BACKEND_ADMIN_PATH}/orders/statistics${queryParams}`
-  // )
+  const { data } = await axiosInstance.get<OrderStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/orders/statistics${queryParams}`
+  )
 
-  // return data
+  return data
 
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(mockDataOrdersStatistics)
-      return mockDataOrdersStatistics
-    }, 2000)
-  })
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(mockDataOrdersStatistics)
+  //     return mockDataOrdersStatistics
+  //   }, 2000)
+  // })
 
-  return promise as Promise<OrderStatisticsResponse>
+  // return promise as Promise<OrderStatisticsResponse>
 }
 
 export { getListOrdersAsync, updateOrderStatus, getOrdersStatistics }

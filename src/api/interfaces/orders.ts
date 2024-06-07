@@ -59,7 +59,7 @@ interface GetOrdersResponseBeI {
   currentPage: number
 }
 
-interface OrderStatisticsResponse {
+interface OrderStatisticsData {
   totalOrders: number
   totalPrice: number
   totalMerchantPrice: number
@@ -67,5 +67,11 @@ interface OrderStatisticsResponse {
   totalProfitWithVTA: number
 }
 
-export type { GetOrdersResponseBeI, OrderBeI, OrderFeI, OrderItemFeI, OrderStatisticsResponse }
+interface OrderStatisticsResponse {
+  totalDataResponse: OrderStatisticsData
+  dataInPeriodOfTimeResponse: OrderStatisticsData
+  dataInPercentsResponse: OrderStatisticsData
+}
+
+export type { GetOrdersResponseBeI, OrderBeI, OrderFeI, OrderItemFeI, OrderStatisticsResponse, OrderStatisticsData }
 export { OrderStatusEnum }

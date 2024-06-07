@@ -17,7 +17,7 @@ interface PropsI {
 const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
   const [isExpandedChildren, setIsExpandedChildren] = useState(false)
 
-  const { data, isError, isLoading } = useGetProductsStatistics({ startDate, endDate })
+  const { data, isError, isLoading, isFetching } = useGetProductsStatistics({ startDate, endDate })
   const { calculusData, ...rest } = data ?? {}
   const overviewData = { categoryName: undefined, ...rest }
 
@@ -39,6 +39,7 @@ const ProductStatisticsContainer = ({ endDate, startDate }: PropsI) => {
           <Typography variant="h4">Products Statistics</Typography>
         </FlexBoxRow>
       }
+      isLoading={isFetching && !isLoading}
       // parentProps={{
       //   sx: { overflow: 'auto', maxHeight: '80vh' },
       // }}

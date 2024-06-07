@@ -28,8 +28,8 @@ export const Home = () => {
       {/* TODO: Add more detailed info about datetime  */}
       <DateTimeContainer onChange={onChangeDateTimeHandler} startDate={startDate} endDate={endDate} />
       <ProductStatisticsContainer startDate={startDate} endDate={endDate} />
+      <OrderStatisticsContainer startDate={startDate} endDate={endDate} />
       <MostOrderedProductsContainer />
-      <OrderStatisticsContainer />
     </FlexBoxColumn>
   )
 }

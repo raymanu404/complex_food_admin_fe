@@ -4,9 +4,10 @@ import { cardSx } from '../../utils/styles'
 
 interface PropsI {
   message?: string
+  type?: 'error' | 'info'
 }
 
-const ErrorCard = ({ message = `Something went wrong!` }: PropsI) => {
+const AlertCard = ({ message = `Something went wrong!`, type = 'error' }: PropsI) => {
   return (
     <Box
       sx={(theme) => ({
@@ -16,11 +17,11 @@ const ErrorCard = ({ message = `Something went wrong!` }: PropsI) => {
         backgroundColor: theme.customPalette.utility.background,
       })}
     >
-      <Alert severity="error" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+      <Alert severity={type} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
         {message}
       </Alert>
     </Box>
   )
 }
 
-export default ErrorCard
+export default AlertCard

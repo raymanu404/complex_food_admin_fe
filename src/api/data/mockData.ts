@@ -1,4 +1,4 @@
-import { OrderStatisticsResponse } from '../interfaces/orders'
+import { OrderStatisticsData, OrderStatisticsResponse } from '../interfaces/orders'
 import {
   MostOrderedProductsDataResponse,
   OrderedProduct,
@@ -118,7 +118,7 @@ const generateMockMostOrderedProductsDataResponse = (): MostOrderedProductsDataR
   }
 }
 
-const mockDataOrdersStatistics: OrderStatisticsResponse = {
+const mockDataOrdersStatistics: OrderStatisticsData = {
   totalOrders: 100,
   totalPrice: 1234.56,
   totalMerchantPrice: 1100.0,
@@ -126,7 +126,7 @@ const mockDataOrdersStatistics: OrderStatisticsResponse = {
   totalProfitWithVTA: 150.0,
 }
 
-const mockDataTotalOrdersStatistics: OrderStatisticsResponse = {
+const mockDataTotalOrdersStatistics: OrderStatisticsData = {
   totalOrders: 420,
   totalPrice: 1534.56,
   totalMerchantPrice: 1500.0,
@@ -134,10 +134,18 @@ const mockDataTotalOrdersStatistics: OrderStatisticsResponse = {
   totalProfitWithVTA: 250.0,
 }
 
-export {
-  sampleStatistics,
-  generateMockOrderedProduct,
-  generateMockMostOrderedProductsDataResponse,
-  mockDataOrdersStatistics,
-  mockDataTotalOrdersStatistics,
+const mockDataPercentsOrdersStatistics: OrderStatisticsData = {
+  totalOrders: 20.2,
+  totalPrice: 4.56,
+  totalMerchantPrice: 15.0,
+  totalProfitWithoutVTA: 34.56,
+  totalProfitWithVTA: 25.0,
 }
+
+const orderStatistics: OrderStatisticsResponse = {
+  dataInPercents: mockDataPercentsOrdersStatistics,
+  dataInPeriodOfTime: mockDataOrdersStatistics,
+  totalData: mockDataTotalOrdersStatistics,
+}
+
+export { sampleStatistics, generateMockOrderedProduct, generateMockMostOrderedProductsDataResponse, orderStatistics }

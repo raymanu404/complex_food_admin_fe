@@ -4,10 +4,10 @@ import { Box, Typography } from '@mui/material'
 import { useGetMostOrderedProducts } from '@/api/hooks/productHooks'
 import LoadingContainer from '../components/LoadingContainer'
 import MostOrderedProductCard from '../components/MostOrderedProductCard'
-import ErrorCard from '../components/ErrorCard'
+import AlertCard from '../components/AlertCard'
 
 const MostOrderedProductsContainer = () => {
-  const { data, isError, isLoading } = useGetMostOrderedProducts()
+  const { data, isError, isLoading, isFetching } = useGetMostOrderedProducts()
   const { data: products } = data ?? {}
 
   return (
@@ -17,6 +17,7 @@ const MostOrderedProductsContainer = () => {
           <Typography variant="h4">Most ordered Products</Typography>
         </FlexBoxRow>
       }
+      isLoading={isFetching && !isLoading}
     >
       <Box
         sx={{
@@ -28,7 +29,8 @@ const MostOrderedProductsContainer = () => {
         }}
       >
         {isLoading && <LoadingContainer />}
-        {isError && <ErrorCard />}
+        {isError && <AlertCard />}
+        {!isError && !products && !isLoading && <AlertCard message="No data" type="info" />}
         {!isLoading &&
           !isError &&
           data &&

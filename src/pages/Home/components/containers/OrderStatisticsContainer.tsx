@@ -1,29 +1,59 @@
-import { Stack } from '@mui/material'
-import { Gauge, gaugeClasses } from '@mui/x-charts'
+import { Box, Typography } from '@mui/material'
+import ParentContainer from '../ParentContainer'
+import { useGetOrdersStatistics } from '@/api/hooks/orderHooks'
+import { useMemo } from 'react'
+import { FlexBoxRow } from '@/common/styles/styled-components'
+import StatisticGauge from '../components/StatisticGauge'
+import AlertCard from '../components/AlertCard'
 
-const OrderStatisticsContainer = () => {
-  //TODO: implement
+interface PropsI {
+  startDate?: Date | null
+  endDate?: Date | null
+}
+
+const OrderStatisticsContainer = ({ endDate, startDate }: PropsI) => {
+  const { data, isError, isLoading, isFetching } = useGetOrdersStatistics({ startDate, endDate })
+
+  const dataInPercents = useMemo(() => data?.dataInPercentsResponse, [data])
+  const dataInPercentsValueKeys: { key: string; value: number }[] = useMemo(
+    () =>
+      Object.entries(dataInPercents ?? {}).map(([key, value]) => {
+        const castedKey = key as string
+        const castedValue = value as number
+        return { key: castedKey, value: castedValue }
+      }),
+    [dataInPercents]
+  )
+
   return (
-    <div>
-      <Stack direction={{ xs: 'column', md: 'row' }} spacing={{ xs: 1, md: 3 }}>
-        <Gauge
-          valueMax={100}
-          value={12}
-          startAngle={-110}
-          endAngle={110}
-          sx={{
-            [`& .${gaugeClasses.valueText}`]: {
-              fontSize: 40,
-              transform: 'translate(0px, 0px)',
-            },
-          }}
-          text={({ value, valueMax }) => `${value} / ${valueMax}`}
-          width={400}
-          height={300}
-        />
-        <Gauge width={400} height={300} value={60} startAngle={-90} endAngle={90} />
-      </Stack>
-    </div>
+    <ParentContainer
+      title={
+        <FlexBoxRow>
+          <Typography variant="h4">Orders Statistics</Typography>
+        </FlexBoxRow>
+      }
+      isLoading={isFetching && !isLoading}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          gap: '20px',
+          padding: '40px',
+          alignItems: 'flex-start',
+        }}
+      >
+        {isError && <AlertCard />}
+        {!isError && !dataInPercentsValueKeys && !isLoading && <AlertCard message="No data" type="info" />}
+        {!isError &&
+          data &&
+          dataInPercentsValueKeys &&
+          dataInPercentsValueKeys.length > 0 &&
+          dataInPercentsValueKeys.map((x) => (
+            <StatisticGauge value={x.value} isLoading={isLoading} textLabel={x.key} key={`${x.key}-${x.value}`} />
+          ))}
+      </Box>
+    </ParentContainer>
   )
 }
 

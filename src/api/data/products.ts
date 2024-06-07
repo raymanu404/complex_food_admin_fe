@@ -69,35 +69,35 @@ const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date 
   queryParams += startDate ? `startDate=${startDateFormated}` : ''
   queryParams += endDate ? `&endDate=${endDateFormated}` : ''
 
-  // const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
-  //   `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
-  // )
+  const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
+  )
 
-  // return data
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(sampleStatistics)
-      return sampleStatistics
-    }, 1000)
-  })
+  return data
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(sampleStatistics)
+  //     return sampleStatistics
+  //   }, 1000)
+  // })
 
-  return promise as Promise<ProductsStatisticsResponse>
+  // return promise as Promise<ProductsStatisticsResponse>
 }
 
 const getMostOrderedProducts = async () => {
-  // const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
-  //   `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
-  // )
-  // return data
+  const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
+    `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
+  )
+  return data
 
-  const promise = new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const data = generateMockMostOrderedProductsDataResponse()
-      resolve(data)
-      return data
-    }, 2000)
-  })
-  return promise as Promise<MostOrderedProductsDataResponse>
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     const data = generateMockMostOrderedProductsDataResponse()
+  //     resolve(data)
+  //     return data
+  //   }, 2000)
+  // })
+  // return promise as Promise<MostOrderedProductsDataResponse>
 }
 
 export {
