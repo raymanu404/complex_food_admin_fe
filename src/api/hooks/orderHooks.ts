@@ -52,7 +52,7 @@ const useUpdateOrderStatus = () => {
 //GET ORDERS STATISTICS
 const useGetOrdersStatistics = ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
   return useQuery({
-    queryKey: ['get-products-statistics-query', startDate, endDate],
+    queryKey: ['get-oders-statistics-query', startDate, endDate],
     queryFn: async () => await getOrdersStatistics({ startDate, endDate }),
     enabled: true,
   })
