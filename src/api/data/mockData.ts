@@ -139,4 +139,5 @@ export {
   generateMockOrderedProduct,
   generateMockMostOrderedProductsDataResponse,
   mockDataOrdersStatistics,
+  mockDataTotalOrdersStatistics,
 }
