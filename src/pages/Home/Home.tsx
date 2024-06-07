@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react'
 import DateTimeContainer from './components/containers/DateTimeContainer'
 import { FlexBoxColumn } from '@/common/styles/styled-components'
 import MostOrderedProductsContainer from './components/containers/MostOrderedProductsContainer'
+import OrderStatisticsContainer from './components/containers/OrderStatisticsContainer'
 
 export const Home = () => {
   const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
@@ -28,7 +29,7 @@ export const Home = () => {
       <DateTimeContainer onChange={onChangeDateTimeHandler} startDate={startDate} endDate={endDate} />
       <ProductStatisticsContainer startDate={startDate} endDate={endDate} />
       <MostOrderedProductsContainer />
-      {/* TODO: Add orders statistics  */}
+      <OrderStatisticsContainer />
     </FlexBoxColumn>
   )
 }
