@@ -1,4 +1,7 @@
-import { Box, Card, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Box, Card, IconButton, Tooltip, TooltipProps, styled, tooltipClasses } from '@mui/material'
+import { ExpandMoreProps } from '../utils/interfaces'
+import { CSSProperties } from 'react'
 
 const FlexBox = styled(Box)(() => ({
   flex: '1',
@@ -10,6 +13,13 @@ const FlexBoxCentered = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  alignItems: 'center',
+}))
+
+const FlexBoxStart = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'flex-start',
   alignItems: 'center',
 }))
 
@@ -35,12 +45,14 @@ const TooltipCustom = styled(({ className, ...props }: TooltipProps) => (
   },
 })
 
-const FlipCard = styled(Card)(() => ({
-  width: '240px',
-  height: '240px',
-  borderRadius: '16px',
-  padding: '20px 5px',
-}))
+const FlipCard = styled(Card)<{ width?: CSSProperties['width']; height?: CSSProperties['height'] }>(
+  ({ width, height }) => ({
+    width: width ?? '240px',
+    height: height ?? '240px',
+    borderRadius: '16px',
+    padding: '20px 5px',
+  })
+)
 
 const SecondaryCard = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -52,4 +64,35 @@ const SecondaryCard = styled(Box)(({ theme }) => ({
   flexGrow: 1,
 }))
 
-export { FlexBox, FlexBoxCentered, FlexCard, TooltipCustom, FlipCard, SecondaryCard }
+const ExpandMore = styled((props: ExpandMoreProps) => {
+  const { expand, ...other } = props
+  return <IconButton {...other} />
+})(({ theme, expand }) => ({
+  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+  marginLeft: 'auto',
+  transition: theme.transitions.create('transform', {
+    duration: theme.transitions.duration.shortest,
+  }),
+}))
+
+const FlexBoxRow = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'row',
+}))
+const FlexBoxColumn = styled(Box)(() => ({
+  display: 'flex',
+  flexDirection: 'column',
+}))
+
+export {
+  FlexBox,
+  FlexBoxCentered,
+  FlexCard,
+  TooltipCustom,
+  FlipCard,
+  SecondaryCard,
+  FlexBoxStart,
+  ExpandMore,
+  FlexBoxRow,
+  FlexBoxColumn,
+}

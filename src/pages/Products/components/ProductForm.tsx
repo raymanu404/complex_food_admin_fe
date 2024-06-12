@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryProductEnum, ProductFormUpdate } from '@/api/interfaces/products'
-import { ImageDropZone, NumericInput, Spinner } from '@/common/components'
+import { Backdrop, ImageDropZone, NumericInput } from '@/common/components'
 import { Box, Button, Checkbox, FormControlLabel, MenuItem, TextField } from '@mui/material'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form'
 import { DEFAULT_PRODUCT_FE } from '../utils/constants'
@@ -34,7 +34,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
     control,
     handleSubmit,
     getValues,
-    formState: { isLoading: isLoadingForm, touchedFields, defaultValues },
+    formState: { touchedFields, defaultValues },
   } = useForm<ProductFormUpdate>({
     defaultValues: defaultData ? { ...defaultData } : DEFAULT_PRODUCT_FE,
   })
@@ -44,8 +44,11 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
   const values = getValues()
 
   const idDirtySubmitButton = useMemo(
-    () => (arePropsEqual(values, defaultValues) && !dropedFile) || Object.values(touchedFields).some((x) => !x),
-    [defaultValues, dropedFile, touchedFields, values]
+    () =>
+      (arePropsEqual(values, defaultValues) && !dropedFile) ||
+      Object.values(touchedFields).some((x) => !x) ||
+      isLoadingAction,
+    [defaultValues, dropedFile, isLoadingAction, touchedFields, values]
   )
 
   const onSubmitLocal: SubmitHandler<ProductFormUpdate> = useCallback(
@@ -59,6 +62,7 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
     setDropedFile(file)
   }, [])
 
+  console.log({ isLoadingAction })
   return (
     <form onSubmit={handleSubmit(onSubmitLocal)}>
       <Box sx={{ minHeight: '20rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: '20px 30px' }}>
@@ -82,19 +86,34 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
           )}
         />
         <Box>
-          <Controller
-            name="price"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                label={'Price'}
-                InputProps={{
-                  inputComponent: NumericInput as any,
-                }}
-              />
-            )}
-          />
+          <Box sx={{ display: 'flex', gap: '30px', justifyContent: 'space-between' }}>
+            <Controller
+              name="price"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={'Price'}
+                  InputProps={{
+                    inputComponent: NumericInput as any,
+                  }}
+                />
+              )}
+            />
+            <Controller
+              name="merchantPrice"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label={'Merchant Price'}
+                  InputProps={{
+                    inputComponent: NumericInput as any,
+                  }}
+                />
+              )}
+            />
+          </Box>
           <Controller
             name="isInStock"
             control={control}
@@ -115,14 +134,11 @@ const ProductForm = ({ defaultData, isLoading: isLoadingAction, onCloseHandler, 
       </Box>
       <Box sx={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 30px' }}>
         <Button onClick={onCloseHandler}>Cancel</Button>
-        <Button
-          type="submit"
-          startIcon={(isLoadingForm || isLoadingAction) && <Spinner size={2.3} />}
-          disabled={idDirtySubmitButton}
-        >
+        <Button type="submit" disabled={idDirtySubmitButton}>
           Submit
         </Button>
       </Box>
+      <Backdrop isOpen={isLoadingAction ?? false} />
     </form>
   )
 }

@@ -1,10 +1,23 @@
-import { Box, Typography, useTheme } from '@mui/material'
+import ProductStatisticsContainer from './components/containers/ProductStatisticsContainer'
+import HeaderSection from './components/containers/HeaderSection'
+import { useCallback, useState } from 'react'
+import DateTimeContainer from './components/containers/DateTimeContainer'
+import { FlexBoxColumn } from '@/common/styles/styled-components'
+import MostOrderedProductsContainer from './components/containers/MostOrderedProductsContainer'
+import OrderStatisticsContainer from './components/containers/OrderStatisticsContainer'
 
 export const Home = () => {
-  const theme = useTheme()
   return (
-    <Box>
-      <Typography>hello world, this is home page</Typography>
-    </Box>
+    <FlexBoxColumn
+      sx={{
+        overflow: 'auto',
+        gap: '30px',
+      }}
+    >
+      <HeaderSection />
+      <MostOrderedProductsContainer />
+      <ProductStatisticsContainer />
+      <OrderStatisticsContainer />
+    </FlexBoxColumn>
   )
 }

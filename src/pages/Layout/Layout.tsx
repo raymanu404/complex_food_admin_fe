@@ -12,7 +12,7 @@ const Layout = ({ children }: PropsWithChildren) => {
   const enabledHeader = useMemo(() => !pathname.includes(PATHS[PathEnum.CONFIRM_ACCOUNT]), [pathname])
 
   return (
-    <FlexBox>
+    <FlexBox sx={{ overflowY: 'auto' }}>
       {enabledHeader && <Header />}
       <Main>{children}</Main>
       <Toast />

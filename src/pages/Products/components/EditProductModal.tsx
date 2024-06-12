@@ -18,28 +18,34 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
   const productObj = transformFromFeToFormData(product)
 
   const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
-  const { uploadFileHandler } = useUploadFile()
+  const { uploadFileHandler, isLoading } = useUploadFile()
+
+  console.log({ isLoading })
 
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
-      const result = await uploadFileHandler(data.file)
-      if (result) {
-        const { imageUrl, error } = result
-        if (error) {
-          toast.error(`Unable to upload file to storage. ${error.message}`)
-          return
+      let imageUrlBe = ''
+      if (data.file) {
+        const result = await uploadFileHandler(data.file)
+        if (result) {
+          const { imageUrl, error } = result
+          if (error) {
+            toast.error(`Unable to upload file to storage. ${error.message}`)
+            return
+          }
+          imageUrlBe = imageUrl
+        } else {
+          toast.error(`Unable to get file`)
         }
-
-        await mutateAsync({
-          productId: product?.id ?? 0,
-          productToUpdate: { ...data, image: imageUrl },
-        }).then(() => {
-          close()
-          refetch()
-        })
-      } else {
-        toast.error(`Unable to get file`)
       }
+
+      await mutateAsync({
+        productId: product?.id ?? 0,
+        productToUpdate: { ...data, image: imageUrlBe },
+      }).then(() => {
+        close()
+        refetch()
+      })
     },
     [close, mutateAsync, product?.id, refetch, uploadFileHandler]
   )
@@ -51,7 +57,7 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
           onCloseHandler={close}
           defaultData={productObj}
           onSubmitHandler={onSubmit}
-          isLoading={isUpdatingProduct}
+          isLoading={isUpdatingProduct || isLoading}
         />
       </DialogContent>
     </Dialog>

@@ -1,3 +1,4 @@
+import PlaceholderImage from '@/common/assets/placeholder-image.png'
 import { PathRecord } from './interfaces'
 
 const BACKEND_BASE_API_URL = import.meta.env.VITE_BACKEND_BASE_API_URL
@@ -6,6 +7,7 @@ const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
 const SUPABASE_PUBLIC_KEY_API = import.meta.env.VITE_SUPABASE_PUBLIC_KEY_API
 const CLIENT_APP_URL = import.meta.env.VITE_CLIENT_APP_URL
 const SUPABASE_SERVICE_ROLE_KEY_API = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY_API
+const SUPABASE_STORAGE_RELATIVE_URL = import.meta.env.VITE_SUPABASE_STORAGE_RELATIVE_URL
 
 const APP_CLIENT_PATH_HOME = '/home'
 
@@ -13,6 +15,7 @@ const DEFAULT_PAGE_SIZE = 10
 
 const DEFAULT_NA = 'N/A'
 const RO_CURRENCY = 'RON'
+const VAT = 'VAT'
 
 const PATHS: PathRecord = {
   HOME: '/home',
@@ -30,6 +33,8 @@ const PATHS: PathRecord = {
 const SUPABASE_PRODUCTS_STORAGE_NAME = 'products'
 const SUPABASE_STORAGE_RELATIVE = 'storage/v1/object/public'
 const SUPABASE_STORAGE_PUBLIC_FOLDER = 'public'
+const SUPABASE_STORAGE_CATEGORIES_FOLDER = 'categories'
+const PLACEHOLDER_IMAGE = PlaceholderImage
 
 export {
   BACKEND_BASE_API_URL,
@@ -45,5 +50,9 @@ export {
   SUPABASE_STORAGE_PUBLIC_FOLDER,
   PATHS,
   CLIENT_APP_URL,
+  VAT,
   SUPABASE_SERVICE_ROLE_KEY_API,
+  SUPABASE_STORAGE_CATEGORIES_FOLDER,
+  PLACEHOLDER_IMAGE,
+  SUPABASE_STORAGE_RELATIVE_URL,
 }

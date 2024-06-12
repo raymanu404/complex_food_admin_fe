@@ -1,5 +1,12 @@
 import { transformProductsData } from '@/pages/Products/utils/mapper'
-import { createProduct, deleteProduct, getListProductsAsync, updateProduct } from '../data/products'
+import {
+  createProduct,
+  deleteProduct,
+  getListProductsAsync,
+  getMostOrderedProducts,
+  getProductsStatistics,
+  updateProduct,
+} from '../data/products'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
 import { ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
@@ -81,11 +88,12 @@ const useDeleteProduct = () => {
 
 //UPLOAD IMAGE TO STORAGE
 const useUploadFile = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const uploadFileHandler = async (file: File | undefined) => {
     let imageUrl = ''
     if (file) {
       const { name } = file
-
+      setIsLoading(true)
       const { data, error } = await supabaseClient.storage
         .from(SUPABASE_PRODUCTS_STORAGE_NAME)
         .upload(`public/${name}`, file, {
@@ -93,25 +101,70 @@ const useUploadFile = () => {
         })
 
       imageUrl = createFullPathStorageFile(name)
+      setIsLoading(false)
       return { error, data, imageUrl }
     }
 
     return null
   }
 
-  return { uploadFileHandler }
+  return { uploadFileHandler, isLoading }
 }
 
-//GET IMAGE FROM STORAGE !EXPERIMENTAL!
-const useGetFileFromStorage = () => {
-  const [isLoading, setIsLoading] = useState(true)
-  const getFileHandler = async (path: string) => {
+//GET FILE PATH FROM STORAGE
+const useGetFilePathFromStorage = () => {
+  const [isLoading, setIsLoading] = useState(false)
+  const getFileHandler = async ({ srcPathWithExt, folderName }: { srcPathWithExt: string; folderName: string }) => {
+    setIsLoading(true)
+
+    const path = `${folderName}/${srcPathWithExt}`
     const { data } = supabaseClient.storage.from(SUPABASE_PRODUCTS_STORAGE_NAME).getPublicUrl(path)
     setIsLoading(false)
+
     return data
   }
 
   return { getFileHandler, isLoading }
+}
+
+//GET FILES NAMES FROM STORAGE
+const useGetListFilesDataFromStorage = ({
+  bucketId = SUPABASE_PRODUCTS_STORAGE_NAME,
+  folderName,
+}: {
+  bucketId?: string
+  folderName: string
+}) => {
+  const query = useQuery({
+    queryKey: ['get-file-list-from-storaget'],
+    queryFn: async () =>
+      await supabaseClient.storage.from(bucketId).list(folderName, {
+        limit: 100,
+        offset: 0,
+        sortBy: { column: 'name', order: 'asc' },
+      }),
+    enabled: true,
+  })
+
+  return query
+}
+
+//GET PRODUCTS STATISTICS
+const useGetProductsStatistics = ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
+  return useQuery({
+    queryKey: ['get-products-statistics-query', startDate, endDate],
+    queryFn: async () => await getProductsStatistics({ startDate, endDate }),
+    enabled: true,
+  })
+}
+
+//GET MOST ORDERED PRODUCTS
+const useGetMostOrderedProducts = () => {
+  return useQuery({
+    queryKey: ['get-most-orderded-products-query'],
+    queryFn: async () => await getMostOrderedProducts(),
+    enabled: true,
+  })
 }
 
 export {
@@ -120,5 +173,8 @@ export {
   useCreateProduct,
   useDeleteProduct,
   useUploadFile,
-  useGetFileFromStorage,
+  useGetFilePathFromStorage,
+  useGetProductsStatistics,
+  useGetMostOrderedProducts,
+  useGetListFilesDataFromStorage,
 }

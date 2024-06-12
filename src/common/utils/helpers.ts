@@ -1,15 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { format } from 'date-fns'
 import { SyntheticEvent } from 'react'
-import PlaceholderImage from '@/common/assets/placeholder-image.png'
+
 import {
+  PLACEHOLDER_IMAGE,
   SUPABASE_PRODUCTS_STORAGE_NAME,
   SUPABASE_STORAGE_PUBLIC_FOLDER,
   SUPABASE_STORAGE_RELATIVE,
   SUPABASE_URL,
 } from './constants'
 
-const formatDate = (date: Date): string => {
+const formatDate = (date: Date | string): string => {
   const formattedDate = format(date, 'dd/MM/yyyy HH:mm:ss')
 
   return formattedDate
@@ -18,7 +19,7 @@ const formatDate = (date: Date): string => {
 const handleImageError = (event: SyntheticEvent<HTMLImageElement | Event>) => {
   const target = event.target as HTMLImageElement
 
-  target.src = PlaceholderImage
+  target.src = PLACEHOLDER_IMAGE
   target.style.objectFit = 'contain'
   target.style.padding = '20px'
 }
@@ -121,7 +122,24 @@ function getItemByPartialKey(partialKey: string) {
   return null
 }
 
-export { saveArrayToLocalStorage, getArrayFromLocalStorage, removeArrayFromLocalStorage, getItemByPartialKey }
+function formatNumber(num: number): string {
+  if (num % 1 === 0) {
+    return num.toString()
+  } else {
+    return num.toFixed(2)
+  }
+}
+
+const formatDateToBe = (date: Date | null | undefined): string => {
+  if (date) {
+    const year = date.getFullYear()
+    const month = `0${date.getMonth() + 1}`.slice(-2) // getMonth() returns 0-indexed month
+    const day = `0${date.getDate()}`.slice(-2)
+    return `${year}-${month}-${day}`
+  }
+
+  return 'invalid'
+}
 
 export {
   formatDate,
@@ -132,4 +150,10 @@ export {
   arePropsEqual,
   createFullPathStorageFile,
   isDateExpired,
+  saveArrayToLocalStorage,
+  getArrayFromLocalStorage,
+  removeArrayFromLocalStorage,
+  getItemByPartialKey,
+  formatNumber,
+  formatDateToBe,
 }

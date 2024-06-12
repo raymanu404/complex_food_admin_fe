@@ -10,8 +10,8 @@ const useMagicLink = () => {
     mutationFn: async (email: string, isEmailValid = true) => {
       if (isEmailValid) {
         const { data, error } = await sendMagicLink({ email })
-        console.log({ data })
-        console.log({ error })
+        // console.log({ data })
+        // console.log({ error })
         return { data, error }
       }
 

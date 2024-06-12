@@ -1,7 +1,15 @@
 import { axiosInstance } from '@/common/config/application_config'
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from 'material-react-table'
-import { GetProductsResponseBeI, ProductBodyToCreate, ProductBodyToUpdate } from '../interfaces/products'
+import {
+  GetProductsResponseBeI,
+  MostOrderedProductsDataResponse,
+  ProductBodyToCreate,
+  ProductBodyToUpdate,
+  ProductsStatisticsResponse,
+} from '../interfaces/products'
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
+import { formatDateToBe } from '@/common/utils/helpers'
+import { generateMockMostOrderedProductsDataResponse, sampleStatistics } from './mockData'
 
 const getListProductsAsync = async ({
   columnFilters,
@@ -32,7 +40,7 @@ const getListProductsAsync = async ({
     const { pageIndex, pageSize } = pagination
     params = { ...params, pageNumber: pageIndex + 1, pageSize: pageSize }
   }
-  console.log(params)
+  // console.log(params)
   const { data } = await axiosInstance.get<GetProductsResponseBeI>(`${BACKEND_ADMIN_PATH}/products`, {
     params: { ...params },
   })
@@ -52,4 +60,51 @@ const deleteProduct = async (productId: number) => {
   await axiosInstance.delete(`${BACKEND_ADMIN_PATH}/products/${productId}`)
 }
 
-export { getListProductsAsync, updateProduct, createProduct, deleteProduct }
+const getProductsStatistics = async ({ endDate, startDate }: { startDate?: Date | null; endDate?: Date | null }) => {
+  let queryParams = `?`
+
+  const startDateFormated = formatDateToBe(startDate)
+  const endDateFormated = formatDateToBe(endDate)
+
+  queryParams += startDate ? `startDate=${startDateFormated}` : ''
+  queryParams += endDate ? `&endDate=${endDateFormated}` : ''
+
+  const { data } = await axiosInstance.get<ProductsStatisticsResponse>(
+    `${BACKEND_ADMIN_PATH}/products/products_statistics${queryParams}`
+  )
+
+  return data
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(sampleStatistics)
+  //     return sampleStatistics
+  //   }, 1000)
+  // })
+
+  // return promise as Promise<ProductsStatisticsResponse>
+}
+
+const getMostOrderedProducts = async () => {
+  const { data } = await axiosInstance.get<MostOrderedProductsDataResponse>(
+    `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
+  )
+  return data
+
+  // const promise = new Promise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     const data = generateMockMostOrderedProductsDataResponse()
+  //     resolve(data)
+  //     return data
+  //   }, 2000)
+  // })
+  // return promise as Promise<MostOrderedProductsDataResponse>
+}
+
+export {
+  getListProductsAsync,
+  updateProduct,
+  createProduct,
+  deleteProduct,
+  getProductsStatistics,
+  getMostOrderedProducts,
+}

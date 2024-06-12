@@ -1,3 +1,4 @@
+import { IconButtonProps } from '@mui/material'
 import { AuthError } from '@supabase/supabase-js'
 
 enum PathEnum {
@@ -30,5 +31,9 @@ type ReturnMagicLinkData = {
 
 type PathRecord = Record<string, string>
 
+interface ExpandMoreProps extends IconButtonProps {
+  expand: boolean
+}
+
 export { PathEnum }
-export type { PathRecord, ReturnMagicLinkData }
+export type { PathRecord, ReturnMagicLinkData, ExpandMoreProps }
