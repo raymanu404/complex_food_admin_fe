@@ -21,7 +21,6 @@ const handleImageError = (event: SyntheticEvent<HTMLImageElement | Event>) => {
 
   target.src = PLACEHOLDER_IMAGE
   target.style.objectFit = 'contain'
-  target.style.padding = '20px'
 }
 
 // Function to map enum values to strings

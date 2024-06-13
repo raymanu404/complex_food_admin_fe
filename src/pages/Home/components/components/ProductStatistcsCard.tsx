@@ -11,6 +11,7 @@ import { PLACEHOLDER_IMAGE, RO_CURRENCY, VAT } from '@/common/utils/constants'
 import { handleImageError } from '@/common/utils/helpers'
 import { Spinner } from '@/common/components'
 
+const IMAGE_WIDTH = MAX_CARD_WITDH - 100
 const IMAGE_HEIGHT = MAX_CARD_HEIGHT - 100
 interface PropsI {
   data: {
@@ -84,6 +85,7 @@ const ProductStatistcsCard = ({
         <CardMedia
           component="img"
           height={IMAGE_HEIGHT}
+          width={IMAGE_WIDTH}
           sx={{ objectFit: 'cover' }}
           src={imageSrc ?? PLACEHOLDER_IMAGE}
           alt={title}
