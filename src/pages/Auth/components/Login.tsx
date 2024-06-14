@@ -1,6 +1,6 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { supabaseClient } from '@/common/config/application_config'
-import { useTheme } from '@mui/material'
+import { Box, useTheme } from '@mui/material'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { useAuthContext } from '@/contexts/AuthContext'
 import { Navigate } from 'react-router-dom'
@@ -16,7 +16,13 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <Box
+      sx={{
+        'a[href="#auth-sign-up"]': {
+          display: 'none',
+        },
+      }}
+    >
       <Auth
         supabaseClient={supabaseClient}
         theme="default"
@@ -29,7 +35,7 @@ const Login = () => {
         }}
         providers={[]}
       />
-    </div>
+    </Box>
   )
 }
 

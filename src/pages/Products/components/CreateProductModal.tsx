@@ -31,13 +31,12 @@ const CreateProductModal = ({ close, isOpen, refetch, ...rest }: PropsI) => {
           toast.error(`Unable to get file`)
         }
       }
-
       await mutateAsync({
         productToCreate: { ...data, image: imageUrlBe },
-      }).then(() => {
-        close()
-        refetch()
       })
+
+      close()
+      refetch()
     },
     [close, mutateAsync, refetch, uploadFileHandler]
   )

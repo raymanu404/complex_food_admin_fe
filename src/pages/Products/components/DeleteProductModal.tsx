@@ -23,10 +23,10 @@ const DeleteProductModal = ({ productId, close, isOpen, refetch }: PropsI) => {
   const onSubmit = async () => {
     await mutateAsync({
       productId,
-    }).then(() => {
-      close()
-      refetch()
     })
+
+    close()
+    refetch()
   }
   return (
     <Dialog open={isOpen} onClose={close} fullWidth maxWidth="sm">

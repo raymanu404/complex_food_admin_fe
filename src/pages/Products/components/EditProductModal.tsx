@@ -20,8 +20,6 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
   const { mutateAsync, isPending: isUpdatingProduct } = useUpdateProduct()
   const { uploadFileHandler, isLoading } = useUploadFile()
 
-  console.log({ isLoading })
-
   const onSubmit: SubmitHandler<ProductFormUpdate> = useCallback(
     async (data) => {
       let imageUrlBe = ''
@@ -42,10 +40,10 @@ const EditProductModal = ({ refetch, close, product, isOpen, ...rest }: PropsI) 
       await mutateAsync({
         productId: product?.id ?? 0,
         productToUpdate: { ...data, image: imageUrlBe },
-      }).then(() => {
-        close()
-        refetch()
       })
+
+      close()
+      refetch()
     },
     [close, mutateAsync, product?.id, refetch, uploadFileHandler]
   )
