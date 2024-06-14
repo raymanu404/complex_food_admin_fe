@@ -17,8 +17,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 0,
         totalPrice: 5293,
         totalMerchantPrice: 973.25,
-        totalProfitWithoutVTA: 4319.75,
-        totalProfitWithVTA: 3455.8,
+        totalProfitWithoutVat: 4319.75,
+        totalProfitWithVat: 3455.8,
         totalOrderedProducts: 214,
       },
       {
@@ -28,8 +28,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 0,
         totalPrice: 159.6,
         totalMerchantPrice: 39.9,
-        totalProfitWithoutVTA: 119.69999999999999,
-        totalProfitWithVTA: 95.75999999999999,
+        totalProfitWithoutVat: 119.69999999999999,
+        totalProfitWithVat: 95.75999999999999,
         totalOrderedProducts: 8,
       },
       {
@@ -39,8 +39,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 2,
         totalPrice: 0,
         totalMerchantPrice: 0,
-        totalProfitWithoutVTA: 0,
-        totalProfitWithVTA: 0,
+        totalProfitWithoutVat: 0,
+        totalProfitWithVat: 0,
         totalOrderedProducts: 0,
       },
       {
@@ -50,8 +50,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 0,
         totalPrice: 0,
         totalMerchantPrice: 0,
-        totalProfitWithoutVTA: 0,
-        totalProfitWithVTA: 0,
+        totalProfitWithoutVat: 0,
+        totalProfitWithVat: 0,
         totalOrderedProducts: 0,
       },
       {
@@ -61,8 +61,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 1,
         totalPrice: 0,
         totalMerchantPrice: 0,
-        totalProfitWithoutVTA: 0,
-        totalProfitWithVTA: 0,
+        totalProfitWithoutVat: 0,
+        totalProfitWithVat: 0,
         totalOrderedProducts: 0,
       },
       {
@@ -72,8 +72,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
         outOfStock: 0,
         totalPrice: 0,
         totalMerchantPrice: 0,
-        totalProfitWithoutVTA: 0,
-        totalProfitWithVTA: 0,
+        totalProfitWithoutVat: 0,
+        totalProfitWithVat: 0,
         totalOrderedProducts: 0,
       },
     ],
@@ -84,8 +84,8 @@ const sampleStatistics: ProductsStatisticsResponse = {
   totalOutOfStock: 3,
   totalPrice: 5452.6,
   totalMerchantPrice: 1013.15,
-  totalProfitWithoutVTA: 4439.45,
-  totalProfitWithVTA: 3551.5600000000004,
+  totalProfitWithoutVat: 4439.45,
+  totalProfitWithVat: 3551.5600000000004,
   totalOrderedProducts: 222,
 }
 
@@ -122,24 +122,24 @@ const mockDataOrdersStatistics: OrderStatisticsData = {
   totalOrders: 100,
   totalPrice: 1234.56,
   totalMerchantPrice: 1100.0,
-  totalProfitWithoutVTA: 134.56,
-  totalProfitWithVTA: 150.0,
+  totalProfitWithoutVat: 134.56,
+  totalProfitWithVat: 150.0,
 }
 
 const mockDataTotalOrdersStatistics: OrderStatisticsData = {
   totalOrders: 420,
   totalPrice: 1534.56,
   totalMerchantPrice: 1500.0,
-  totalProfitWithoutVTA: 534.56,
-  totalProfitWithVTA: 250.0,
+  totalProfitWithoutVat: 534.56,
+  totalProfitWithVat: 250.0,
 }
 
 const mockDataPercentsOrdersStatistics: OrderStatisticsData = {
   totalOrders: 20.2,
   totalPrice: 4.56,
   totalMerchantPrice: 15.0,
-  totalProfitWithoutVTA: 34.56,
-  totalProfitWithVTA: 25.0,
+  totalProfitWithoutVat: 34.56,
+  totalProfitWithVat: 25.0,
 }
 
 const orderStatistics: OrderStatisticsResponse = {

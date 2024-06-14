@@ -9,7 +9,6 @@ import {
 } from '../interfaces/products'
 import { BACKEND_ADMIN_PATH } from '@/common/utils/constants'
 import { formatDateToBe } from '@/common/utils/helpers'
-import { generateMockMostOrderedProductsDataResponse, sampleStatistics } from './mockData'
 
 const getListProductsAsync = async ({
   columnFilters,
@@ -89,16 +88,15 @@ const getMostOrderedProducts = async () => {
     `${BACKEND_ADMIN_PATH}/products/most_ordered_products`
   )
   return data
-
-  // const promise = new Promise((resolve, reject) => {
-  //   setTimeout(() => {
-  //     const data = generateMockMostOrderedProductsDataResponse()
-  //     resolve(data)
-  //     return data
-  //   }, 2000)
-  // })
-  // return promise as Promise<MostOrderedProductsDataResponse>
 }
+// const promise = new Promise((resolve, reject) => {
+//   setTimeout(() => {
+//     const data = generateMockMostOrderedProductsDataResponse()
+//     resolve(data)
+//     return data
+//   }, 2000)
+// })
+// return promise as Promise<MostOrderedProductsDataResponse>
 
 export {
   getListProductsAsync,

@@ -63,8 +63,8 @@ interface OrderStatisticsData {
   totalOrders: number
   totalPrice: number
   totalMerchantPrice: number
-  totalProfitWithoutVTA: number
-  totalProfitWithVTA: number
+  totalProfitWithoutVat: number
+  totalProfitWithVat: number
 }
 
 interface OrderStatisticsResponse {

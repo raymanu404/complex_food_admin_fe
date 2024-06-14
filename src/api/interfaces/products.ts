@@ -49,8 +49,8 @@ interface CategoryData {
   outOfStock: number
   totalPrice: number
   totalMerchantPrice: number
-  totalProfitWithoutVTA: number
-  totalProfitWithVTA: number
+  totalProfitWithoutVat: number
+  totalProfitWithVat: number
   totalOrderedProducts: number
 }
 
@@ -66,8 +66,8 @@ interface ProductsStatisticsResponse {
   totalOutOfStock: number
   totalPrice: number
   totalMerchantPrice: number
-  totalProfitWithoutVTA: number
-  totalProfitWithVTA: number
+  totalProfitWithoutVat: number
+  totalProfitWithVat: number
   totalOrderedProducts: number
 }
 

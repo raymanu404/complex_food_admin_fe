@@ -21,8 +21,8 @@ interface PropsI {
     outOfStock?: number
     totalPrice?: number
     totalMerchantPrice?: number
-    totalProfitWithoutVTA?: number
-    totalProfitWithVTA?: number
+    totalProfitWithoutVat?: number
+    totalProfitWithVat?: number
     totalOrderedProducts?: number
   }
   imageSrc: string
@@ -40,8 +40,8 @@ const ProductStatistcsCard = ({
     totalOrderedProducts,
     totalPrice,
     totalProducts,
-    totalProfitWithVTA,
-    totalProfitWithoutVTA,
+    totalProfitWithVat,
+    totalProfitWithoutVat,
     categoryName,
   },
   imageSrc = PLACEHOLDER_IMAGE,
@@ -107,8 +107,8 @@ const ProductStatistcsCard = ({
           <RowCard title={`Total ordered products`} value={totalOrderedProducts} />
           <RowCard title={`Total selling price (${RO_CURRENCY})`} value={totalPrice} />
           <RowCard title={`Total merchant price (${RO_CURRENCY})`} value={totalMerchantPrice} />
-          <RowCard title={`Total profit without ${VAT} (${RO_CURRENCY})`} value={totalProfitWithoutVTA} />
-          <RowCard title={`Total profit with ${VAT} (${RO_CURRENCY})`} value={totalProfitWithVTA} />
+          <RowCard title={`Total profit without ${VAT} (${RO_CURRENCY})`} value={totalProfitWithoutVat} />
+          <RowCard title={`Total profit with ${VAT} (${RO_CURRENCY})`} value={totalProfitWithVat} />
         </CardContent>
       </Collapse>
     </Card>
