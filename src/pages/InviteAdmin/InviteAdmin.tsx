@@ -6,8 +6,8 @@ import { useGetListAdmin } from '@/api/hooks/usersHooks'
 
 const InviteAdmin = () => {
   const { isLoading, users, refetch } = useGetListAdmin({ isEnabled: true })
-  // const emailList = useMemo(() => users.map((item) => item.email ?? ''), [users])
-  const emailList: string[] = []
+  const emailList = useMemo(() => users.map((item) => item.email ?? ''), [users])
+  // const emailList: string[] = []
 
   return (
     <FlexBoxCentered sx={{ gap: '30px' }}>

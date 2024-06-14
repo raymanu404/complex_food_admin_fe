@@ -49,7 +49,7 @@ const InvitationPage = ({ disableSentButton, refetch, emailList }: PropsI) => {
           return
         }
 
-        toast.success(`You send an invitation to ${value}`)
+        toast.success(`You sent an invitation to ${value}`)
         resetState()
         refetch()
       } else {
