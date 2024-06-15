@@ -36,7 +36,7 @@ const OrderItemFrontSide = ({
         <Box sx={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
           <Box width={'85%'}>
             <TooltipCustom title={title}>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h6" gutterBottom>
                 {title}
               </Typography>
             </TooltipCustom>
@@ -47,9 +47,9 @@ const OrderItemFrontSide = ({
         <Divider />
         {/* DETAILS */}
         <Box sx={{ padding: '10px 20px', height: '140px' }}>
-          <Typography variant="h4">{category}</Typography>
-          {/* <TooltipCustom title={description}> */}
-          <OverflowTooltip text={`${description}`} />
+          <Typography variant="h6">{category}</Typography>
+          <TooltipCustom title={description}>{description}</TooltipCustom>
+          {/* <OverflowTooltip text={`${description}`} /> */}
           {/* </TooltipCustom> */}
         </Box>
         {/* PRICE + Quantity */}

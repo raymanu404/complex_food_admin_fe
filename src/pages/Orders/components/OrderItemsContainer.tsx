@@ -13,7 +13,7 @@ const OrderItemsContainer = ({ row }: PropsI) => {
 
   //TODO:finish styles
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto', maxHeight: '300px' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'row', overflow: 'auto', height: '300px' }}>
       <Stack gap="0.2rem" direction={'row'} columnGap={10}>
         {orderItems &&
           orderItems.map((orderItem) => <OrderItemDetails orderItem={orderItem} key={orderItem.orderItemId} />)}
