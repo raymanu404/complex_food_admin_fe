@@ -96,7 +96,7 @@ export const OrdersContainer = () => {
     paginationDisplayMode: 'pages',
     enableFacetedValues: true,
     enableGlobalFilter: false, //lets disable this for now
-    editDisplayMode: 'table', // ('modal', 'row', 'cell', and 'custom' are also
+    editDisplayMode: 'table',
     enableEditing: true,
     // enableRowActions: true,
     state: {

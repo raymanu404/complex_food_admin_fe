@@ -14,7 +14,7 @@ const OrderItemDetails = ({ orderItem }: PropsI) => {
   const { category, description, image, orderItemId, price, quantity, title } = orderItem
 
   return (
-    <Box sx={{ height: '250px', width: '250px' }}>
+    <Box>
       <ReactCardFlip isFlipped={isFlipped}>
         <OrderItemFrontSide
           category={category}

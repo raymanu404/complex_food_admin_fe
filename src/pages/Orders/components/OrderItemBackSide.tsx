@@ -14,9 +14,9 @@ const OrderItemBackSide = ({ flipCardHandler, image, title }: PropsI) => {
         ev.preventDefault()
         flipCardHandler(false)
       }}
-      sx={{ cursor: 'pointer' }}
+      sx={{ cursor: 'pointer', justifyContent: 'center', display: 'flex', alignItems: 'center' }}
     >
-      <CardMedia component="img" sx={{ objectFit: 'fill' }} image={image} alt={title} onError={handleImageError} />
+      <CardMedia component="img" sx={{ objectFit: 'cover' }} image={image} alt={title} onError={handleImageError} />
     </FlipCard>
   )
 }
