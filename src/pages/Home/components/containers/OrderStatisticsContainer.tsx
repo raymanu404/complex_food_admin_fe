@@ -6,6 +6,7 @@ import { FlexBoxRow } from '@/common/styles/styled-components'
 import StatisticGauge from '../components/StatisticGauge'
 import AlertCard from '../components/AlertCard'
 import DateTimeContainer from './DateTimeContainer'
+import { camelToPascalWithSpaces } from '../../utils/helpers'
 
 const OrderStatisticsContainer = () => {
   const [startDate, setStartDate] = useState<Date | null>(new Date(2024, 0, 1))
@@ -62,7 +63,12 @@ const OrderStatisticsContainer = () => {
           dataInPercentsValueKeys &&
           dataInPercentsValueKeys.length > 0 &&
           dataInPercentsValueKeys.map((x) => (
-            <StatisticGauge value={x.value} isLoading={isLoading} textLabel={x.key} key={`${x.key}-${x.value}`} />
+            <StatisticGauge
+              value={x.value}
+              isLoading={isLoading}
+              textLabel={camelToPascalWithSpaces(x.key)}
+              key={`${x.key}-${x.value}`}
+            />
           ))}
       </Box>
     </ParentContainer>

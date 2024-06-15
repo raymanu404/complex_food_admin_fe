@@ -9,7 +9,7 @@ import {
 } from 'material-react-table'
 import { Button } from '@mui/material'
 import { products_columns } from './utils/mapper'
-import { FlexBoxCentered, FlexCard } from '@/common/styles/styled-components'
+import { FlexBoxCentered } from '@/common/styles/styled-components'
 import { ProductFeI } from '@/api/interfaces/products'
 import { DEFAULT_PAGE_SIZE } from '@/common/utils/constants'
 import { useGetListProducts } from '@/api/hooks/productHooks'
@@ -139,10 +139,7 @@ export const ProductsContainer = () => {
 
   return (
     <FlexBoxCentered sx={{ padding: '20px 40px', margin: '0 auto' }}>
-      <FlexCard sx={{ height: '80vh' }}>
-        <h1>Products table</h1>
-        <MaterialReactTable table={productsTable} />
-      </FlexCard>
+      <MaterialReactTable table={productsTable} />
       {isEditModalOpen && (
         <EditProductModal close={closeEditModal} isOpen={isEditModalOpen} product={editProduct} refetch={refetch} />
       )}

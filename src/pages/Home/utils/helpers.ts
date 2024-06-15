@@ -17,4 +17,18 @@ const createAbsolutePathURLForFile = ({
 const createAbsolutePathLocal = ({ fileName, fileExt }: { fileName: string; fileExt: string }) =>
   `src\\common\\assets\\categories\\${fileName}${fileExt}`
 
-export { createAbsolutePathURLForFile, createAbsolutePathLocal }
+/**
+ * Converts a camelCase string to PascalCase with spaces between words.
+ * @param camelCaseStr - The camelCase string to convert.
+ * @returns The converted PascalCase string with spaces between words.
+ */
+function camelToPascalWithSpaces(camelCaseStr: string): string {
+  // Split the string by uppercase letters and preserve the uppercase letters in the array
+  const words = camelCaseStr.split(/(?=[A-Z])/)
+
+  // Join the words with spaces and capitalize the first letter of the resulting string
+  const pascalWithSpaces = words.join(' ')
+  return pascalWithSpaces.charAt(0).toUpperCase() + pascalWithSpaces.slice(1).toLocaleLowerCase()
+}
+
+export { createAbsolutePathURLForFile, createAbsolutePathLocal, camelToPascalWithSpaces }
