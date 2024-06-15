@@ -34,7 +34,6 @@ function OverflowTooltip({ text, ...rest }: PropsI) {
         style={{
           overflow: 'hidden',
           textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
           maxWidth: '100%',
         }}
         ref={textRef}

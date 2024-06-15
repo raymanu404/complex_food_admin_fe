@@ -47,8 +47,8 @@ const TooltipCustom = styled(({ className, ...props }: TooltipProps) => (
 
 const FlipCard = styled(Card)<{ width?: CSSProperties['width']; height?: CSSProperties['height'] }>(
   ({ width, height }) => ({
-    width: width ?? '240px',
-    height: height ?? '240px',
+    width: width ?? '300px',
+    height: height ?? '300px',
     borderRadius: '16px',
     padding: '20px 5px',
   })
